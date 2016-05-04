@@ -53,6 +53,18 @@ void Player::update()
 	MoveableObject::update();
 	//Probar valores para animacion
 	//m_currentFrame = int(((SDL_GetTicks() / (1000 / 3)) % m_numFrames));
+
+	DrawMessage drawMsg;
+	drawMsg.objectID = this->m_objectId;
+	drawMsg.column = this->m_currentFrame;
+	drawMsg.row = this->m_currentRow;
+	drawMsg.posX = this->m_position.m_x;
+	drawMsg.posY = this->m_position.m_y;
+	drawMsg.textureID = this->m_textureID;
+	Game::Instance()->sendToAllClients(drawMsg);
+
+	m_direction.setX(0);
+	m_direction.setY(0);
 }
 
 
@@ -64,7 +76,7 @@ void Player::clean()
 void Player::handleInput(InputMessage dataMsg)
 {
 
-    if(m_controllable && !m_dead)
+    if(m_dead && !m_dying)
     {
         // handle keys
         if ((dataMsg.buttonUp ==1) && (m_position.getY() > 0))

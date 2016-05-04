@@ -31,8 +31,10 @@ int main(int argc, char **argv)
 		//Bucle del juego
 		while (Game::Instance()->isRunning()) {
 			frameStartTime = SDL_GetTicks();
+
 			Game::Instance()->handleEvents();
 			Game::Instance()->update();
+
 			frameEndTime = SDL_GetTicks() - frameStartTime;
 			//tiempo a esperar = tiempo que demoro en finalizar el  frame = tiempo en que finalizó - tiempo en que inició
 			if (frameEndTime < DELAY_TIME) {

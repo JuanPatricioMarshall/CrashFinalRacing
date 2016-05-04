@@ -15,6 +15,7 @@ AlanTuring::~AlanTuring()
 {
 
 }
+
 /********************************************Metodos del Juego*********************************************************************/
 int AlanTuring::encodeDrawMessage(DrawMessage drawMsg, char* bufferSalida)
 {
@@ -23,14 +24,13 @@ int AlanTuring::encodeDrawMessage(DrawMessage drawMsg, char* bufferSalida)
 
 	NetworkMessage codigoEnigma;
 	bzero(codigoEnigma.msg_Data, MESSAGE_DATA_SIZE);
+
 	codigoEnigma.msg_Code[0] = 'd';
 	codigoEnigma.msg_Code[1] = 'm';
 	codigoEnigma.msg_Code[2] = 's';
 
-
 	//copia el draw message en el buffer de network message data
-	bzero(codigoEnigma.msg_Data, DRAW_MESSAGE_SIZE + 1);
-	memcpy(codigoEnigma.msg_Data, &drawMsg, DRAW_MESSAGE_SIZE);
+	memcpy(codigoEnigma.msg_Data, &drawMsg, sizeof(DrawMessage));
 
 	codigoEnigma.msg_Length = DRAW_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
@@ -46,14 +46,14 @@ int AlanTuring::encodeInputMessage(InputMessage inputMsg, char* bufferSalida)
 
 	NetworkMessage codigoEnigma;
 	bzero(codigoEnigma.msg_Data, MESSAGE_DATA_SIZE);
+
 	codigoEnigma.msg_Code[0] = 'i';
 	codigoEnigma.msg_Code[1] = 'm';
 	codigoEnigma.msg_Code[2] = 's';
 
 
 	//copia el draw message en el buffer de network message data
-	bzero(codigoEnigma.msg_Data, INPUT_MESSAGE_SIZE + 1);
-	memcpy(codigoEnigma.msg_Data, &inputMsg, INPUT_MESSAGE_SIZE);
+	memcpy(codigoEnigma.msg_Data, &inputMsg, sizeof(InputMessage));
 
 	codigoEnigma.msg_Length = INPUT_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
@@ -66,13 +66,13 @@ int AlanTuring::encodeInputMessage(InputMessage inputMsg, char* bufferSalida)
 DrawMessage AlanTuring::decodeDrawMessage (NetworkMessage netMsg)
 {
 	DrawMessage drawMsg;
-	memcpy(&drawMsg, netMsg.msg_Data, sizeof(DataMessage));
+	memcpy(&drawMsg, netMsg.msg_Data, sizeof(DrawMessage));
 	return drawMsg;
 }
 InputMessage AlanTuring::decodeInputMessage (NetworkMessage netMsg)
 {
 	InputMessage inputMsg;
-	memcpy(&inputMsg, netMsg.msg_Data, sizeof(DataMessage));
+	memcpy(&inputMsg, netMsg.msg_Data, sizeof(InputMessage));
 	return inputMsg;
 }
 /**********************************************************************************************************************************/

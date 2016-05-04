@@ -26,15 +26,20 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
     m_gameHeight = height;
 
     //Provisorio rompen porq blackship water island son string... pone ints (hacer mapas primero)
-   m_player = new Player(true);
+    m_player = new Player();
    //m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, "blackship", 1);
    m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, 1, 1);
-   listOfPlayer[m_player->getObjectId()]=*m_player;
+   int objectID = ObjectIdGenerator::Instance()->generateId();
+   m_player->setObjectID(objectID);
+   listOfPlayer[objectID]= *m_player;
+   printf("Player inicializado con objectID %d\n", objectID);
 
    m_background = new Background();
    //m_background->load(0, 0, m_gameWidth, m_gameHeight, "water")
+   objectID = ObjectIdGenerator::Instance()->generateId();
+   m_background->setObjectID(objectID);
    m_background->load(0, 0, m_gameWidth, m_gameHeight, 2);
-   //listOfGameObject[m_background->getObjectId()]=*m_background;
+   listOfGameObject[m_background->getObjectId()] = *m_background;
 
 
    m_island = new Island();
@@ -49,9 +54,18 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
     return true;
 }
 
+void Game::createPlayer(int textureID)
+{
+	Player newPlayer;
+	newPlayer.load(m_gameWidth/2, m_gameHeight/2, 38, 64, textureID, 1);
+	int objectID = ObjectIdGenerator::Instance()->generateId();
+	newPlayer.setObjectID(objectID);
+	listOfPlayer[objectID]= newPlayer;
+}
+
 void Game::render()
 {
-    SDL_RenderClear(m_pRenderer);
+    //SDL_RenderClear(m_pRenderer);
 
 
     //Dibujar lo que haya que dibujar
@@ -59,7 +73,7 @@ void Game::render()
     m_island->draw(); //Provisorio
     m_player->draw();//Provisorio
 */
-    SDL_RenderPresent(m_pRenderer);
+    //SDL_RenderPresent(m_pRenderer);
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
@@ -67,8 +81,16 @@ void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
 void Game::update()
 {
-	for (std::map<int,GameObject>::iterator it=listOfGameObject.begin(); it!=listOfGameObject.end(); ++it)
+	for (std::map<int,Player>::iterator it=listOfPlayer.begin(); it != listOfPlayer.end(); ++it)
+	{
+		printf("objectID = %d \n", it->second.getObjectId());
 	     it->second.update();
+	}
+	for (std::map<int,GameObject>::iterator it=listOfGameObject.begin(); it != listOfGameObject.end(); ++it)
+	{
+		printf("objectID = %d \n", it->second.getObjectId());
+	     //it->second.update();
+	}
 
 }
 
@@ -78,34 +100,34 @@ void Game::handleEvents()
 void Game::setUpKorea()
 {
 
-	std::string fileName = "src/Utils/Default/servidor.xml";
+	std::string fileName = "Utils/Default/servidor.xml";
 
 
-		ParserServidor* servidorParser = new ParserServidor();
-		servidorParser->parsearDocumento(fileName);
+	ParserServidor* servidorParser = new ParserServidor();
+	servidorParser->parsearDocumento(fileName);
 
-		LoggerInfo loggerInfo = servidorParser->getLoggerInfo();
-		Logger::Instance()->setLoglevel(loggerInfo.debugAvailable, loggerInfo.warningAvailable, loggerInfo.errorAvailable);
+	LoggerInfo loggerInfo = servidorParser->getLoggerInfo();
+	Logger::Instance()->setLoglevel(loggerInfo.debugAvailable, loggerInfo.warningAvailable, loggerInfo.errorAvailable);
 
-		int porto = servidorParser->getServidorInfo().puerto ;
-		printf("Cargo puerto: %d \n",porto);
-		int maxClientes = servidorParser->getServidorInfo().cantMaximaClientes;
-		printf("Cargo maxClientes: %d \n",maxClientes);
-		printf("Creando enlazamiento\n");
-		m_server = new server(13333, 1);
-		printf("Se pone a escuchar\n");
-		m_server->escuchar();
-		printf("Escucho 1");
-		int auxi = 0;
-		while(m_server->getNumClientes()!=m_server->getMaxClientes())
-		{
-			auxi++;
-			m_server->aceptar();
-			printf("Acepto %d \n",auxi);
-		}
-		//servidor->closeAllsockets();
-	    //delete servidor;
-	    //Logger::Instance()->Close();
+	int porto = servidorParser->getServidorInfo().puerto ;
+	printf("Cargo puerto: %d \n",porto);
+	int maxClientes = servidorParser->getServidorInfo().cantMaximaClientes;
+	printf("Cargo maxClientes: %d \n",maxClientes);
+	printf("Creando enlazamiento\n");
+	m_server = new server(13333, 1);
+	printf("Se pone a escuchar\n");
+	m_server->escuchar();
+	printf("Escucho 1");
+	int auxi = 0;
+	while(m_server->getNumClientes() < m_server->getMaxClientes())
+	{
+		auxi++;
+		m_server->aceptar();
+		printf("Acepto %d \n",auxi);
+	}
+	//servidor->closeAllsockets();
+	//delete servidor;
+	//Logger::Instance()->Close();
 }
 
 
@@ -133,9 +155,9 @@ void Game::readFromKorea()
 
 }
 
-void Game::actualizarEstado(int id,InputMessage dataMsg){
-	printf("Actualizar player %d\n",dataMsg.objectID);
-	listOfPlayer[dataMsg.objectID].handleInput(dataMsg);
+void Game::actualizarEstado(int id, InputMessage inputMsg){
+	printf("Actualizar player %d\n",inputMsg.objectID);
+	listOfPlayer[inputMsg.objectID].handleInput(inputMsg);
 }
 
 void Game::clean()
@@ -148,6 +170,8 @@ void Game::clean()
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
+    listOfPlayer.clear();
+    listOfGameObject.clear();
 
     SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);

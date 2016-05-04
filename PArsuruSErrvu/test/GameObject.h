@@ -18,8 +18,21 @@
 class GameObject
 {
 public:
+    GameObject() :  m_tag("GameObject"),
+    				m_textureID(0),
+    				m_position(0,0),
+                    m_width(0),
+                    m_height(0),
+					m_numFrames(0),
+                    m_angle(0),
+                    m_alpha(255),
+                    m_currentRow(0),
+                    m_currentFrame(0)
 
-    // clase abstracta
+
+    {
+    	m_objectId=ObjectIdGenerator::Instance()->generateId();
+    }
     ~GameObject() {}
 
     /* Debe ser llamado siempre al crear un GameObject, para inicializar sus variables, cargar la imagen en el map del TextureManager, etc
@@ -60,23 +73,6 @@ public:
     }*/
 
 protected:
-
-    // constructor with default initialisation list
-    GameObject() :  m_tag("GameObject"),
-    				m_textureID(0),
-    				m_position(0,0),
-                    m_width(0),
-                    m_height(0),
-					m_numFrames(0),
-                    m_angle(0),
-                    m_alpha(255),
-                    m_currentRow(0),
-                    m_currentFrame(0)
-
-
-    {
-    	m_objectId=ObjectIdGenerator::Instance()->generateId();
-    }
 
     // Tag que posee información acerca del tipo de GameObject
     std::string m_tag;

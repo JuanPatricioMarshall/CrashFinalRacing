@@ -75,30 +75,37 @@ void Player::handleInput()
 	mensaje.buttonXpecialCombo=0;
 	mensaje.buttonCompressionSistem=0;
 	mensaje.actionID=0;
+	bool dirty = false;
 
 	// handle keys
 	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_SPACE))
 	{
-		mensaje.buttonShoot=1;
+		mensaje.buttonShoot = 1;
+		dirty = true;
 	}
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_W))))
 	{
 		mensaje.buttonUp = 1;
+		dirty = true;
 	}
 
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_S))))
 	{
 		mensaje.buttonDown = 1;
+		dirty = true;
 	}
 
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_A))))
 	{
 		mensaje.buttonLeft = 1;
+		dirty = true;
 	}
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_D))))
 	{
 		mensaje.buttonRight = 1;
+		dirty = true;
 	}
 
-	Game::Instance()->sendToKorea( mensaje);
+	if (dirty)
+		Game::Instance()->sendToKorea( mensaje);
 }

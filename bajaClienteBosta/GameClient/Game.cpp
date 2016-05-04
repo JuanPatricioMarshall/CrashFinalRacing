@@ -62,6 +62,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
     //Provisorio rompen porq blackship water island son string... pone ints (hacer mapas primero)
     m_player = new Player(true);
+    TextureManager::Instance()-> init();
+    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
    // m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, "blackship", 1);
 
     /*  m_background = new Background();
@@ -82,10 +84,8 @@ void Game::render()
 {
     SDL_RenderClear(m_pRenderer);
 
-
     for (std::map<int,DrawObject>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
          it->second.draw();
-
 
     //Dibujar lo que haya que dibujar
  /*   m_background->draw(); //Provisorio
@@ -96,27 +96,29 @@ void Game::render()
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
 	printf("interpretando %d\n",drwMsg.objectID);
-	if ( listObjects.find(drwMsg.objectID) == listObjects.end() ) {
-		DrawObject agregar;
-		agregar.load(drwMsg.posX,drwMsg.posY,drwMsg.textureID);
-		agregar.setCurrentRow(drwMsg.row);
-		agregar.setCurrentFrame(drwMsg.column);
-		agregar.setObjectID(drwMsg.objectID);
-		listObjects[drwMsg.objectID] = agregar;
-		//PARA BORRAR listObjects.erase(id);
-	}else{
-		listObjects[drwMsg.objectID].setCurrentRow(drwMsg.row);
-		listObjects[drwMsg.objectID].setCurrentFrame(drwMsg.column);
-		listObjects[drwMsg.objectID].setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
-	}
+
+		if ( listObjects.find(drwMsg.objectID) == listObjects.end() ) {
+			printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
+			DrawObject newObject;
+			newObject.load(drwMsg.posX,drwMsg.posY,drwMsg.textureID);
+			newObject.setCurrentRow(drwMsg.row);
+			newObject.setCurrentFrame(drwMsg.column);
+			newObject.setObjectID(drwMsg.objectID);
+			listObjects[drwMsg.objectID] = newObject;
+			//PARA BORRAR listObjects.erase(id);
+		}else{
+			listObjects[drwMsg.objectID].setCurrentRow(drwMsg.row);
+			listObjects[drwMsg.objectID].setCurrentFrame(drwMsg.column);
+			listObjects[drwMsg.objectID].setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
+		}
 
 	}
 
 void Game::update()
 {
-	m_background->update(); //Provisorio
+	/*m_background->update(); //Provisorio
 	m_island->update(); //Provisorio
-	m_player->update(); // Provisorio
+	m_player->update(); // Provisorio*/
 }
 
 void Game::handleEvents()
@@ -147,14 +149,14 @@ void Game::setUpKorea()
 void Game::conectToKorea()
 {
 	if (!m_client->conectar())
-					{
-						printf("No se pudo establecer conexión con el servidor.\n");
+	{
+		printf("No se pudo establecer conexión con el servidor.\n");
 
-					}
-				else
-				{
-					readFromKorea();
-				}
+	}
+	else
+	{
+		readFromKorea();
+	}
 }
 
 
@@ -167,7 +169,7 @@ void* Game::koreaMethod(void)
 	std::cout << "Empece a ciclar bitches!\n";
 	while (Game::Instance()->isRunning()) {
 			m_client->leer();
-	        }
+	}
 	 pthread_exit(NULL);
 }
 void *Game::thread_method(void *context)
@@ -183,12 +185,13 @@ void Game::clean()
 {
     cout << "cleaning game\n";
 
-    delete m_background; //Provisorio
+   /* delete m_background; //Provisorio
     delete m_island; //Provisorio
-    delete m_player; //Provisorio
+    delete m_player; //Provisorio*/
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
+    listObjects.clear();
 
     SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);

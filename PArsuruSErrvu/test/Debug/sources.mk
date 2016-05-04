@@ -23,11 +23,11 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Background \
 . \
-Utils/pugixml \
+Server \
+Singletons \
 Utils \
 Utils/Parser \
-Singletons \
-Server \
-Background \
+Utils/pugixml \
 

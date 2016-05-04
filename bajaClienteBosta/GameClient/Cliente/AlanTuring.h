@@ -39,6 +39,8 @@ public:
 	//ENCODES Y DECODES RELACIONADOS AL JUEGO
 	int encodeDrawMessage(DrawMessage msj, char* bufferSalida);
 	int encodeInputMessage(InputMessage msj, char* bufferSalida);
+	//int encodeDrawMessage(NetworkMessage* netMsg, const DrawMessage msj);
+	//int encodeInputMessage(NetworkMessage* netMsg, const InputMessage msj);
 
 	DrawMessage decodeDrawMessage(NetworkMessage netMsg);
 	InputMessage decodeInputMessage(NetworkMessage netMsg);

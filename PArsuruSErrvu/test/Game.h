@@ -43,6 +43,9 @@ public:
     void render();
     void update();
     void handleEvents();
+    void clean();
+
+    void createPlayer(int textureID);
     void setUpKorea();
     void conectToKorea();
     void sendToAllClients(DrawMessage mensaje);
@@ -50,7 +53,7 @@ public:
    	void readFromKorea();
    	void interpretarDrawMsg(DrawMessage drwMsg);
    	void actualizarEstado(int id,InputMessage dataMsg);
-    void clean();
+
 
     SDL_Renderer* getRenderer() const { return m_pRenderer; }
     SDL_Window* getWindow() const { return m_pWindow; }

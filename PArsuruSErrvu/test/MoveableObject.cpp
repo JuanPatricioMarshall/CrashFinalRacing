@@ -34,14 +34,6 @@ void MoveableObject::update()
 	if (m_direction.getY() != 0)
 		m_position.m_y += (m_direction.getY() * m_speed.getY());
 
-	DrawMessage enviar;
-	enviar.objectID = this->m_objectId;
-	enviar.column = this->m_currentFrame;
-	enviar.row = this->m_currentRow;
-	enviar.posX = this->m_position.m_x;
-	enviar.posY = this->m_position.m_y;
-	enviar.textureID = this->m_textureID;
-	//Game::Instance()->sendToAllClients(enviar);
 }
 
 void MoveableObject::clean()

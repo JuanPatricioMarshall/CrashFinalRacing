@@ -44,7 +44,7 @@ bool cliente::conectar()
 		cerrarSoket();
 	}
 	m_connecting = false;
-	printf("m_connected &d \n",m_connected);
+	printf("m_connected %d \n",m_connected);
     return m_connected;
 }
 void cliente::desconectar()
@@ -214,15 +214,12 @@ bool cliente::leer()
 	   //Se perdio la conexion con el server
 	   return false;
    }
-   printf("Empece a decodificar");
+   printf("Empece a decodificar\n");
    int messageLength = (int)m_alanTuring->decodeLength(buffer);
    //loopea hasta haber leido la totalidad de los bytes necarios
-
-   printf("%d == %d\n",n,messageLength);
    while (n < messageLength)
    {
-
-	  printf("%d \n",n);
+	  printf("leyo incompleto: %d de %d\n",n, messageLength);
 	   n = recv(sockfd, buffer, 255, 0);
 
        if (!lecturaExitosa(n))
@@ -239,7 +236,7 @@ bool cliente::leer()
    NetworkMessage netMsgRecibido = m_alanTuring->decode(buffer);
 
    procesarMensaje(netMsgRecibido);
-   printf("Procesado");
+   printf("Mensaje Procesado\n");
 
    return true;
 
@@ -316,14 +313,13 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 	}
 
 	DrawMessage drwMsg = m_alanTuring->decodeDrawMessage(networkMessage);
-		printf("Murio \n");
-		if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 's'))
-			{
+	if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 's'))
+	{
 
-				Game::Instance()->interpretarDrawMsg(drwMsg);
-				//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
+			Game::Instance()->interpretarDrawMsg(drwMsg);
+			//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
 
-			}
+	}
 
 }
 

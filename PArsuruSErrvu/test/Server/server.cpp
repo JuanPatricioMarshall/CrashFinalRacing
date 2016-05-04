@@ -443,17 +443,23 @@ bool server::lecturaExitosa(int bytesLeidos, int clientID)
 
 bool server::procesarMensaje(ServerMessage* serverMsg)
 {
+
+
 	bool procesamientoExitoso = true;;
 	NetworkMessage netMsg = serverMsg->networkMessage;
-	InputMessage dataMsg = m_alanTuring->decodeInputMessage(netMsg);
 
-	//los mensajes de timeout no requieren procesamiente ni ningún tipo de feedback visible
 	if ((netMsg.msg_Code[0] == 't') && (netMsg.msg_Code[1] == 'm') && (netMsg.msg_Code[2] == 'o'))
 	{
 		return true;
 	}
 
-	Game::Instance()->actualizarEstado(serverMsg->clientID,dataMsg);
+	InputMessage inputMsg = m_alanTuring->decodeInputMessage(netMsg);
+	printf("button right: %d \n",inputMsg.buttonRight);
+
+	//los mensajes de timeout no requieren procesamiente ni ningún tipo de feedback visible
+
+
+	Game::Instance()->actualizarEstado(serverMsg->clientID,inputMsg);
 
 	return procesamientoExitoso;
 }
