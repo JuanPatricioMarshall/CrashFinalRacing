@@ -32,11 +32,18 @@ TextureInfo TextureManager::getTextureInfo(int textureId){
 void TextureManager::init(){
 
 	TextureInfo hola;
+
 	hola.height = 64;
 	hola.numFrames = 1;
 	hola.path =	"Assets/Sprites/BlackShip.png";
 	hola.width =38 ;
 	m_textureMapInfo[1]=hola;
+
+	hola.height = 64;
+	hola.numFrames = 1;
+	hola.path =	"Assets/Sprites/BlackShip.png";
+	hola.width =38 ;
+	m_textureMapInfo[0]=hola;
 
 	hola.height = 600;
 	hola.numFrames = 1;

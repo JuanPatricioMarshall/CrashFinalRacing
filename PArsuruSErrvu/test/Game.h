@@ -45,7 +45,8 @@ public:
     void handleEvents();
     void clean();
 
-    void createPlayer(int textureID);
+    void createPlayer(int id);
+    void removePlayer(int id);
     void setUpKorea();
     void conectToKorea();
     void sendToAllClients(DrawMessage mensaje);

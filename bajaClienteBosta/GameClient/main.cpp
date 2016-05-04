@@ -28,7 +28,6 @@ int main(int argc, char **argv)
 	{
 		std::cout << "game init success!\n";
 
-		Game::Instance()->conectToKorea();
 		std::cout << "Game Online!\n";
 
 		//Bucle del juego

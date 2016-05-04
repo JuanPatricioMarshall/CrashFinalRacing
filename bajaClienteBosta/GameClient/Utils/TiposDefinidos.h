@@ -10,13 +10,14 @@
 
 #define MESSAGE_BUFFER_SIZE 256
 #define MESSAGE_ID_BYTES_LIMIT 25
-#define MESSAGE_LENGTH_BYTES 2
+#define MESSAGE_LENGTH_BYTES 4
 #define MESSAGE_CODE_BYTES 3
 #define MESSAGE_DATA_SIZE (MESSAGE_BUFFER_SIZE - MESSAGE_LENGTH_BYTES - MESSAGE_CODE_BYTES)
 #define MESSAGE_VALUE_SIZE (MESSAGE_DATA_SIZE - MESSAGE_ID_BYTES_LIMIT - 1)
 
 #define DRAW_MESSAGE_SIZE 16
 #define INPUT_MESSAGE_SIZE 24
+#define CONNECTED_MESSAGE_SIZE 8
 
 #include <string>
 
@@ -49,9 +50,15 @@ struct Mensaje{
 
 struct NetworkMessage
 {
-	unsigned short msg_Length;
+	int msg_Length;
 	char msg_Code[MESSAGE_CODE_BYTES];
 	char msg_Data[MESSAGE_DATA_SIZE];
+};
+
+struct ConnectedMessage
+{
+	int objectID;
+	int textureID;
 };
 
 struct DrawMessage

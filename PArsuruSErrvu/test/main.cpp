@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 		while (Game::Instance()->isRunning()) {
 			frameStartTime = SDL_GetTicks();
 
-			Game::Instance()->handleEvents();
+			//Game::Instance()->handleEvents();
 			Game::Instance()->update();
 
 			frameEndTime = SDL_GetTicks() - frameStartTime;

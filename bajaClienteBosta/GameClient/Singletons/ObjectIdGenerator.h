@@ -34,7 +34,7 @@ private:
     int m_IdCounterStrike;
     static ObjectIdGenerator* s_pInstance;
 
-    ObjectIdGenerator() {m_IdCounterStrike =0;}
+    ObjectIdGenerator();
     ~ObjectIdGenerator() {}
     ObjectIdGenerator(const ObjectIdGenerator&);
     ObjectIdGenerator& operator=(const ObjectIdGenerator&);

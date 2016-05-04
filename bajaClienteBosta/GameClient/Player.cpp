@@ -65,6 +65,7 @@ void Player::handleInput()
 {
 	InputMessage mensaje;
 
+	mensaje.objectID = getObjectId();
 	mensaje.buttonUp=0;
 	mensaje.buttonDown=0;
 	mensaje.buttonRight=0;
@@ -107,5 +108,8 @@ void Player::handleInput()
 	}
 
 	if (dirty)
+	{
+		printf("Enviando Input del objeto %d \n", getObjectId());
 		Game::Instance()->sendToKorea( mensaje);
+	}
 }

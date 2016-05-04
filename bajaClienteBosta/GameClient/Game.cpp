@@ -61,7 +61,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
 
     //Provisorio rompen porq blackship water island son string... pone ints (hacer mapas primero)
-    m_player = new Player(true);
     TextureManager::Instance()-> init();
     TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
    // m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, "blackship", 1);
@@ -74,7 +73,11 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     // en ms
     m_island->setReappearanceTime(0);
 */
-    setUpKorea();
+    m_player = new Player(true);
+
+    if (!setUpKorea())
+    	return false;
+
     //tudo ben
     m_running = true;
     return true;
@@ -85,7 +88,9 @@ void Game::render()
     SDL_RenderClear(m_pRenderer);
 
     for (std::map<int,DrawObject>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
+    {
          it->second.draw();
+    }
 
     //Dibujar lo que haya que dibujar
  /*   m_background->draw(); //Provisorio
@@ -95,24 +100,31 @@ void Game::render()
     SDL_RenderPresent(m_pRenderer);
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
-	printf("interpretando %d\n",drwMsg.objectID);
+	printf("interpretando draw message del objeto %d\n",drwMsg.objectID);
+	printf("texture ID: %d \n",drwMsg.textureID);
+	printf("Pos X: %d \n",drwMsg.posX);
+	printf("Pos Y: %d \n",drwMsg.posY);
 
-		if ( listObjects.find(drwMsg.objectID) == listObjects.end() ) {
-			printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
-			DrawObject newObject;
-			newObject.load(drwMsg.posX,drwMsg.posY,drwMsg.textureID);
-			newObject.setCurrentRow(drwMsg.row);
-			newObject.setCurrentFrame(drwMsg.column);
-			newObject.setObjectID(drwMsg.objectID);
-			listObjects[drwMsg.objectID] = newObject;
-			//PARA BORRAR listObjects.erase(id);
-		}else{
-			listObjects[drwMsg.objectID].setCurrentRow(drwMsg.row);
-			listObjects[drwMsg.objectID].setCurrentFrame(drwMsg.column);
-			listObjects[drwMsg.objectID].setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
-		}
+	if ( listObjects.find(drwMsg.objectID) == listObjects.end() )
+	{
+		printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
+		DrawObject newObject = DrawObject();
 
+		newObject.setObjectID(drwMsg.objectID);
+		newObject.load(static_cast<int>(drwMsg.posX),static_cast<int>(drwMsg.posY),drwMsg.textureID);
+		newObject.setCurrentRow(static_cast<int>(drwMsg.row));
+		newObject.setCurrentFrame(static_cast<int>(drwMsg.column));
+
+		listObjects[drwMsg.objectID] = newObject;
+		//PARA BORRAR listObjects.erase(id);
+	}else
+	{
+		listObjects[drwMsg.objectID].setCurrentRow(static_cast<int>(drwMsg.row));
+		listObjects[drwMsg.objectID].setCurrentFrame(static_cast<int>(drwMsg.column));
+		listObjects[drwMsg.objectID].setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
 	}
+
+}
 
 void Game::update()
 {
@@ -127,7 +139,7 @@ void Game::handleEvents()
 	//Pseudo controler
 	m_player->handleInput();
 }
-void Game::setUpKorea()
+bool Game::setUpKorea()
 {
 		std::string	fileName = "Utils/Default/cliente.xml";
 
@@ -143,20 +155,32 @@ void Game::setUpKorea()
 
 	    m_client = new cliente(3,ip,porto, listaDeMensajes);
 
+	    if (!conectToKorea())
+	    	return false;
+
+	    return true;
 
 }
 
-void Game::conectToKorea()
+void Game::createPlayer(int objectID, int textureID)
+{
+	//m_player = new Player();
+	m_player->setObjectID(objectID);
+}
+
+bool Game::conectToKorea()
 {
 	if (!m_client->conectar())
 	{
 		printf("No se pudo establecer conexión con el servidor.\n");
+		return false;
 
 	}
 	else
 	{
 		readFromKorea();
 	}
+	return true;
 }
 
 

@@ -39,11 +39,13 @@ public:
 	//ENCODES Y DECODES RELACIONADOS AL JUEGO
 	int encodeDrawMessage(DrawMessage msj, char* bufferSalida);
 	int encodeInputMessage(InputMessage msj, char* bufferSalida);
+	int encodeConnectedMessage(ConnectedMessage msj, char* bufferSalida);
 	//int encodeDrawMessage(NetworkMessage* netMsg, const DrawMessage msj);
 	//int encodeInputMessage(NetworkMessage* netMsg, const InputMessage msj);
 
 	DrawMessage decodeDrawMessage(NetworkMessage netMsg);
 	InputMessage decodeInputMessage(NetworkMessage netMsg);
+	ConnectedMessage decodeConnectedMessage(NetworkMessage netMsg);
 
 	//devuelve un buffer de 256 bytes con el mensaje codificado en binario en buffeSalida y un int con el tamaño Mensaje
 	int encodeXMLMessage(Mensaje mensaje, char* bufferSalida);
@@ -51,7 +53,7 @@ public:
 
 	//los decode reciben buffers de tamaño 256
 	NetworkMessage decode (char* codigoEnigma);
-	unsigned short decodeLength(char* codigoEnigma);
+	int decodeLength(char* codigoEnigma);
 	DataMessage decodeMessage (NetworkMessage netMsg);
 
 	//modificadores de NetworkMessage

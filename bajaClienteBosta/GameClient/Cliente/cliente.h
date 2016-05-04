@@ -10,6 +10,7 @@
 #include "../Utils/TiposDefinidos.h"
 
 #include <stdio.h>
+//#include <X11/Xlib.h>
 #include <queue>
 #include <stdlib.h>
 #include <pthread.h>

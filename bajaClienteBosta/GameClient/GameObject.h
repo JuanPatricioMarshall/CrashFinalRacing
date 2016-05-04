@@ -47,6 +47,7 @@ public:
 
     int getWidth() { return m_width; }
     int getHeight() { return m_height; }
+    int getObjectId() { return m_objectId; }
     void setObjectID(int objectId) {m_objectId = objectId;}
 
     // En este ejemplo de scroll, scrollea to do menos los objetos con tag player
@@ -74,7 +75,6 @@ protected:
 
 
     {
-    	m_objectId=ObjectIdGenerator::Instance()->generateId();
     }
 
     // Tag que posee información acerca del tipo de GameObject

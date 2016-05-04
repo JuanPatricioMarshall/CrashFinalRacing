@@ -26,41 +26,60 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
     m_gameHeight = height;
 
     //Provisorio rompen porq blackship water island son string... pone ints (hacer mapas primero)
-    m_player = new Player();
+   //m_player = new Player();
    //m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, "blackship", 1);
-   m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, 1, 1);
-   int objectID = ObjectIdGenerator::Instance()->generateId();
-   m_player->setObjectID(objectID);
-   listOfPlayer[objectID]= *m_player;
-   printf("Player inicializado con objectID %d\n", objectID);
+   //m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, 1, 1);
+   //listOfPlayer[m_player->getObjectId()]= *m_player;
 
    m_background = new Background();
    //m_background->load(0, 0, m_gameWidth, m_gameHeight, "water")
-   objectID = ObjectIdGenerator::Instance()->generateId();
-   m_background->setObjectID(objectID);
    m_background->load(0, 0, m_gameWidth, m_gameHeight, 2);
+	printf("Background inicializado con objectID: %d y textureID: %d\n", m_background->getObjectId(), 2);
    listOfGameObject[m_background->getObjectId()] = *m_background;
 
 
    m_island = new Island();
    //m_island->load(0, m_gameHeight/2, 150, 150, "island", 1);
    m_island->load(0, m_gameHeight/2, 150, 150, 3, 1);
-   // en ms
-   m_island->setReappearanceTime(0);
-   //listOfGameObject[m_island->getObjectId()] = *m_island;
+   m_island->setReappearanceTime(0);   // en ms
+   printf("Isla inicializada con objectID: %d y textureID: %d\n", m_island->getObjectId(), 3);
+   listOfGameObject[m_island->getObjectId()] = *m_island;
+
     setUpKorea();
     //tudo ben
     m_running = true;
+
+    int cantPlayers = 0;
+	for (std::map<int,Player>::iterator it=listOfPlayer.begin(); it != listOfPlayer.end(); ++it)
+	{
+		//printf("objectID = %d \n", it->second.getObjectId());
+		cantPlayers++;
+	}
+	printf("cant players: %d  \n", cantPlayers);
+	cantPlayers = 0;
+	for (std::map<int,GameObject>::iterator it=listOfGameObject.begin(); it != listOfGameObject.end(); ++it)
+	{
+		//printf("objectID = %d \n", it->second.getObjectId());
+		cantPlayers++;
+	}
+	printf("cant objetos: %d  \n", cantPlayers);
+
     return true;
 }
 
-void Game::createPlayer(int textureID)
+void Game::createPlayer(int id)
 {
-	Player newPlayer;
-	newPlayer.load(m_gameWidth/2, m_gameHeight/2, 38, 64, textureID, 1);
-	int objectID = ObjectIdGenerator::Instance()->generateId();
-	newPlayer.setObjectID(objectID);
-	listOfPlayer[objectID]= newPlayer;
+	Player newPlayer = Player();
+	newPlayer.setObjectID(id);
+	newPlayer.load(m_gameWidth/2, m_gameHeight/2, 38, 64, id, 1);
+	listOfPlayer[newPlayer.getObjectId()]= newPlayer;
+	printf("Player inicializado con objectID: %d y textureID: %d\n", newPlayer.getObjectId(), id);
+}
+
+void Game::removePlayer(int id)
+{
+	//listOfPlayer.erase(id);
+	//mostrar en gris
 }
 
 void Game::render()
@@ -83,13 +102,13 @@ void Game::update()
 {
 	for (std::map<int,Player>::iterator it=listOfPlayer.begin(); it != listOfPlayer.end(); ++it)
 	{
-		printf("objectID = %d \n", it->second.getObjectId());
+		//printf("objectID = %d \n", it->second.getObjectId());
 	     it->second.update();
 	}
 	for (std::map<int,GameObject>::iterator it=listOfGameObject.begin(); it != listOfGameObject.end(); ++it)
 	{
-		printf("objectID = %d \n", it->second.getObjectId());
-	     //it->second.update();
+		//printf("objectID = %d \n", it->second.getObjectId());
+	     it->second.update();
 	}
 
 }
@@ -114,7 +133,7 @@ void Game::setUpKorea()
 	int maxClientes = servidorParser->getServidorInfo().cantMaximaClientes;
 	printf("Cargo maxClientes: %d \n",maxClientes);
 	printf("Creando enlazamiento\n");
-	m_server = new server(13333, 1);
+	m_server = new server(porto, maxClientes);
 	printf("Se pone a escuchar\n");
 	m_server->escuchar();
 	printf("Escucho 1");
@@ -123,7 +142,6 @@ void Game::setUpKorea()
 	{
 		auxi++;
 		m_server->aceptar();
-		printf("Acepto %d \n",auxi);
 	}
 	//servidor->closeAllsockets();
 	//delete servidor;
@@ -157,6 +175,11 @@ void Game::readFromKorea()
 
 void Game::actualizarEstado(int id, InputMessage inputMsg){
 	printf("Actualizar player %d\n",inputMsg.objectID);
+	printf("button right: %d \n",inputMsg.buttonRight);
+	printf("button left: %d \n",inputMsg.buttonLeft);
+	printf("button up: %d \n",inputMsg.buttonUp);
+	printf("button down: %d \n",inputMsg.buttonDown);
+
 	listOfPlayer[inputMsg.objectID].handleInput(inputMsg);
 }
 
@@ -166,7 +189,7 @@ void Game::clean()
 
     delete m_background; //Provisorio
     delete m_island; //Provisorio
-    delete m_player; //Provisorio
+    //delete m_player; //Provisorio
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();

@@ -66,12 +66,13 @@ void Island::update()
 		}
 	}
 	DrawMessage enviar;
-	enviar.objectID = this->m_objectId;
-	enviar.column = this->m_currentFrame;
-	enviar.row = this->m_currentRow;
-	enviar.posX = this->m_position.m_x;
-	enviar.posY = this->m_position.m_y;
-	enviar.textureID = this->m_textureID;
+	printf("Isla Info\n");
+	enviar.objectID = m_objectId;
+	enviar.column = m_currentFrame;
+	enviar.row = m_currentRow;
+	enviar.posX = m_position.m_x;
+	enviar.posY = m_position.m_y;
+	enviar.textureID = m_textureID;
 	Game::Instance()->sendToAllClients(enviar);
 }
 

@@ -33,11 +33,11 @@ bool cliente::conectar()
 
 	if (m_connected)
 	{
-		//serverTimeOut->Reset();
-		//sendTimeOutTimer->Reset();
-		//serverTimeOut->Start();
-		//sendTimeOutTimer->Start();
-		//createTimeoutThread();
+		/*serverTimeOut->Reset();
+		sendTimeOutTimer->Reset();
+		serverTimeOut->Start();
+		sendTimeOutTimer->Start();
+		createTimeoutThread();*/
 	}
 	else
 	{
@@ -62,6 +62,7 @@ cliente::cliente(int argc, string ip, int port, std::vector<Mensaje> listaDeMens
 	m_connecting = false;
 	m_alanTuring = new AlanTuring();
 
+    //XInitThreads();
     pthread_mutex_init(&m_readingMutex, NULL);
     pthread_mutex_init(&m_writingMutex, NULL);
     pthread_cond_init(&m_condv, NULL);
@@ -172,18 +173,18 @@ bool cliente::sendTimeOutMsg()
 
 	if ((float)sendTimeOutTimer->GetTicks()/CLOCKS_PER_SEC >= 1)
 	{
-		Mensaje timeOutMsg = MessageFactory::Instance()->createMessage("to", "",msgTimeOutACK);
+		Mensaje timeOutMsg = MessageFactory::Instance()->createMessage("", "",msgTimeOutACK);
 		sendMsg(timeOutMsg);
 
 		sendTimeOutTimer->Reset();
 		//espera procesamiento del server
-		leer();
+		if (!leer())
+			return false;
 	}
 	pthread_mutex_unlock(&m_writingMutex);
 	return true;
 
 }
-
 
 bool cliente::checkServerConnection()
 {
@@ -204,7 +205,8 @@ bool cliente::leer()
 	printf("Empece a leer");
     pthread_mutex_lock(&m_readingMutex);
     bzero(buffer,256);
-    n = recv(sockfd, buffer, 255, 0);
+    char *p = (char*)buffer;
+    n = recv(sockfd, p, 255, 0);
     /*string buf = buffer;
    if (strcmp(buf.c_str(),"exit\n") == 0){
 	   m_conected = false;
@@ -215,18 +217,30 @@ bool cliente::leer()
 	   return false;
    }
    printf("Empece a decodificar\n");
-   int messageLength = (int)m_alanTuring->decodeLength(buffer);
+   int acum = n;
+   while (n < 4)
+   {
+	   p += n;
+	   n = recv(sockfd, p, 255, 0);
+	   if (!lecturaExitosa(n))
+		   return false;
+	   acum += n;
+   }
+   int messageLength = m_alanTuring->decodeLength(buffer);
+   p += n;
+   messageLength -= acum;
    //loopea hasta haber leido la totalidad de los bytes necarios
-   while (n < messageLength)
+   while (messageLength > 0)
    {
 	  printf("leyo incompleto: %d de %d\n",n, messageLength);
-	   n = recv(sockfd, buffer, 255, 0);
-
+	  n = recv(sockfd, p, 255, 0);
        if (!lecturaExitosa(n))
        {
     	   //se perdio la conexion con el server
     	  return false;
        }
+       p += n;
+       messageLength -= n;
    }
    pthread_cond_signal(&m_condv);
    pthread_mutex_unlock(&m_readingMutex);
@@ -273,12 +287,15 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 {
 	printf("Entro a procesar\n");
 
-
 	if ((networkMessage.msg_Code[0] == 'c') && (networkMessage.msg_Code[1] == 'n') && (networkMessage.msg_Code[2] == 't'))
 	{
 		//El cliente se conecto con exito.
 		printf("Conección con el server exitosa. \n");
 		Logger::Instance()->LOG("Cliente: Conección al servidor exitosa.\n", DEBUG);
+
+		ConnectedMessage connectedMessage = m_alanTuring->decodeConnectedMessage(networkMessage);
+		printf("Conectado con id: %d \n", connectedMessage.objectID);
+		Game::Instance()->createPlayer(connectedMessage.objectID, connectedMessage.textureID);
 		//string valorMensaje(dataMsg.msg_value);
 		//char valorChar = valorMensaje.at(0);
 		//printf("Valor del Mensaje: %c \n", valorChar);
@@ -312,11 +329,11 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		return;
 	}
 
-	DrawMessage drwMsg = m_alanTuring->decodeDrawMessage(networkMessage);
+
 	if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 's'))
 	{
-
-			Game::Instance()->interpretarDrawMsg(drwMsg);
+		DrawMessage drwMsg = m_alanTuring->decodeDrawMessage(networkMessage);
+		Game::Instance()->interpretarDrawMsg(drwMsg);
 			//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
 
 	}

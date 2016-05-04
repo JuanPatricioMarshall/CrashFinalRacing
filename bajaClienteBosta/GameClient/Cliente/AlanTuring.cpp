@@ -62,6 +62,29 @@ int AlanTuring::encodeInputMessage(InputMessage inputMsg, char* bufferSalida)
 
 	return codigoEnigma.msg_Length;
 }
+int AlanTuring::encodeConnectedMessage(ConnectedMessage connectedMsg, char* bufferSalida)
+{
+	//inicializa el buffer de salida
+	bzero(bufferSalida, MESSAGE_BUFFER_SIZE);
+
+	NetworkMessage codigoEnigma;
+	bzero(codigoEnigma.msg_Data, MESSAGE_DATA_SIZE);
+
+	codigoEnigma.msg_Code[0] = 'c';
+	codigoEnigma.msg_Code[1] = 'n';
+	codigoEnigma.msg_Code[2] = 't';
+
+
+	//copia el draw message en el buffer de network message data
+	memcpy(codigoEnigma.msg_Data, &connectedMsg, sizeof(ConnectedMessage));
+
+	codigoEnigma.msg_Length = CONNECTED_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	//copia el mensaje de red al buffer ingresado
+	memcpy(bufferSalida, &codigoEnigma, sizeof(NetworkMessage));
+
+	return codigoEnigma.msg_Length;
+}
 
 DrawMessage AlanTuring::decodeDrawMessage (NetworkMessage netMsg)
 {
@@ -74,6 +97,12 @@ InputMessage AlanTuring::decodeInputMessage (NetworkMessage netMsg)
 	InputMessage inputMsg;
 	memcpy(&inputMsg, netMsg.msg_Data, sizeof(InputMessage));
 	return inputMsg;
+}
+ConnectedMessage AlanTuring::decodeConnectedMessage (NetworkMessage netMsg)
+{
+	ConnectedMessage connectedMsg;
+	memcpy(&connectedMsg, netMsg.msg_Data, sizeof(ConnectedMessage));
+	return connectedMsg;
 }
 /**********************************************************************************************************************************/
 
@@ -95,9 +124,19 @@ int AlanTuring::encodeXMLMessage(Mensaje mensaje, char* bufferSalida)
 int AlanTuring::encodeNetworkMessage(NetworkMessage netMsg, char* bufferSalida )
 {
 	bzero(bufferSalida,MESSAGE_BUFFER_SIZE);
+
+	/*memcpy(bufferSalida, &netMsg.msg_Length, sizeof (netMsg.msg_Length));
+	memcpy(bufferSalida + sizeof (netMsg.msg_Length),&netMsg.msg_Code, sizeof (netMsg.msg_Code));
+	memcpy(bufferSalida + sizeof (netMsg.msg_Length) + sizeof (netMsg.msg_Code), &netMsg.msg_Data,
+			sizeof (NetworkMessage) - sizeof (netMsg.msg_Length) - sizeof (netMsg.msg_Code));
+	int length = netMsg.msg_Length;
+	return length;*/
+
+	//memcpy(bufferSalida, &netMsg, sizeof(NetworkMessage));
 	memcpy(bufferSalida, &netMsg, sizeof(NetworkMessage));
 	int length = (int)netMsg.msg_Length;
 	return length;
+
 }
 
 NetworkMessage AlanTuring::decode(char* codigoEnigma)
@@ -110,9 +149,9 @@ NetworkMessage AlanTuring::decode(char* codigoEnigma)
 /*
  * METODOS DE DECODIFICACION
  */
-unsigned short AlanTuring::decodeLength(char* codigoEnigma)
+int AlanTuring::decodeLength(char* codigoEnigma)
 {
-	unsigned short messageLength;
+	int messageLength;
 	memcpy(&messageLength, codigoEnigma, sizeof(messageLength));
 	return messageLength;
 }

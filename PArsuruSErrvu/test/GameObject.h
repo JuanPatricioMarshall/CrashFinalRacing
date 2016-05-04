@@ -31,7 +31,7 @@ public:
 
 
     {
-    	m_objectId=ObjectIdGenerator::Instance()->generateId();
+    	m_objectId = ObjectIdGenerator::Instance()->generateId();
     }
     ~GameObject() {}
 

@@ -5,7 +5,7 @@
  *      Author: gonzalo
  */
 
-#include "Game.h"
+/*#include "Game.h"
 #include "Utils/Random.h"
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -50,4 +50,4 @@ int mainDeCliente(int argc, char **argv)
     Game::Instance()->clean();
 
     return 0;
-}
+}*/

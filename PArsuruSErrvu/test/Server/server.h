@@ -40,6 +40,7 @@ class server
         const int getNumClientes();
         void sendToAll(DrawMessage msg);
         void sendDrawMsg(int socketReceptor, DrawMessage msg);
+        void sendConnectedMsg(int socketReceptor, ConnectedMessage msg);
         bool isRunning();
         ~server();
 
@@ -49,6 +50,7 @@ class server
          static void *mati_method(void *context);//ES LO UNICO QUE PUEDE TENER GUION BAJO POR LO PODEROSO QUE ES
          static void *mati_method2(void *context);//ESTE ES AUN MAS PODEROSO
          static void *mati_method3(void *context);
+
 
     private:
 

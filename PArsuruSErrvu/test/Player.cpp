@@ -35,7 +35,7 @@ void Player::load(int x, int y, int width, int height, int textureID, int numFra
     // Load comun. Inicializa variables
     MoveableObject::load(x, y, width, height, textureID, numFrames);
 
-    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", m_textureID, Game::Instance()->getRenderer());
+   // TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", m_textureID, Game::Instance()->getRenderer());
 
     // Otras acciones de inicialización del Player más especificas
 
@@ -55,12 +55,13 @@ void Player::update()
 	//m_currentFrame = int(((SDL_GetTicks() / (1000 / 3)) % m_numFrames));
 
 	DrawMessage drawMsg;
-	drawMsg.objectID = this->m_objectId;
-	drawMsg.column = this->m_currentFrame;
-	drawMsg.row = this->m_currentRow;
-	drawMsg.posX = this->m_position.m_x;
-	drawMsg.posY = this->m_position.m_y;
-	drawMsg.textureID = this->m_textureID;
+	drawMsg.objectID = m_objectId;
+	//printf("Enviando objectID %d\n", drawMsg.objectID);
+	drawMsg.column = m_currentFrame;
+	drawMsg.row = m_currentRow;
+	drawMsg.posX = m_position.getX();
+	drawMsg.posY = m_position.getY();
+	drawMsg.textureID = m_textureID;
 	Game::Instance()->sendToAllClients(drawMsg);
 
 	m_direction.setX(0);
@@ -73,32 +74,33 @@ void Player::clean()
     MoveableObject::clean();
 }
 
-void Player::handleInput(InputMessage dataMsg)
+void Player::handleInput(InputMessage inputMsg)
 {
 
-    if(m_dead && !m_dying)
+    if(!m_dead && !m_dying)
     {
         // handle keys
-        if ((dataMsg.buttonUp ==1) && (m_position.getY() > 0))
+        if ((inputMsg.buttonUp == 1) && (m_position.getY() > 0))
         {
             m_direction.setY(DIRECTION_UP);
         }
-        else if ((dataMsg.buttonDown == 1) && ((m_position.getY() + m_height) < Game::Instance()->getGameHeight() - 10))
+        else if ((inputMsg.buttonDown == 1) && ((m_position.getY() + m_height) < Game::Instance()->getGameHeight() - 10))
         {
         	m_direction.setY(DIRECTION_DOWN);
         }
 
-        if ((dataMsg.buttonLeft == 1)	&& m_position.getX() > 0)
+        if ((inputMsg.buttonLeft == 1)	&& m_position.getX() > 0)
         {
         	m_direction.setX(DIRECTION_LEFT);
         }
-        else if ((dataMsg.buttonRight == 1) && ((m_position.getX() + m_width) < Game::Instance()->getGameWidth()))
+        else if ((inputMsg.buttonRight == 1) && ((m_position.getX() + m_width) < Game::Instance()->getGameWidth()))
         {
         	m_direction.setX(DIRECTION_RIGHT);
         }
         //Se mueve a velocidades constantes. Evita que vaay a mayot velocidad en diagonal
         m_direction.normalize();
+        printf("Direcion = %f , %f \n", m_direction.m_x, m_direction.m_y);
 
     }
-
+    update();
 }

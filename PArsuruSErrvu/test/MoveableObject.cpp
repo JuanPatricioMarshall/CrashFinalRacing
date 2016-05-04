@@ -29,10 +29,16 @@ void MoveableObject::update()
 {
 	//se mueve en la dirección seteada
 	if (m_direction.getX() != 0)
+	{
 		m_position.m_x += (m_direction.getX() * m_speed.getX());
+		printf("Se movio en X a %d \n", m_position.m_x);
+	}
 
 	if (m_direction.getY() != 0)
+	{
 		m_position.m_y += (m_direction.getY() * m_speed.getY());
+		printf("Se movio en Y a %d \n",m_position.m_y);
+	}
 
 }
 

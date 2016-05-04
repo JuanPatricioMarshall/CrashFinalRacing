@@ -42,13 +42,15 @@ public:
     void render();
     void update();
     void handleEvents();
-    void setUpKorea();
-    void conectToKorea();
+    void clean();
+
+    void createPlayer(int objectID, int textureID);
+    bool setUpKorea();
+    bool conectToKorea();
    	void sendToKorea(InputMessage mensaje);
    	void* koreaMethod(void);
    	void readFromKorea();
    	void interpretarDrawMsg(DrawMessage drwMsg);
-    void clean();
 
     SDL_Renderer* getRenderer() const { return m_pRenderer; }
     SDL_Window* getWindow() const { return m_pWindow; }
