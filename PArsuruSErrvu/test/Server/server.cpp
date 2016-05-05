@@ -38,7 +38,8 @@ server::server(int port, int maxC): MAX_CLIENTES(maxC)
     m_clientThreads.resize(MAX_CLIENTES);
     m_queuePost.resize(MAX_CLIENTES);
     m_clientResponseThreads.resize(MAX_CLIENTES);
-    startThread();
+    startProcesarThread();
+
     printf("Bienvenido a servu\n");
 }
 
@@ -125,7 +126,7 @@ bool server::crearCliente (int clientSocket)
 	//printf("se agrego en la posicion %d \n", m_lastID);
 
 	pthread_create(&m_clientThreads[m_lastID], NULL, &server::mati_method, (void*)this);
-	//pthread_create(&m_clientResponseThreads[m_lastID], NULL, &server::mati_method3, (void*)this);
+	pthread_create(&m_clientResponseThreads[m_lastID], NULL, &server::mati_method3, (void*)this);
 
 	aumentarNumeroClientes();
 
@@ -160,16 +161,35 @@ void server::escribir(int id)
     //send(m_listaDeClientes.getElemAt(id), "Llego correctamente!\n", 21, 0);
 }
 
-void server::sendToAll(DrawMessage msg){
+void server::encolarDrawMessage(DrawMessage drawMsg)
+{
+	 for (int i = 0; i < m_listaDeClientes.size(); i++)
+	 {
+	     if ( m_listaDeClientes.isAvailable(i))
+	     {
+	    	 m_queuePost[m_listaDeClientes.getElemAt(i)].add(drawMsg);
+	     }
+	 }
 
+}
+
+void server::sendToAll(DrawMessage drawMsg){
 
 	 for (int i = 0; i < m_listaDeClientes.size(); i++)
+	 {
+	     if ( m_listaDeClientes.isAvailable(i))
+	     {
+	    	 m_queuePost[i].add(drawMsg);
+	     }
+	 }
+
+	 /*for (int i = 0; i < m_listaDeClientes.size(); i++)
 	 {
 	     if ( m_listaDeClientes.isAvailable(i)){
 	    	 sendDrawMsg(m_listaDeClientes.getElemAt(i),msg);
 
 	     }
-	 }
+	 }*/
 }
 void server::sendDrawMsg(int socketReceptor, DrawMessage msg)
 {
@@ -284,7 +304,7 @@ bool server::leer(int id)
     msg.id = id;
     msg.texto = my_str2;*/
 
-    m_queue.add(serverMsg);
+    m_mensajesAProcesar.add(serverMsg);
     return true;
 }
 
@@ -298,9 +318,9 @@ void* server::procesar(void)
 		//checkTimeOuts();
 
 		//Procesa cola
-		if (m_queue.size() != 0)
+		if (m_mensajesAProcesar.size() != 0)
 		{
-			ServerMessage serverMsg = m_queue.remove();
+			ServerMessage serverMsg = m_mensajesAProcesar.remove();
 			// BLOQUE DE PROCESAMIENTO
 			procesarMensaje(&serverMsg);
 
@@ -339,13 +359,13 @@ void* server::postProcesamiento(void)
 	{
 			if (m_queuePost[id].size() != 0)
 			{
-				ServerMessage msg = m_queuePost[id].remove();
-				DrawMessage drawMessage = m_alanTuring->decodeDrawMessage(msg.networkMessage);
+				DrawMessage drawMessage = m_queuePost[id].remove();
+				//DrawMessage drawMessage = m_alanTuring->decodeDrawMessage(msg.drawMessage);
 				sendDrawMsg(m_listaDeClientes.getElemAt(id),drawMessage);
-
 			}
 	}
 }
+
 
 void *server::newDialog(void)
 {
@@ -354,7 +374,6 @@ void *server::newDialog(void)
     {
     	if (!this->leer(id))
     		break;
-        this->escribir(id);
 	}
     pthread_exit(NULL);
 
@@ -374,9 +393,9 @@ void *server::mati_method3(void *context)
 }
 
 
-void server::startThread()
+void server::startProcesarThread()
 {
-	pthread_create(&threadDeProcesos, NULL, mati_method2,(void*)this );
+	pthread_create(&threadDeProcesar, NULL, mati_method2,(void*)this );
 }
 
 void server::closeAllsockets()

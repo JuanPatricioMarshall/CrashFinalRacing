@@ -159,7 +159,8 @@ void* Game::koreaMethod(void)
 	std::cout << "Empece a ciclar bitches!\n";
 	while (Game::Instance()->isRunning()) {
 
-		//	m_server->leer();
+			/*if (!m_server->leer())
+				break;*/
 	        }
 	 pthread_exit(NULL);
 }

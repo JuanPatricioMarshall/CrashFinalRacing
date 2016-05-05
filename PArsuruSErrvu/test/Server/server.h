@@ -23,7 +23,6 @@
 #include <arpa/inet.h>
 #include <memory>
 
-
 #define TIMEOUT_SECONDS 10
 #define TIMEOUT_MICROSECONDS 0
 #include "../Game.h"
@@ -31,6 +30,8 @@ class server
 {
     public:
         server(int port,int maxC);
+        ~server();
+
         void escuchar();
         void aceptar();
         void escribir(int id);
@@ -42,8 +43,8 @@ class server
         void sendDrawMsg(int socketReceptor, DrawMessage msg);
         void sendConnectedMsg(int socketReceptor, ConnectedMessage msg);
         bool isRunning();
-        ~server();
 
+        void encolarDrawMessage(DrawMessage);
         //METODOS LOCOS
          void *procesar(void);
          void *postProcesamiento(void);
@@ -51,13 +52,12 @@ class server
          static void *mati_method2(void *context);//ESTE ES AUN MAS PODEROSO
          static void *mati_method3(void *context);
 
-
     private:
 
         const int MAX_CLIENTES;
         AlanTuring* m_alanTuring;
-        multiqueue m_queue;
-        std::vector<multiqueue> m_queuePost;
+        multiqueue<ServerMessage> m_mensajesAProcesar;
+        std::vector<multiqueue<DrawMessage>> m_queuePost;
         bool m_svRunning;
         int m_clientNum;
         ListaInteligente<int> m_listaDeClientes;
@@ -74,7 +74,7 @@ class server
 
         char buffer[256];
         struct sockaddr_in serv_addr, cli_addr;
-        pthread_t threadDeProcesos;
+        pthread_t threadDeProcesar;
 
         bool crearCliente (int clientSocket);
         void checkTimeOuts();
@@ -82,7 +82,7 @@ class server
         void closeSocket(int id);
         void reducirNumeroClientes();
         void aumentarNumeroClientes();
-        void startThread();
+        void startProcesarThread();
         void *newDialog(void);
         bool procesarMensaje(ServerMessage* serverMsg);
         void error(const char *msg);
