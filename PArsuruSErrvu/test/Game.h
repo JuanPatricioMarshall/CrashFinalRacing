@@ -72,8 +72,8 @@ public:
 
 private:
 
-    std::map<int,Player> listOfPlayer;
-    std::map<int,GameObject> listOfGameObject;
+    std::map<int,Player*> listOfPlayer;
+    std::map<int,GameObject*> listOfGameObject;
 
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;

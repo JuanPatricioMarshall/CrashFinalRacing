@@ -151,7 +151,7 @@ NetworkMessage AlanTuring::decode(char* codigoEnigma)
  */
 int AlanTuring::decodeLength(char* codigoEnigma)
 {
-	int messageLength;
+	int messageLength = 0;
 	memcpy(&messageLength, codigoEnigma, sizeof(messageLength));
 	return messageLength;
 }

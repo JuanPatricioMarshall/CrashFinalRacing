@@ -194,7 +194,10 @@ void server::sendToAll(DrawMessage drawMsg){
 void server::sendDrawMsg(int socketReceptor, DrawMessage msg)
 {
 	char bufferEscritura[MESSAGE_BUFFER_SIZE];
+	bzero(bufferEscritura,MESSAGE_BUFFER_SIZE);
+
 	int msgLength = m_alanTuring->encodeDrawMessage(msg, bufferEscritura);
+
 	char *ptr = (char*) bufferEscritura;
 
     while (msgLength > 0)
@@ -217,7 +220,7 @@ void server::sendConnectedMsg(int socketReceptor, ConnectedMessage msg)
 
     while (msgLength > 0)
     {
-        int bytesEnviados = send(socketReceptor, ptr, msgLength, 0);
+        int bytesEnviados = send(socketReceptor, ptr, msgLength , 0);
         if (bytesEnviados < 1)
         {
         	Logger::Instance()->LOG("Server: No se pudo enviar el mensaje.", WARN);
@@ -263,8 +266,9 @@ bool server::leer(int id)
     //Reseteo el buffer que se va a completar con nuevos mensajes
     bzero(buffer,256);
     char *p = (char*)buffer;
+    int messageLength = 0;
 
-    int n = recv(m_listaDeClientes.getElemAt(id), p, 255, 0);
+    int n = recv(m_listaDeClientes.getElemAt(id), p, MESSAGE_LENGTH_BYTES, 0);
     if (!lecturaExitosa(n, id))
     	return false;
 
@@ -272,19 +276,20 @@ bool server::leer(int id)
     while (n < 4)
     {
  	   p += n;
- 	   n = recv(m_listaDeClientes.getElemAt(id), p, 255, 0);
+ 	   n = recv(m_listaDeClientes.getElemAt(id), p, MESSAGE_LENGTH_BYTES, 0);
        if (!lecturaExitosa(n, id))
        	return false;
  	   acum += n;
     }
-    int messageLength = m_alanTuring->decodeLength(buffer);
+    messageLength = m_alanTuring->decodeLength(buffer);
+
     p += n;
     messageLength -= acum;
 
     //loopea hasta haber leido la totalidad de los bytes necarios
     while (messageLength > 0)
     {
-    	n = recv(m_listaDeClientes.getElemAt(id), p, 255, 0);
+    	n = recv(m_listaDeClientes.getElemAt(id), p, messageLength, 0);
         if (!lecturaExitosa(n, id))
         	return false;
         p += n;

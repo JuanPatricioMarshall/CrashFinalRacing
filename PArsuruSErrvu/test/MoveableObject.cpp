@@ -2,7 +2,7 @@
 
 MoveableObject::MoveableObject() :  GameObject(),
 				m_direction(0,0),
-				m_speed(5,5)
+				m_speed(25,25)
 {
 	m_tag = "Nave";
 }
@@ -31,7 +31,7 @@ void MoveableObject::update()
 	if (m_direction.getX() != 0)
 	{
 		m_position.m_x += (m_direction.getX() * m_speed.getX());
-		printf("Se movio en X a %d \n", m_position.m_x);
+		printf("Se movio en X a %f \n", m_position.m_x);
 	}
 
 	if (m_direction.getY() != 0)

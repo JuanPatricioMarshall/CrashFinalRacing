@@ -107,6 +107,7 @@ void cliente::escribir(Mensaje mensaje)
 
 void cliente::sendMsg(Mensaje msg)
 {
+	pthread_mutex_lock(&m_writingMutex);
 	char bufferEscritura[MESSAGE_BUFFER_SIZE];
 	int msgLength = m_alanTuring->encodeXMLMessage(msg, bufferEscritura);
 	char *ptr = (char*) bufferEscritura;
@@ -134,6 +135,7 @@ void cliente::sendMsg(Mensaje msg)
 
     }*/
 
+	pthread_mutex_unlock(&m_writingMutex);
     if (msg.tipo.compare("timeoutACK") != 0)
     {
 		std::stringstream ss;
@@ -146,6 +148,7 @@ void cliente::sendMsg(Mensaje msg)
 
 void cliente::sendInputMsg(InputMessage msg)
 {
+	pthread_mutex_lock(&m_writingMutex);
 	char bufferEscritura[MESSAGE_BUFFER_SIZE];
 	int msgLength = m_alanTuring->encodeInputMessage(msg, bufferEscritura);
 	char *ptr = (char*) bufferEscritura;
@@ -161,6 +164,7 @@ void cliente::sendInputMsg(InputMessage msg)
         ptr += bytesEnviados;
         msgLength -= bytesEnviados;
     }
+	pthread_mutex_unlock(&m_writingMutex);
     printf("Mensaje input enviado \n");
 }
 
@@ -202,38 +206,38 @@ bool cliente::checkServerConnection()
 
 bool cliente::leer()
 {
-	printf("Empece a leer");
-    pthread_mutex_lock(&m_readingMutex);
-    bzero(buffer,256);
-    char *p = (char*)buffer;
-    n = recv(sockfd, p, 255, 0);
-    /*string buf = buffer;
-   if (strcmp(buf.c_str(),"exit\n") == 0){
-	   m_conected = false;
-   }*/
+	pthread_mutex_lock(&m_readingMutex);
+	//char buffer[256];
+	bzero(buffer,256);
+	int messageLength = 0;
+	char *p = (char*)buffer;
+	n = recv(sockfd, buffer, MESSAGE_LENGTH_BYTES, 0);
+
    if (!lecturaExitosa(n))
    {
 	   //Se perdio la conexion con el server
 	   return false;
    }
-   printf("Empece a decodificar\n");
    int acum = n;
-   while (n < 4)
+   while (n < MESSAGE_LENGTH_BYTES)
    {
+	   printf("Leyo menos de 4\n");
 	   p += n;
-	   n = recv(sockfd, p, 255, 0);
+	   n = recv(sockfd, p, MESSAGE_LENGTH_BYTES, 0);
 	   if (!lecturaExitosa(n))
 		   return false;
 	   acum += n;
    }
-   int messageLength = m_alanTuring->decodeLength(buffer);
+
+   messageLength = m_alanTuring->decodeLength(buffer);
+   printf ("Leyo %d bytes \n", messageLength);
+
    p += n;
    messageLength -= acum;
    //loopea hasta haber leido la totalidad de los bytes necarios
    while (messageLength > 0)
    {
-	  printf("leyo incompleto: %d de %d\n",n, messageLength);
-	  n = recv(sockfd, p, 255, 0);
+	  n = recv(sockfd, p, messageLength, 0);
        if (!lecturaExitosa(n))
        {
     	   //se perdio la conexion con el server
@@ -250,7 +254,6 @@ bool cliente::leer()
    NetworkMessage netMsgRecibido = m_alanTuring->decode(buffer);
 
    procesarMensaje(netMsgRecibido);
-   printf("Mensaje Procesado\n");
 
    return true;
 
@@ -285,8 +288,6 @@ void cliente::setTimeOut()
 
 void cliente::procesarMensaje(NetworkMessage networkMessage)
 {
-	printf("Entro a procesar\n");
-
 	if ((networkMessage.msg_Code[0] == 'c') && (networkMessage.msg_Code[1] == 'n') && (networkMessage.msg_Code[2] == 't'))
 	{
 		//El cliente se conecto con exito.

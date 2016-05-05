@@ -45,16 +45,16 @@ void TextureManager::init(){
 	hola.width =61 ;
 	m_textureMapInfo[0]=hola;
 
-	hola.height = 600;
-	hola.numFrames = 1;
-	hola.path =	"Assets/Sprites/island.jpg";
-	hola.width = 800 ;
-	m_textureMapInfo[3]=hola;
-
 	hola.height = 150;
 	hola.numFrames = 1;
-	hola.path =	"Assets/Sprites/water.jpg";
+	hola.path =	"Assets/Sprites/island.jpg";
 	hola.width = 150 ;
+	m_textureMapInfo[3]=hola;
+
+	hola.height = 600;
+	hola.numFrames = 1;
+	hola.path =	"Assets/Sprites/water.jpg";
+	hola.width = 800 ;
 	m_textureMapInfo[2]=hola;
 }
 void TextureManager::draw(int id, int x, int y, int width, int height, double angle, SDL_Renderer* renderer, SDL_RendererFlip flip)

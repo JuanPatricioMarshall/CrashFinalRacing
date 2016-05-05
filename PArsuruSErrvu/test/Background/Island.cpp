@@ -51,7 +51,7 @@ void Island::update()
 
 		if (m_position.getY() >= Game::Instance()->getGameHeight())
 		{
-			printf("El objeto %s %f %d scrolleo toda la pantalla.\n", m_tag.c_str(), m_position.getY(), Game::Instance()->getGameHeight());
+			//printf("El objeto %s %f %d scrolleo toda la pantalla.\n", m_tag.c_str(), m_position.getY(), Game::Instance()->getGameHeight());
 			if (m_reappearanceTime > 0)
 			{
 				//inicia Timer con el callback de reaparecer, luego del tiempo establecido
@@ -66,7 +66,6 @@ void Island::update()
 		}
 	}
 	DrawMessage enviar;
-	printf("Isla Info\n");
 	enviar.objectID = m_objectId;
 	enviar.column = m_currentFrame;
 	enviar.row = m_currentRow;

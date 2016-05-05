@@ -68,7 +68,7 @@ public:
 
 private:
 
-    std::map<int,DrawObject> listObjects;
+    std::map<int,DrawObject*> listObjects;
 
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;

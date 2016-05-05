@@ -47,7 +47,7 @@ public:
     virtual void draw(){}
 
     // Actualiza el estado del objeto (posición, velocidad, etc)
-    virtual void update(){}
+    virtual void update(){ }
 
     // Libera memoria y los recursos que esté utilizando el GameObject
     virtual void clean(){}

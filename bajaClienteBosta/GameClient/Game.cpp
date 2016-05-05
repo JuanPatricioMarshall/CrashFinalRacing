@@ -87,9 +87,9 @@ void Game::render()
 {
     SDL_RenderClear(m_pRenderer);
 
-    for (std::map<int,DrawObject>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
+    for (std::map<int,DrawObject*>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
     {
-         it->second.draw();
+         it->second->draw();
     }
 
     //Dibujar lo que haya que dibujar
@@ -100,28 +100,28 @@ void Game::render()
     SDL_RenderPresent(m_pRenderer);
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
-	printf("interpretando draw message del objeto %d\n",drwMsg.objectID);
+	/*printf("interpretando draw message del objeto %d\n",drwMsg.objectID);
 	printf("texture ID: %d \n",drwMsg.textureID);
 	printf("Pos X: %d \n",drwMsg.posX);
-	printf("Pos Y: %d \n",drwMsg.posY);
+	printf("Pos Y: %d \n",drwMsg.posY);*/
 
 	if ( listObjects.find(drwMsg.objectID) == listObjects.end() )
 	{
 		printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
-		DrawObject newObject = DrawObject();
+		DrawObject* newObject = new DrawObject();
 
-		newObject.setObjectID(drwMsg.objectID);
-		newObject.load(static_cast<int>(drwMsg.posX),static_cast<int>(drwMsg.posY),drwMsg.textureID);
-		newObject.setCurrentRow(static_cast<int>(drwMsg.row));
-		newObject.setCurrentFrame(static_cast<int>(drwMsg.column));
+		newObject->setObjectID(drwMsg.objectID);
+		newObject->load(static_cast<int>(drwMsg.posX),static_cast<int>(drwMsg.posY),drwMsg.textureID);
+		newObject->setCurrentRow(static_cast<int>(drwMsg.row));
+		newObject->setCurrentFrame(static_cast<int>(drwMsg.column));
 
 		listObjects[drwMsg.objectID] = newObject;
 		//PARA BORRAR listObjects.erase(id);
 	}else
 	{
-		listObjects[drwMsg.objectID].setCurrentRow(static_cast<int>(drwMsg.row));
-		listObjects[drwMsg.objectID].setCurrentFrame(static_cast<int>(drwMsg.column));
-		listObjects[drwMsg.objectID].setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
+		listObjects[drwMsg.objectID]->setCurrentRow(static_cast<int>(drwMsg.row));
+		listObjects[drwMsg.objectID]->setCurrentFrame(static_cast<int>(drwMsg.column));
+		listObjects[drwMsg.objectID]->setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
 	}
 
 }
@@ -209,9 +209,15 @@ void Game::clean()
 {
     cout << "cleaning game\n";
 
+    for (std::map<int,DrawObject*>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
+    {
+    	it->second->clean();
+		delete it->second;
+    }
    /* delete m_background; //Provisorio
     delete m_island; //Provisorio
     delete m_player; //Provisorio*/
+
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
