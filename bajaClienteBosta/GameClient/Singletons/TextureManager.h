@@ -35,6 +35,8 @@ public:
 
     TextureInfo getTextureInfo(int textureId);
 
+    void changeTextureColor(int textureID, Uint8 r, Uint8 g, Uint8 b);
+
     // Libera la memoria utilizada por todas las imagenes cargadas al map
     void clearTextureMap();
     // Libera la memoria de la imagen con id pasado como parametro (la saca del map)

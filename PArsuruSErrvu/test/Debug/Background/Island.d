@@ -46,8 +46,6 @@ Background/Island.d: ../Background/Island.cpp ../Background/Island.h \
  ../Background/../Player.h ../Background/../MoveableObject.h \
  ../Background/../Weapons/Weapon.h ../Background/../Weapons/../Vector2D.h \
  ../Background/../Weapons/BasicWeapon.h ../Background/../Weapons/Weapon.h \
- ../Background/../DrawObject.h ../Background/../Game.h \
- ../Background/../GameObject.h \
  ../Background/../Singletons/TextureManager.h
 
 ../Background/Island.h:
@@ -157,11 +155,5 @@ Background/Island.d: ../Background/Island.cpp ../Background/Island.h \
 ../Background/../Weapons/BasicWeapon.h:
 
 ../Background/../Weapons/Weapon.h:
-
-../Background/../DrawObject.h:
-
-../Background/../Game.h:
-
-../Background/../GameObject.h:
 
 ../Background/../Singletons/TextureManager.h:

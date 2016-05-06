@@ -14,7 +14,7 @@
 
 using namespace std;
 
-const int FPS = 150;
+const int FPS = 1000;
 const int DELAY_TIME = 1000.0f / FPS;
 
 int main(int argc, char **argv)

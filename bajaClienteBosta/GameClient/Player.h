@@ -34,6 +34,7 @@ public:
 
     virtual void collision();
 
+    void setControllable(bool controllable) { m_controllable = controllable; }
     //Getters
     bool isDead() { return m_dead; }
     bool isDying() { return m_dying; }

@@ -420,7 +420,7 @@ void server::closeSocket(int id)
 		return;
 
 	//removeTimeOutTimer(id);
-
+	Game::Instance()->disconnectPlayer(id);
 	reducirNumeroClientes();
 	close(m_listaDeClientes.getElemAt(id));
 	m_listaDeClientes.removeAt(id);
@@ -515,7 +515,6 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 	{
 		InputMessage inputMsg = m_alanTuring->decodeInputMessage(netMsg);
 
-		printf("button right: %d \n",inputMsg.buttonRight);
 		Game::Instance()->actualizarEstado(serverMsg->clientID,inputMsg);
 	}
 

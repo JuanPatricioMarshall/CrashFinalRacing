@@ -42,9 +42,7 @@ Background/Background.d: ../Background/Background.cpp \
  ../Background/../Weapons/../Singletons/GameTimeHelper.h \
  ../Background/../Player.h ../Background/../MoveableObject.h \
  ../Background/../Weapons/Weapon.h ../Background/../Weapons/../Vector2D.h \
- ../Background/../Weapons/BasicWeapon.h ../Background/../Weapons/Weapon.h \
- ../Background/../DrawObject.h ../Background/../Game.h \
- ../Background/../GameObject.h
+ ../Background/../Weapons/BasicWeapon.h ../Background/../Weapons/Weapon.h
 
 ../Background/Background.h:
 
@@ -149,9 +147,3 @@ Background/Background.d: ../Background/Background.cpp \
 ../Background/../Weapons/BasicWeapon.h:
 
 ../Background/../Weapons/Weapon.h:
-
-../Background/../DrawObject.h:
-
-../Background/../Game.h:
-
-../Background/../GameObject.h:

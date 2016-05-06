@@ -44,8 +44,7 @@ Singletons/InputHandler.d: ../Singletons/InputHandler.cpp \
  ../Singletons/../Weapons/Weapon.h ../Singletons/../Weapons/../Vector2D.h \
  ../Singletons/../Vector2D.h ../Singletons/../Utils/TiposDefinidos.h \
  ../Singletons/../Weapons/BasicWeapon.h ../Singletons/../Weapons/Weapon.h \
- ../Singletons/../DrawObject.h ../Singletons/../Game.h \
- ../Singletons/../GameObject.h ../Singletons/../Vector2D.h
+ ../Singletons/../Vector2D.h
 
 ../Singletons/InputHandler.h:
 
@@ -146,11 +145,5 @@ Singletons/InputHandler.d: ../Singletons/InputHandler.cpp \
 ../Singletons/../Weapons/BasicWeapon.h:
 
 ../Singletons/../Weapons/Weapon.h:
-
-../Singletons/../DrawObject.h:
-
-../Singletons/../Game.h:
-
-../Singletons/../GameObject.h:
 
 ../Singletons/../Vector2D.h:

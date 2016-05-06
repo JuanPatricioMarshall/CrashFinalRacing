@@ -37,8 +37,7 @@ Weapons/Bullet.d: ../Weapons/Bullet.cpp ../Weapons/Bullet.h \
  ../Weapons/../Weapons/Weapon.h \
  ../Weapons/../Weapons/../Singletons/GameTimeHelper.h \
  ../Weapons/../Weapons/../Vector2D.h ../Weapons/../Weapons/BasicWeapon.h \
- ../Weapons/../Weapons/Weapon.h ../Weapons/../DrawObject.h \
- ../Weapons/../Game.h ../Weapons/../Singletons/GameTimeHelper.h
+ ../Weapons/../Weapons/Weapon.h ../Weapons/../Singletons/GameTimeHelper.h
 
 ../Weapons/Bullet.h:
 
@@ -137,9 +136,5 @@ Weapons/Bullet.d: ../Weapons/Bullet.cpp ../Weapons/Bullet.h \
 ../Weapons/../Weapons/BasicWeapon.h:
 
 ../Weapons/../Weapons/Weapon.h:
-
-../Weapons/../DrawObject.h:
-
-../Weapons/../Game.h:
 
 ../Weapons/../Singletons/GameTimeHelper.h:

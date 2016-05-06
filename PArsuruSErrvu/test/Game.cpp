@@ -52,17 +52,20 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
     return true;
 }
 
-void Game::createPlayer(int id)
+void Game::createPlayer(int playerID)
 {
 	Player* newPlayer = new Player();
-	newPlayer->setObjectID(id);
-	newPlayer->load(m_gameWidth/2, m_gameHeight/2, 38, 64, id, 1);
+	newPlayer->setObjectID(playerID);
+	newPlayer->load(m_gameWidth/2, m_gameHeight/2, 38, 64, playerID, 1);
+	newPlayer->setConnected(true);
+
 	listOfPlayer[newPlayer->getObjectId()]= newPlayer;
-	printf("Player inicializado con objectID: %d y textureID: %d\n", newPlayer->getObjectId(), id);
+	printf("Player inicializado con objectID: %d y textureID: %d\n", newPlayer->getObjectId(), playerID);
 }
 
-void Game::removePlayer(int id)
+void Game::disconnectPlayer(int playerID)
 {
+	listOfPlayer[playerID]->setConnected(false);
 	//listOfPlayer.erase(id);
 	//mostrar en gris
 }
@@ -160,11 +163,11 @@ void Game::readFromKorea()
 }
 
 void Game::actualizarEstado(int id, InputMessage inputMsg){
-	printf("Actualizar player %d\n",inputMsg.objectID);
+	/*printf("Actualizar player %d\n",inputMsg.objectID);
 	printf("button right: %d \n",inputMsg.buttonRight);
 	printf("button left: %d \n",inputMsg.buttonLeft);
 	printf("button up: %d \n",inputMsg.buttonUp);
-	printf("button down: %d \n",inputMsg.buttonDown);
+	printf("button down: %d \n",inputMsg.buttonDown);*/
 
 	listOfPlayer[inputMsg.objectID]->handleInput(inputMsg);
 }

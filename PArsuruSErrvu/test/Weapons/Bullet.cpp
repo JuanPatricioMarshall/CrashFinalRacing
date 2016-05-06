@@ -15,7 +15,7 @@ Bullet::Bullet(): MoveableObject(),
 	m_textureID = 10;
 
 	m_dyingTime = 3000;
-	m_speed = Vector2D(5,5);
+	m_speed = Vector2D(10,10);
 }
 
 Bullet::~Bullet() {}
@@ -57,10 +57,14 @@ void Bullet::clean()
 void Bullet::sendDrawMessage(bool isAlive)
 {
 	DrawMessage drawMsg;
+	drawMsg.connectionStatus = true;
 	drawMsg.alive = isAlive;
-	drawMsg.unusedBool = false;
+	drawMsg.hasSound = false;
+	drawMsg.otroBool = false;
+
 	drawMsg.objectID = m_objectId;
 	drawMsg.layer = m_layer;
+	drawMsg.soundID = 0;
 	drawMsg.column = m_currentFrame;
 	drawMsg.row = m_currentRow;
 	drawMsg.posX = m_position.getX();

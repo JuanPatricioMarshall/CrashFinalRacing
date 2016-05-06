@@ -33,8 +33,8 @@ void BulletsHandler::updateBullets()
 {
     for (std::vector<Bullet*>::iterator p_it = m_bullets.begin(); p_it != m_bullets.end();)
     {
-        if((*p_it)->getPosition().getX() < 0 || (*p_it)->getPosition().getX() > Game::Instance()->getGameWidth()
-           || (*p_it)->getPosition().getY() < 0 || (*p_it)->getPosition().getY() > Game::Instance()->getGameHeight() || (*p_it)->isDead())
+        if((*p_it)->getPosition().getX() < -20 || (*p_it)->getPosition().getX() > Game::Instance()->getGameWidth()
+           || (*p_it)->getPosition().getY() < -20 || (*p_it)->getPosition().getY() > Game::Instance()->getGameHeight() || (*p_it)->isDead())
         {
 
         	(*p_it)->clean();

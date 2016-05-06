@@ -64,10 +64,14 @@ void Background::clean()
 void Background::sendDrawMessage(bool isAlive)
 {
 	DrawMessage drawMsg;
+	drawMsg.connectionStatus = true;
 	drawMsg.alive = isAlive;
-	drawMsg.unusedBool = false;
+	drawMsg.hasSound = false;
+	drawMsg.otroBool = false;
+
 	drawMsg.objectID = m_objectId;
 	drawMsg.layer = m_layer;
+	drawMsg.soundID = 0;
 	drawMsg.column = m_currentFrame;
 	drawMsg.row = m_currentRow;
 	drawMsg.posX = m_position.getX();

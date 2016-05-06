@@ -65,53 +65,56 @@ void Player::clean()
 
 void Player::handleInput()
 {
-	InputMessage mensaje;
+	if (!m_controllable || m_dead || m_dying)
+		return;
 
-	mensaje.objectID = getObjectId();
-	mensaje.buttonUp=0;
-	mensaje.buttonDown=0;
-	mensaje.buttonRight=0;
-	mensaje.buttonLeft=0;
-	mensaje.buttonShoot=0;
-	mensaje.buttonReserved=0;//2 bytes reserved for future
-	mensaje.buttonShootNigaPower=0;
-	mensaje.buttonXpecialCombo=0;
-	mensaje.buttonCompressionSistem=0;
-	mensaje.actionID=0;
+	InputMessage inputMsg;
+
+	inputMsg.objectID = getObjectId();
+	inputMsg.buttonUp=0;
+	inputMsg.buttonDown=0;
+	inputMsg.buttonRight=0;
+	inputMsg.buttonLeft=0;
+	inputMsg.buttonShoot=0;
+	inputMsg.buttonReserved=0;//2 bytes reserved for future
+	inputMsg.buttonShootPower=0;
+	inputMsg.buttonXpecialCombo=0;
+	inputMsg.buttonCompressionSistem=0;
+	inputMsg.actionID=0;
 	bool dirty = false;
 
 	// handle keys
 	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_SPACE))
 	{
-		mensaje.buttonShoot = 1;
+		inputMsg.buttonShoot = 1;
 		dirty = true;
 	}
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_W))))
 	{
-		mensaje.buttonUp = 1;
+		inputMsg.buttonUp = 1;
 		dirty = true;
 	}
 
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_S))))
 	{
-		mensaje.buttonDown = 1;
+		inputMsg.buttonDown = 1;
 		dirty = true;
 	}
 
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_A))))
 	{
-		mensaje.buttonLeft = 1;
+		inputMsg.buttonLeft = 1;
 		dirty = true;
 	}
 	if (((InputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT)) || (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_D))))
 	{
-		mensaje.buttonRight = 1;
+		inputMsg.buttonRight = 1;
 		dirty = true;
 	}
 
 	if (dirty)
 	{
-		printf("Enviando Input del objeto %d \n", getObjectId());
-		Game::Instance()->sendToKorea( mensaje);
+		//printf("Enviando Input del objeto %d \n", getObjectId());
+		Game::Instance()->sendToKorea( inputMsg);
 	}
 }

@@ -21,7 +21,7 @@ bool cliente::conectar()
     	m_connecting = false;
     	return false;
     }
-    //setTimeOut();
+    setTimeOut();
     if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
     {
     	Logger::Instance()->LOG("Cliente: El cliente no se pudo conectar satisfactoriamente", WARN);
@@ -33,11 +33,11 @@ bool cliente::conectar()
 
 	if (m_connected)
 	{
-		/*serverTimeOut->Reset();
+		serverTimeOut->Reset();
 		sendTimeOutTimer->Reset();
 		serverTimeOut->Start();
 		sendTimeOutTimer->Start();
-		createTimeoutThread();*/
+		createTimeoutThread();
 	}
 	else
 	{
@@ -51,9 +51,11 @@ void cliente::desconectar()
 {
 	if (!m_connected)
 		return;
+	Game::Instance()->disconnect();
 	m_connected = false;
-	//serverTimeOut->Stop();
+	serverTimeOut->Stop();
 	cerrarSoket();
+	printf("Has sido desconectado del servidor \n");
 	Logger::Instance()->LOG("Cliente: El cliente se ha desconectado satisfactoriamente", DEBUG);
 }
 
@@ -84,8 +86,8 @@ cliente::cliente(int argc, string ip, int port, std::vector<Mensaje> listaDeMens
     serv_addr.sin_port = htons(portno);
     listaDeMensajes = listaDeMensajesCargados;
 
-    //serverTimeOut = new Timer();
-    //sendTimeOutTimer = new Timer();
+    serverTimeOut = new Timer();
+    sendTimeOutTimer = new Timer();
 
 
 }
@@ -165,17 +167,17 @@ void cliente::sendInputMsg(InputMessage msg)
         msgLength -= bytesEnviados;
     }
 	pthread_mutex_unlock(&m_writingMutex);
-    printf("Mensaje input enviado \n");
+    //printf("Mensaje input enviado \n");
 }
 
 //Envia mensaje de timeOut cada x tiempo
 bool cliente::sendTimeOutMsg()
 {
-	pthread_mutex_lock(&m_writingMutex);
+	//pthread_mutex_lock(&m_writingMutex);
 	if (!checkServerConnection())
 		return false;
 
-	if ((float)sendTimeOutTimer->GetTicks()/CLOCKS_PER_SEC >= 1)
+	/*if ((float)sendTimeOutTimer->GetTicks()/CLOCKS_PER_SEC >= 2.5f)
 	{
 		Mensaje timeOutMsg = MessageFactory::Instance()->createMessage("", "",msgTimeOutACK);
 		sendMsg(timeOutMsg);
@@ -185,7 +187,7 @@ bool cliente::sendTimeOutMsg()
 		if (!leer())
 			return false;
 	}
-	pthread_mutex_unlock(&m_writingMutex);
+	pthread_mutex_unlock(&m_writingMutex);*/
 	return true;
 
 }
@@ -196,6 +198,8 @@ bool cliente::checkServerConnection()
 	if (((float)serverTimeOut->GetTicks()/CLOCKS_PER_SEC >= TIMEOUT_SECONDS) || (m_connected == false))
 	{
 		printf("Se perdio conexión con el servidor.\n");
+
+		Game::Instance()->disconnect();
 		desconectar();
 		printf("Presione 1 para reconectar.\n");
 		return false;
@@ -248,7 +252,7 @@ bool cliente::leer()
    pthread_cond_signal(&m_condv);
    pthread_mutex_unlock(&m_readingMutex);
    //llego el mensaje bien
-   //serverTimeOut->Reset();
+   serverTimeOut->Reset();
 
    NetworkMessage netMsgRecibido = m_alanTuring->decode(buffer);
 

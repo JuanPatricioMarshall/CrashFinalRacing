@@ -93,6 +93,11 @@ void TextureManager::drawFrame(int id, int x, int y, int width, int height, int 
     SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, angle, 0, flip);
 }
 
+void TextureManager::changeTextureColor(int textureID, Uint8 r, Uint8 g, Uint8 b)
+{
+	SDL_SetTextureColorMod(m_textureMap[textureID], r, g, b);
+}
+
 void TextureManager::clearTextureMap()
 {
     m_textureMap.clear();

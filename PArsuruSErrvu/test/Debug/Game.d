@@ -24,7 +24,7 @@ Game.d: ../Game.cpp ../Game.h ../Server/server.h \
  ../Weapons/../Singletons/GameTimeHelper.h ../Player.h \
  ../MoveableObject.h ../Weapons/Weapon.h ../Weapons/../Vector2D.h \
  ../Vector2D.h ../Utils/TiposDefinidos.h ../Weapons/BasicWeapon.h \
- ../Weapons/Weapon.h ../DrawObject.h ../GameObject.h
+ ../Weapons/Weapon.h
 
 ../Game.h:
 
@@ -127,7 +127,3 @@ Game.d: ../Game.cpp ../Game.h ../Server/server.h \
 ../Weapons/BasicWeapon.h:
 
 ../Weapons/Weapon.h:
-
-../DrawObject.h:
-
-../GameObject.h:

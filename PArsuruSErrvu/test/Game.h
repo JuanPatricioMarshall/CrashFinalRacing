@@ -13,7 +13,6 @@
 #include <iostream>
 #include <sstream>
 #include "Player.h"
-#include "DrawObject.h"
 #include <map>
 using namespace std;
 class Island;
@@ -46,8 +45,8 @@ public:
     void handleEvents();
     void clean();
 
-    void createPlayer(int id);
-    void removePlayer(int id);
+    void createPlayer(int playerId);
+    void disconnectPlayer(int playerId);
     void setUpKorea();
     void conectToKorea();
     void sendToAllClients(DrawMessage mensaje);

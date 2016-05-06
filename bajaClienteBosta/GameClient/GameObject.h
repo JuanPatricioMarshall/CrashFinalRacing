@@ -49,6 +49,7 @@ public:
     int getWidth() { return m_width; }
     int getHeight() { return m_height; }
 
+    int getTextureId() { return m_textureID; }
     int getObjectId() { return m_objectId; }
     int getLayer() { return m_layer; }
     void setObjectID(int objectId) {m_objectId = objectId;}

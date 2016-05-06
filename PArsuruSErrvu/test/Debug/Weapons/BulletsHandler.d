@@ -38,8 +38,7 @@ Weapons/BulletsHandler.d: ../Weapons/BulletsHandler.cpp \
  ../Weapons/../Weapons/Bullet.h \
  ../Weapons/../Weapons/../Singletons/GameTimeHelper.h \
  ../Weapons/../Weapons/../Vector2D.h ../Weapons/../Weapons/BasicWeapon.h \
- ../Weapons/../Weapons/Weapon.h ../Weapons/../DrawObject.h \
- ../Weapons/../Game.h ../Weapons/../Singletons/GameTimeHelper.h
+ ../Weapons/../Weapons/Weapon.h ../Weapons/../Singletons/GameTimeHelper.h
 
 ../Weapons/BulletsHandler.h:
 
@@ -140,9 +139,5 @@ Weapons/BulletsHandler.d: ../Weapons/BulletsHandler.cpp \
 ../Weapons/../Weapons/BasicWeapon.h:
 
 ../Weapons/../Weapons/Weapon.h:
-
-../Weapons/../DrawObject.h:
-
-../Weapons/../Game.h:
 
 ../Weapons/../Singletons/GameTimeHelper.h:

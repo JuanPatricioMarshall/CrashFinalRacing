@@ -37,9 +37,9 @@ class AlanTuring
 {
 public:
 	//ENCODES Y DECODES RELACIONADOS AL JUEGO
-	int encodeDrawMessage(DrawMessage msj, char* bufferSalida);
-	int encodeInputMessage(InputMessage msj, char* bufferSalida);
-	int encodeConnectedMessage(ConnectedMessage msj, char* bufferSalida);
+	int encodeDrawMessage(DrawMessage msj, char* bufferEntrada);
+	int encodeInputMessage(InputMessage msj, char* bufferEntrada);
+	int encodeConnectedMessage(ConnectedMessage msj, char* bufferEntrada);
 	//int encodeDrawMessage(NetworkMessage* netMsg, const DrawMessage msj);
 	//int encodeInputMessage(NetworkMessage* netMsg, const InputMessage msj);
 
@@ -49,7 +49,7 @@ public:
 
 	//devuelve un buffer de 256 bytes con el mensaje codificado en binario en buffeSalida y un int con el tamaño Mensaje
 	int encodeXMLMessage(Mensaje mensaje, char* bufferSalida);
-	int encodeNetworkMessage(NetworkMessage netMsg, char* bufferSalida);
+	int encodeNetworkMessage(NetworkMessage netMsg, char* bufferEntrada);
 
 	//los decode reciben buffers de tamaño 256
 	NetworkMessage decode (char* codigoEnigma);

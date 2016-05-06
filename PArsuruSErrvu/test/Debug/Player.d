@@ -33,8 +33,7 @@ Player.d: ../Player.cpp ../Player.h ../MoveableObject.h ../GameObject.h \
  ../Weapons/../Singletons/../Vector2D.h \
  ../Weapons/../Singletons/TextureManager.h \
  ../Weapons/../Weapons/BulletsHandler.h ../Weapons/../Weapons/Bullet.h \
- ../Weapons/../Player.h ../Weapons/../DrawObject.h ../Weapons/../Game.h \
- ../Weapons/../GameObject.h ../Weapons/../Singletons/GameTimeHelper.h \
+ ../Weapons/../Player.h ../Weapons/../Singletons/GameTimeHelper.h \
  ../Weapons/../Vector2D.h ../Singletons/InputHandler.h \
  ../Singletons/TextureManager.h ../Weapons/BasicWeapon.h \
  ../Weapons/Weapon.h
@@ -130,12 +129,6 @@ Player.d: ../Player.cpp ../Player.h ../MoveableObject.h ../GameObject.h \
 ../Weapons/../Weapons/Bullet.h:
 
 ../Weapons/../Player.h:
-
-../Weapons/../DrawObject.h:
-
-../Weapons/../Game.h:
-
-../Weapons/../GameObject.h:
 
 ../Weapons/../Singletons/GameTimeHelper.h:
 

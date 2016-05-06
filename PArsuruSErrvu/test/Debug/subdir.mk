@@ -4,7 +4,6 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../DrawObject.cpp \
 ../Game.cpp \
 ../MoveableObject.cpp \
 ../Nave.cpp \
@@ -12,7 +11,6 @@ CPP_SRCS += \
 ../main.cpp 
 
 OBJS += \
-./DrawObject.o \
 ./Game.o \
 ./MoveableObject.o \
 ./Nave.o \
@@ -20,7 +18,6 @@ OBJS += \
 ./main.o 
 
 CPP_DEPS += \
-./DrawObject.d \
 ./Game.d \
 ./MoveableObject.d \
 ./Nave.d \

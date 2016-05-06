@@ -45,6 +45,8 @@ public:
     void clean();
 
     void createPlayer(int objectID, int textureID);
+    void disconnectObject(int objectID, int layer);
+    void disconnect();
     bool setUpKorea();
     bool conectToKorea();
    	void sendToKorea(InputMessage mensaje);

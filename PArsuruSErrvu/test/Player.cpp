@@ -10,7 +10,7 @@
 using namespace std;
 
 Player::Player() :  MoveableObject(),
-					m_controllable(true),
+					m_connected(true),
 					m_dead(false),
 					m_dying(false)
 {
@@ -18,15 +18,6 @@ Player::Player() :  MoveableObject(),
 	m_layer = FOREGROUND;
 	m_currentWeapon = new BasicWeapon();
 	m_shootOffset = Vector2D(15, -5);
-}
-
-Player::Player(bool canControl) :  MoveableObject(),
-									m_dead(false),
-									m_dying(false)
-{
-	m_controllable = canControl;
-	m_tag = "Player";
-	m_currentWeapon = new BasicWeapon();
 }
 
 void Player::collision()
@@ -103,7 +94,7 @@ void Player::handleInput(InputMessage inputMsg)
         if (inputMsg.buttonShoot)
         	m_currentWeapon->shoot(Vector2D(m_position.getX() + m_shootOffset.getX(), m_position.getY() + m_shootOffset.getY()));
 
-        printf("Direcion = %f , %f \n", m_direction.m_x, m_direction.m_y);
+        //printf("Direcion = %f , %f \n", m_direction.m_x, m_direction.m_y);
 
     }
     //update();
@@ -112,10 +103,14 @@ void Player::handleInput(InputMessage inputMsg)
 void Player::sendDrawMessage(bool isAlive)
 {
 	DrawMessage drawMsg;
+	drawMsg.connectionStatus = m_connected;
 	drawMsg.alive = isAlive;
-	drawMsg.unusedBool = false;
+	drawMsg.hasSound = false;
+	drawMsg.otroBool = false;
+
 	drawMsg.objectID = m_objectId;
 	drawMsg.layer = m_layer;
+	drawMsg.soundID = 0;
 	drawMsg.column = m_currentFrame;
 	drawMsg.row = m_currentRow;
 	drawMsg.posX = m_position.getX();

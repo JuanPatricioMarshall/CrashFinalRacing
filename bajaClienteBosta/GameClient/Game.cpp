@@ -111,6 +111,11 @@ void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
 	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
+		if (drwMsg.connectionStatus == false)
+		{
+			disconnectObject(drwMsg.objectID, static_cast<int>(drwMsg.layer));
+		}
+
 		//Si existe y esta vivo lo actualia y sino lo quita del map
 		if (drwMsg.alive)
 		{
@@ -122,7 +127,7 @@ void Game::interpretarDrawMsg(DrawMessage drwMsg){
 			removeDrawObject(drwMsg.objectID, drwMsg.layer);
 		}
 	}
-	else
+	else //Si no existe en el mapa
 	{
 		if (!drwMsg.alive)
 			return;
@@ -271,6 +276,44 @@ void Game::createPlayer(int objectID, int textureID)
 	m_player->setObjectID(objectID);
 }
 
+void Game::disconnectObject(int objectID, int layer)
+{
+	//Armo color gris
+	Uint8 r = 0xCC;
+	Uint8 g = 0xCC;
+	Uint8 b = 0xCC;
+
+	switch(layer)
+	{
+	case BACKGROUND:
+		TextureManager::Instance()->changeTextureColor(backgroundObjects[objectID]->getTextureId(), r, g, b);
+		break;
+	case MIDDLEGROUND:
+		TextureManager::Instance()->changeTextureColor(middlegroundObjects[objectID]->getTextureId(), r, g, b);
+		break;
+	case FOREGROUND:
+		TextureManager::Instance()->changeTextureColor(foregroundObjects[objectID]->getTextureId(), r, g, b);
+		break;
+	default:
+		TextureManager::Instance()->changeTextureColor(foregroundObjects[objectID]->getTextureId(), r, g, b);
+	}
+}
+
+void Game::disconnect()
+{
+	m_player->setControllable(false);
+
+	//Armo color gris
+	Uint8 r = 0xCC;
+	Uint8 g = 0xCC;
+	Uint8 b = 0xCC;
+
+	//hardcodeado el layer del player
+	TextureManager::Instance()->changeTextureColor(m_player->getTextureId(), r, g, b);
+
+	m_running = false;
+}
+
 bool Game::conectToKorea()
 {
 	if (!m_client->conectar())
@@ -327,10 +370,8 @@ void Game::clean()
     	it->second->clean();
 		delete it->second;
     }
-   /* delete m_background; //Provisorio
-    delete m_island; //Provisorio
-    delete m_player; //Provisorio*/
 
+    //delete m_player; //Provisorio
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();

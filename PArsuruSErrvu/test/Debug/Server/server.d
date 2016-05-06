@@ -34,8 +34,7 @@ Server/server.d: ../Server/server.cpp ../Server/server.h \
  ../Server/../Player.h ../Server/../MoveableObject.h \
  ../Server/../Weapons/Weapon.h ../Server/../Weapons/../Vector2D.h \
  ../Server/../Vector2D.h ../Server/../Utils/TiposDefinidos.h \
- ../Server/../Weapons/BasicWeapon.h ../Server/../Weapons/Weapon.h \
- ../Server/../DrawObject.h ../Server/../Game.h ../Server/../GameObject.h
+ ../Server/../Weapons/BasicWeapon.h ../Server/../Weapons/Weapon.h
 
 ../Server/server.h:
 
@@ -138,9 +137,3 @@ Server/server.d: ../Server/server.cpp ../Server/server.h \
 ../Server/../Weapons/BasicWeapon.h:
 
 ../Server/../Weapons/Weapon.h:
-
-../Server/../DrawObject.h:
-
-../Server/../Game.h:
-
-../Server/../GameObject.h:

@@ -9,7 +9,7 @@
 
 BasicWeapon::BasicWeapon(): Weapon()
 {
-	m_shootCooldown = 500;
+	m_shootCooldown = 250;
 	m_waitTime = 0;
 	m_canShoot = true;
 }
