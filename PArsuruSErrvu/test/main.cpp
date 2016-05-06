@@ -10,6 +10,8 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+#include "Singletons/GameTimeHelper.h"
+
 using namespace std;
 
 const int FPS = 150;
@@ -31,15 +33,22 @@ int main(int argc, char **argv)
 		//Bucle del juego
 		while (Game::Instance()->isRunning()) {
 			frameStartTime = SDL_GetTicks();
-
 			//Game::Instance()->handleEvents();
 			Game::Instance()->update();
 
 			frameEndTime = SDL_GetTicks() - frameStartTime;
+
 			//tiempo a esperar = tiempo que demoro en finalizar el  frame = tiempo en que finalizó - tiempo en que inició
 			if (frameEndTime < DELAY_TIME) {
 				SDL_Delay((int) ((DELAY_TIME - frameEndTime)));
+				GameTimeHelper::Instance()->updateDeltaTime(DELAY_TIME);
             }
+			else
+			{
+				GameTimeHelper::Instance()->updateDeltaTime(frameEndTime);
+			}
+
+
         }
     }
     else

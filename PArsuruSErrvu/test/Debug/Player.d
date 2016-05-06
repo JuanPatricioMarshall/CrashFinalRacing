@@ -1,38 +1,43 @@
 Player.d: ../Player.cpp ../Player.h ../MoveableObject.h ../GameObject.h \
  ../Vector2D.h ../Singletons/ObjectIdGenerator.h \
- ../Singletons/../Utils/TiposDefinidos.h ../Singletons/InputHandler.h \
- ../Singletons/../Game.h ../Singletons/../Server/server.h \
- ../Singletons/../Server/ListaInteligente.h \
- ../Singletons/../Server/AlanTuring.h \
- ../Singletons/../Server/../Utils/Logger.h \
- ../Singletons/../Server/../Utils/Time.h \
- ../Singletons/../Server/../Utils/TiposDefinidos.h \
- ../Singletons/../Server/multiqueue.h \
- ../Singletons/../Server/ServerMessage.h \
- ../Singletons/../Server/../Utils/Timer.h \
- ../Singletons/../Server/MessageFactory.h \
- ../Singletons/../Server/../Utils/StringHelper.h \
- ../Singletons/../Server/../Game.h \
- ../Singletons/../Utils/Parser/ParserServidor.h \
- ../Singletons/../Utils/Parser/Parser.h \
- ../Singletons/../Utils/Parser/../Logger.h \
- ../Singletons/../Utils/Parser/../TiposDefinidos.h \
- ../Singletons/../Utils/Parser/../pugixml/pugixml.hpp \
- ../Singletons/../Utils/Parser/../pugixml/pugiconfig.hpp \
- ../Singletons/../Background/Island.h \
- ../Singletons/../Background/BackgroundObject.h \
- ../Singletons/../Background/../GameObject.h \
- ../Singletons/../Background/../Utils/Random.h \
- ../Singletons/../Background/../Game.h \
- ../Singletons/../Background/../Singletons/TextureManager.h \
- ../Singletons/../Background/../Singletons/../Utils/TiposDefinidos.h \
- ../Singletons/../Background/Background.h \
- ../Singletons/../Background/../Vector2D.h \
- ../Singletons/../Singletons/InputHandler.h \
- ../Singletons/../Singletons/TextureManager.h ../Singletons/../Player.h \
- ../Singletons/../DrawObject.h ../Singletons/../Game.h \
- ../Singletons/../GameObject.h ../Singletons/../Vector2D.h \
- ../Singletons/TextureManager.h
+ ../Singletons/../Utils/TiposDefinidos.h ../Utils/TiposDefinidos.h \
+ ../Weapons/Weapon.h ../Weapons/Bullet.h ../Weapons/../MoveableObject.h \
+ ../Weapons/../Game.h ../Weapons/../Server/server.h \
+ ../Weapons/../Server/ListaInteligente.h \
+ ../Weapons/../Server/AlanTuring.h ../Weapons/../Server/../Utils/Logger.h \
+ ../Weapons/../Server/../Utils/Time.h \
+ ../Weapons/../Server/../Utils/TiposDefinidos.h \
+ ../Weapons/../Server/multiqueue.h ../Weapons/../Server/ServerMessage.h \
+ ../Weapons/../Server/../Utils/Timer.h \
+ ../Weapons/../Server/MessageFactory.h \
+ ../Weapons/../Server/../Utils/StringHelper.h \
+ ../Weapons/../Server/../Game.h \
+ ../Weapons/../Utils/Parser/ParserServidor.h \
+ ../Weapons/../Utils/Parser/Parser.h \
+ ../Weapons/../Utils/Parser/../Logger.h \
+ ../Weapons/../Utils/Parser/../TiposDefinidos.h \
+ ../Weapons/../Utils/Parser/../pugixml/pugixml.hpp \
+ ../Weapons/../Utils/Parser/../pugixml/pugiconfig.hpp \
+ ../Weapons/../Background/Island.h \
+ ../Weapons/../Background/BackgroundObject.h \
+ ../Weapons/../Background/../GameObject.h \
+ ../Weapons/../Background/../Utils/Random.h \
+ ../Weapons/../Background/../Utils/TiposDefinidos.h \
+ ../Weapons/../Background/../Game.h \
+ ../Weapons/../Background/../Singletons/TextureManager.h \
+ ../Weapons/../Background/../Singletons/../Utils/TiposDefinidos.h \
+ ../Weapons/../Background/Background.h \
+ ../Weapons/../Background/../Vector2D.h \
+ ../Weapons/../Singletons/InputHandler.h \
+ ../Weapons/../Singletons/../Game.h \
+ ../Weapons/../Singletons/../Vector2D.h \
+ ../Weapons/../Singletons/TextureManager.h \
+ ../Weapons/../Weapons/BulletsHandler.h ../Weapons/../Weapons/Bullet.h \
+ ../Weapons/../Player.h ../Weapons/../DrawObject.h ../Weapons/../Game.h \
+ ../Weapons/../GameObject.h ../Weapons/../Singletons/GameTimeHelper.h \
+ ../Weapons/../Vector2D.h ../Singletons/InputHandler.h \
+ ../Singletons/TextureManager.h ../Weapons/BasicWeapon.h \
+ ../Weapons/Weapon.h
 
 ../Player.h:
 
@@ -46,76 +51,100 @@ Player.d: ../Player.cpp ../Player.h ../MoveableObject.h ../GameObject.h \
 
 ../Singletons/../Utils/TiposDefinidos.h:
 
+../Utils/TiposDefinidos.h:
+
+../Weapons/Weapon.h:
+
+../Weapons/Bullet.h:
+
+../Weapons/../MoveableObject.h:
+
+../Weapons/../Game.h:
+
+../Weapons/../Server/server.h:
+
+../Weapons/../Server/ListaInteligente.h:
+
+../Weapons/../Server/AlanTuring.h:
+
+../Weapons/../Server/../Utils/Logger.h:
+
+../Weapons/../Server/../Utils/Time.h:
+
+../Weapons/../Server/../Utils/TiposDefinidos.h:
+
+../Weapons/../Server/multiqueue.h:
+
+../Weapons/../Server/ServerMessage.h:
+
+../Weapons/../Server/../Utils/Timer.h:
+
+../Weapons/../Server/MessageFactory.h:
+
+../Weapons/../Server/../Utils/StringHelper.h:
+
+../Weapons/../Server/../Game.h:
+
+../Weapons/../Utils/Parser/ParserServidor.h:
+
+../Weapons/../Utils/Parser/Parser.h:
+
+../Weapons/../Utils/Parser/../Logger.h:
+
+../Weapons/../Utils/Parser/../TiposDefinidos.h:
+
+../Weapons/../Utils/Parser/../pugixml/pugixml.hpp:
+
+../Weapons/../Utils/Parser/../pugixml/pugiconfig.hpp:
+
+../Weapons/../Background/Island.h:
+
+../Weapons/../Background/BackgroundObject.h:
+
+../Weapons/../Background/../GameObject.h:
+
+../Weapons/../Background/../Utils/Random.h:
+
+../Weapons/../Background/../Utils/TiposDefinidos.h:
+
+../Weapons/../Background/../Game.h:
+
+../Weapons/../Background/../Singletons/TextureManager.h:
+
+../Weapons/../Background/../Singletons/../Utils/TiposDefinidos.h:
+
+../Weapons/../Background/Background.h:
+
+../Weapons/../Background/../Vector2D.h:
+
+../Weapons/../Singletons/InputHandler.h:
+
+../Weapons/../Singletons/../Game.h:
+
+../Weapons/../Singletons/../Vector2D.h:
+
+../Weapons/../Singletons/TextureManager.h:
+
+../Weapons/../Weapons/BulletsHandler.h:
+
+../Weapons/../Weapons/Bullet.h:
+
+../Weapons/../Player.h:
+
+../Weapons/../DrawObject.h:
+
+../Weapons/../Game.h:
+
+../Weapons/../GameObject.h:
+
+../Weapons/../Singletons/GameTimeHelper.h:
+
+../Weapons/../Vector2D.h:
+
 ../Singletons/InputHandler.h:
 
-../Singletons/../Game.h:
-
-../Singletons/../Server/server.h:
-
-../Singletons/../Server/ListaInteligente.h:
-
-../Singletons/../Server/AlanTuring.h:
-
-../Singletons/../Server/../Utils/Logger.h:
-
-../Singletons/../Server/../Utils/Time.h:
-
-../Singletons/../Server/../Utils/TiposDefinidos.h:
-
-../Singletons/../Server/multiqueue.h:
-
-../Singletons/../Server/ServerMessage.h:
-
-../Singletons/../Server/../Utils/Timer.h:
-
-../Singletons/../Server/MessageFactory.h:
-
-../Singletons/../Server/../Utils/StringHelper.h:
-
-../Singletons/../Server/../Game.h:
-
-../Singletons/../Utils/Parser/ParserServidor.h:
-
-../Singletons/../Utils/Parser/Parser.h:
-
-../Singletons/../Utils/Parser/../Logger.h:
-
-../Singletons/../Utils/Parser/../TiposDefinidos.h:
-
-../Singletons/../Utils/Parser/../pugixml/pugixml.hpp:
-
-../Singletons/../Utils/Parser/../pugixml/pugiconfig.hpp:
-
-../Singletons/../Background/Island.h:
-
-../Singletons/../Background/BackgroundObject.h:
-
-../Singletons/../Background/../GameObject.h:
-
-../Singletons/../Background/../Utils/Random.h:
-
-../Singletons/../Background/../Game.h:
-
-../Singletons/../Background/../Singletons/TextureManager.h:
-
-../Singletons/../Background/../Singletons/../Utils/TiposDefinidos.h:
-
-../Singletons/../Background/Background.h:
-
-../Singletons/../Background/../Vector2D.h:
-
-../Singletons/../Singletons/InputHandler.h:
-
-../Singletons/../Singletons/TextureManager.h:
-
-../Singletons/../Player.h:
-
-../Singletons/../DrawObject.h:
-
-../Singletons/../Game.h:
-
-../Singletons/../GameObject.h:
-
-../Singletons/../Vector2D.h:
-
 ../Singletons/TextureManager.h:
+
+../Weapons/BasicWeapon.h:
+
+../Weapons/Weapon.h:

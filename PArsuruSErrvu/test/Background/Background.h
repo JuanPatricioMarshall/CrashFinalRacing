@@ -11,6 +11,7 @@
 #include "BackgroundObject.h"
 #include "../Vector2D.h"
 #include "../Singletons/TextureManager.h"
+#include "../Utils/TiposDefinidos.h"
 #include "../Game.h"
 #include "../GameObject.h"
 #include <string>
@@ -27,6 +28,8 @@ public:
     virtual void draw();
     virtual void update();
     virtual void clean();
+
+    void sendDrawMessage(bool isAlive);
 
     //Getters
     Vector2D& getDirection() { return m_direction; }

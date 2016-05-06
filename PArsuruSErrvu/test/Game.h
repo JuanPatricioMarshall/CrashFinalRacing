@@ -8,10 +8,11 @@
 #include "Background/Background.h"
 #include "Singletons/InputHandler.h"
 #include "Singletons/TextureManager.h"
+#include "Weapons/BulletsHandler.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <sstream>
-#include "Player.h";
+#include "Player.h"
 #include "DrawObject.h"
 #include <map>
 using namespace std;
@@ -52,7 +53,7 @@ public:
     void sendToAllClients(DrawMessage mensaje);
    	void* koreaMethod(void);
    	void readFromKorea();
-   	void interpretarDrawMsg(DrawMessage drwMsg);
+
    	void actualizarEstado(int id,InputMessage dataMsg);
 
 
@@ -73,7 +74,9 @@ public:
 private:
 
     std::map<int,Player*> listOfPlayer;
-    std::map<int,GameObject*> listOfGameObject;
+
+    //Layers
+    std::map<int,GameObject*> listOfGameObjects;
 
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;

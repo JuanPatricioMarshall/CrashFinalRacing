@@ -230,7 +230,6 @@ bool cliente::leer()
    }
 
    messageLength = m_alanTuring->decodeLength(buffer);
-   printf ("Leyo %d bytes \n", messageLength);
 
    p += n;
    messageLength -= acum;

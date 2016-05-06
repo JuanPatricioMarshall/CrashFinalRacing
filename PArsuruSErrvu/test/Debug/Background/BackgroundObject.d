@@ -3,7 +3,8 @@ Background/BackgroundObject.d: ../Background/BackgroundObject.cpp \
  ../Background/../Vector2D.h \
  ../Background/../Singletons/ObjectIdGenerator.h \
  ../Background/../Singletons/../Utils/TiposDefinidos.h \
- ../Background/../Utils/Random.h
+ ../Background/../Utils/TiposDefinidos.h ../Background/../Utils/Random.h \
+ ../Background/../Utils/TiposDefinidos.h
 
 ../Background/BackgroundObject.h:
 
@@ -15,4 +16,8 @@ Background/BackgroundObject.d: ../Background/BackgroundObject.cpp \
 
 ../Background/../Singletons/../Utils/TiposDefinidos.h:
 
+../Background/../Utils/TiposDefinidos.h:
+
 ../Background/../Utils/Random.h:
+
+../Background/../Utils/TiposDefinidos.h:

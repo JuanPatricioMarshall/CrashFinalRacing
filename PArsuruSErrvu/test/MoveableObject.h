@@ -26,7 +26,8 @@ public:
     
     Vector2D& getDirection() { return m_direction; }
     Vector2D& getSpeed() { return m_speed; }
-
+    void setDirection(const Vector2D& direction) { m_direction = direction; }
+    void setSpeed(const Vector2D& speed) { m_speed = speed; }
 
 
 protected:

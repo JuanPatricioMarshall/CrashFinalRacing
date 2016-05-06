@@ -23,8 +23,11 @@ public:
     virtual void load(int x, int y, int width, int height, int textureID, int numFrames);
     virtual void draw();
     virtual void update();
+    virtual void clean();
 
     virtual void reappear();
+
+    void sendDrawMessage(bool isAlive);
 };
 
 

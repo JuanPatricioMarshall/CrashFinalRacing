@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Singletons/GameTimeHelper.cpp \
 ../Singletons/InputHandler.cpp \
 ../Singletons/ObjectIdGenerator.cpp \
 ../Singletons/TextureManager.cpp 
 
 OBJS += \
+./Singletons/GameTimeHelper.o \
 ./Singletons/InputHandler.o \
 ./Singletons/ObjectIdGenerator.o \
 ./Singletons/TextureManager.o 
 
 CPP_DEPS += \
+./Singletons/GameTimeHelper.d \
 ./Singletons/InputHandler.d \
 ./Singletons/ObjectIdGenerator.d \
 ./Singletons/TextureManager.d 

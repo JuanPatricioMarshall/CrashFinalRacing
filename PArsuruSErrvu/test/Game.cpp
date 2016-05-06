@@ -31,38 +31,23 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
    //m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, 1, 1);
    //listOfPlayer[m_player->getObjectId()]= *m_player;
 
-   /*m_background = new Background();
-   //m_background->load(0, 0, m_gameWidth, m_gameHeight, "water")
+   m_background = new Background();
    m_background->load(0, 0, m_gameWidth, m_gameHeight, 2);
-	printf("Background inicializado con objectID: %d y textureID: %d\n", m_background->getObjectId(), 2);
-   listOfGameObject[m_background->getObjectId()] = m_background;*/
+   m_background->setLayer(BACKGROUND);
+	printf("Background inicializado con objectID: %d y textureID: %d y layer : %d\n", m_background->getObjectId(), 2, m_background->getLayer());
+	listOfGameObjects[m_background->getObjectId()] = m_background;
 
 
    m_island = new Island();
-   //m_island->load(0, m_gameHeight/2, 150, 150, "island", 1);
    m_island->load(0, m_gameHeight/2, 150, 150, 3, 1);
+   m_island->setLayer(MIDDLEGROUND);
    m_island->setReappearanceTime(0);   // en ms
    printf("Isla inicializada con objectID: %d y textureID: %d\n", m_island->getObjectId(), 3);
-   listOfGameObject[m_island->getObjectId()] = m_island;
+   listOfGameObjects[m_island->getObjectId()] = m_island;
 
     setUpKorea();
     //tudo ben
     m_running = true;
-
-    int cantPlayers = 0;
-	for (std::map<int,Player*>::iterator it=listOfPlayer.begin(); it != listOfPlayer.end(); ++it)
-	{
-		//printf("objectID = %d \n", it->second.getObjectId());
-		cantPlayers++;
-	}
-	printf("cant players: %d  \n", cantPlayers);
-	cantPlayers = 0;
-	for (std::map<int,GameObject*>::iterator it=listOfGameObject.begin(); it != listOfGameObject.end(); ++it)
-	{
-		//printf("objectID = %d \n", it->second.getObjectId());
-		cantPlayers++;
-	}
-	printf("cant objetos: %d  \n", cantPlayers);
 
     return true;
 }
@@ -94,18 +79,18 @@ void Game::render()
 */
     //SDL_RenderPresent(m_pRenderer);
 }
-void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
-	}
 
 void Game::update()
 {
+	BulletsHandler::Instance()->updateBullets();
+
 	for (std::map<int,Player*>::iterator it=listOfPlayer.begin(); it != listOfPlayer.end(); ++it)
 	{
 		//printf("objectID = %d \n", it->second.getObjectId());
 	     it->second->update();
 	}
-	for (std::map<int,GameObject*>::iterator it=listOfGameObject.begin(); it != listOfGameObject.end(); ++it)
+	for (std::map<int,GameObject*>::iterator it=listOfGameObjects.begin(); it != listOfGameObjects.end(); ++it)
 	{
 		//printf("objectID = %d \n", it->second.getObjectId());
 	     it->second->update();
@@ -187,6 +172,7 @@ void Game::actualizarEstado(int id, InputMessage inputMsg){
 void Game::clean()
 {
     cout << "cleaning game\n";
+    BulletsHandler::Instance()->clearBullets();
 
 	for (std::map<int,Player*>::iterator it=listOfPlayer.begin(); it != listOfPlayer.end(); ++it)
 	{
@@ -194,7 +180,7 @@ void Game::clean()
 	     it->second->clean();
 	     delete  it->second;
 	}
-	for (std::map<int,GameObject*>::iterator it=listOfGameObject.begin(); it != listOfGameObject.end(); ++it)
+	for (std::map<int,GameObject*>::iterator it=listOfGameObjects.begin(); it != listOfGameObjects.end(); ++it)
 	{
 		//printf("objectID = %d \n", it->second.getObjectId());
 	     it->second->clean();
@@ -208,7 +194,7 @@ void Game::clean()
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
     listOfPlayer.clear();
-    listOfGameObject.clear();
+    listOfGameObjects.clear();
 
     SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);

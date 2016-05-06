@@ -73,7 +73,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     // en ms
     m_island->setReappearanceTime(0);
 */
-    m_player = new Player(true);
+    m_player = new Player();
 
     if (!setUpKorea())
     	return false;
@@ -87,43 +87,146 @@ void Game::render()
 {
     SDL_RenderClear(m_pRenderer);
 
-    for (std::map<int,DrawObject*>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
+    for (std::map<int,DrawObject*>::iterator it = backgroundObjects.begin(); it != backgroundObjects.end(); ++it)
+    {
+         it->second->draw();
+    }
+    for (std::map<int,DrawObject*>::iterator it = middlegroundObjects.begin(); it != middlegroundObjects.end(); ++it)
+    {
+         it->second->draw();
+    }
+    for (std::map<int,DrawObject*>::iterator it = foregroundObjects.begin(); it != foregroundObjects.end(); ++it)
     {
          it->second->draw();
     }
 
-    //Dibujar lo que haya que dibujar
- /*   m_background->draw(); //Provisorio
-    m_island->draw(); //Provisorio
-    m_player->draw();//Provisorio
-*/
     SDL_RenderPresent(m_pRenderer);
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
-	/*printf("interpretando draw message del objeto %d\n",drwMsg.objectID);
-	printf("texture ID: %d \n",drwMsg.textureID);
+	//printf("interpretando draw message del objeto %d\n",drwMsg.objectID);
+	/*printf("texture ID: %d \n",drwMsg.textureID);
 	printf("Pos X: %d \n",drwMsg.posX);
 	printf("Pos Y: %d \n",drwMsg.posY);*/
+	//printf("Layer: %d \n",drwMsg.layer);
 
-	if ( listObjects.find(drwMsg.objectID) == listObjects.end() )
+	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
-		printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
-		DrawObject* newObject = new DrawObject();
+		//Si existe y esta vivo lo actualia y sino lo quita del map
+		if (drwMsg.alive)
+		{
+			updateGameObject(drwMsg);
+		}
+		else
+		{
+			//printf("Destruyendo objeto con id: %d \n", drwMsg.objectID);
+			removeDrawObject(drwMsg.objectID, drwMsg.layer);
+		}
+	}
+	else
+	{
+		if (!drwMsg.alive)
+			return;
 
+		//printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
+
+		DrawObject* newObject = new DrawObject();
 		newObject->setObjectID(drwMsg.objectID);
+		newObject->setLayer(static_cast<int>(drwMsg.layer));
 		newObject->load(static_cast<int>(drwMsg.posX),static_cast<int>(drwMsg.posY),drwMsg.textureID);
 		newObject->setCurrentRow(static_cast<int>(drwMsg.row));
 		newObject->setCurrentFrame(static_cast<int>(drwMsg.column));
-
-		listObjects[drwMsg.objectID] = newObject;
-		//PARA BORRAR listObjects.erase(id);
-	}else
-	{
-		listObjects[drwMsg.objectID]->setCurrentRow(static_cast<int>(drwMsg.row));
-		listObjects[drwMsg.objectID]->setCurrentFrame(static_cast<int>(drwMsg.column));
-		listObjects[drwMsg.objectID]->setPosition(Vector2D(drwMsg.posX,drwMsg.posY));
+		addDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer), newObject);
 	}
+	//PARA BORRAR listObjects.erase(id);
+}
 
+void Game::addDrawObject(int objectID, int layer, DrawObject* newDrawObject)
+{
+	switch(layer)
+	{
+	case BACKGROUND: backgroundObjects[objectID] = newDrawObject;
+			break;
+	case MIDDLEGROUND: middlegroundObjects[objectID] = newDrawObject;
+			break;
+	case FOREGROUND: foregroundObjects[objectID] = newDrawObject;
+			break;
+
+	default: middlegroundObjects[objectID] = newDrawObject;
+	}
+}
+
+void Game::updateGameObject(const DrawMessage drawMessage)
+{
+	switch(drawMessage.layer)
+	{
+	case BACKGROUND: backgroundObjects[drawMessage.objectID]->setCurrentRow(static_cast<int>(drawMessage.row));
+			backgroundObjects[drawMessage.objectID]->setCurrentFrame(static_cast<int>(drawMessage.column));
+			backgroundObjects[drawMessage.objectID]->setPosition(Vector2D(drawMessage.posX,drawMessage.posY));
+			break;
+
+	case MIDDLEGROUND: middlegroundObjects[drawMessage.objectID]->setCurrentRow(static_cast<int>(drawMessage.row));
+			middlegroundObjects[drawMessage.objectID]->setCurrentFrame(static_cast<int>(drawMessage.column));
+			middlegroundObjects[drawMessage.objectID]->setPosition(Vector2D(drawMessage.posX,drawMessage.posY));
+			break;
+
+	case FOREGROUND: foregroundObjects[drawMessage.objectID]->setCurrentRow(static_cast<int>(drawMessage.row));
+			foregroundObjects[drawMessage.objectID]->setCurrentFrame(static_cast<int>(drawMessage.column));
+			foregroundObjects[drawMessage.objectID]->setPosition(Vector2D(drawMessage.posX,drawMessage.posY));
+			break;
+
+	default: middlegroundObjects[drawMessage.objectID]->setCurrentRow(static_cast<int>(drawMessage.row));
+			middlegroundObjects[drawMessage.objectID]->setCurrentFrame(static_cast<int>(drawMessage.column));
+			middlegroundObjects[drawMessage.objectID]->setPosition(Vector2D(drawMessage.posX,drawMessage.posY));
+	}
+}
+
+void Game::removeDrawObject(int objectID, int layer)
+{
+	switch(layer)
+	{
+	case BACKGROUND:
+			delete backgroundObjects[objectID];
+			backgroundObjects.erase(objectID);
+			break;
+
+	case MIDDLEGROUND:
+		delete middlegroundObjects[objectID];
+		middlegroundObjects.erase(objectID);
+		break;
+
+	case FOREGROUND:
+		delete foregroundObjects[objectID];
+		foregroundObjects.erase(objectID);
+		break;
+	}
+}
+
+bool Game::existDrawObject(int objectID, int layer)
+{
+	switch(layer)
+	{
+	case BACKGROUND:
+			if (backgroundObjects.find(objectID) == backgroundObjects.end())
+			{
+				return false;
+			}
+			break;
+	case MIDDLEGROUND:
+			if (middlegroundObjects.find(objectID) == middlegroundObjects.end())
+			{
+				return false;
+			}
+			break;
+	case FOREGROUND:
+			if (foregroundObjects.find(objectID) == foregroundObjects.end())
+			{
+				return false;
+			}
+			break;
+
+	default: return true;
+	}
+	return true;
 }
 
 void Game::update()
@@ -209,7 +312,17 @@ void Game::clean()
 {
     cout << "cleaning game\n";
 
-    for (std::map<int,DrawObject*>::iterator it=listObjects.begin(); it!=listObjects.end(); ++it)
+    for (std::map<int,DrawObject*>::iterator it = backgroundObjects.begin(); it != backgroundObjects.end(); ++it)
+    {
+    	it->second->clean();
+		delete it->second;
+    }
+    for (std::map<int,DrawObject*>::iterator it = middlegroundObjects.begin(); it != middlegroundObjects.end(); ++it)
+    {
+    	it->second->clean();
+		delete it->second;
+    }
+    for (std::map<int,DrawObject*>::iterator it = foregroundObjects.begin(); it != foregroundObjects.end(); ++it)
     {
     	it->second->clean();
 		delete it->second;
@@ -221,7 +334,9 @@ void Game::clean()
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
-    listObjects.clear();
+    backgroundObjects.clear();
+    middlegroundObjects.clear();
+    foregroundObjects.clear();
 
     SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);

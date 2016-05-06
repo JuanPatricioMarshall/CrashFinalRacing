@@ -33,29 +33,35 @@ void TextureManager::init(){
 
 	TextureInfo hola;
 
+	hola.width =38;
 	hola.height = 64;
 	hola.numFrames = 1;
 	hola.path =	"Assets/Sprites/BlackShip.png";
-	hola.width =38 ;
 	m_textureMapInfo[1]=hola;
 
+	hola.width =61;
 	hola.height = 68;
 	hola.numFrames = 1;
 	hola.path =	"Assets/Sprites/redfighter.png";
-	hola.width =61 ;
 	m_textureMapInfo[0]=hola;
 
 	hola.height = 150;
 	hola.numFrames = 1;
 	hola.path =	"Assets/Sprites/island.jpg";
-	hola.width = 150 ;
+	hola.width = 150;
 	m_textureMapInfo[3]=hola;
 
+	hola.width = 800;
 	hola.height = 600;
 	hola.numFrames = 1;
 	hola.path =	"Assets/Sprites/water.jpg";
-	hola.width = 800 ;
 	m_textureMapInfo[2]=hola;
+
+	hola.width = 32;
+	hola.height = 32;
+	hola.numFrames = 1;
+	hola.path =	"Assets/Sprites/bullet.png";
+	m_textureMapInfo[10]=hola;
 }
 void TextureManager::draw(int id, int x, int y, int width, int height, double angle, SDL_Renderer* renderer, SDL_RendererFlip flip)
 {

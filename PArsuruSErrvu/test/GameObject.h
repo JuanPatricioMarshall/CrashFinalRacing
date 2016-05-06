@@ -10,16 +10,16 @@
 
 #include <string>
 #include "Vector2D.h"
+//#include "Game.h"
 #include "Singletons/ObjectIdGenerator.h"
+#include "Utils/TiposDefinidos.h"
 
-/*
- * Clase abstracta de la que heredan todos los GameObjects
-*/
 class GameObject
 {
 public:
     GameObject() :  m_tag("GameObject"),
     				m_textureID(0),
+					m_layer(MIDDLEGROUND),
     				m_position(0,0),
                     m_width(0),
                     m_height(0),
@@ -33,7 +33,7 @@ public:
     {
     	m_objectId = ObjectIdGenerator::Instance()->generateId();
     }
-    ~GameObject() {}
+    virtual ~GameObject() {}
 
     /* Debe ser llamado siempre al crear un GameObject, para inicializar sus variables, cargar la imagen en el map del TextureManager, etc
      * x e y son la posición en pantalla en donde se inicializa el GameObject
@@ -57,11 +57,15 @@ public:
     const std::string getTag() { return m_tag; }
 
     Vector2D& getPosition() { return m_position; }
+    void setPosition(const Vector2D& position) { m_position = position; }
 
     int getWidth() { return m_width; }
     int getHeight() { return m_height; }
+
     int getObjectId() { return m_objectId; }
+    int getLayer() { return m_layer; }
     void setObjectID(int objectId) {m_objectId = objectId;}
+    void setLayer(int layer) {m_layer = layer;}
 
     // En este ejemplo de scroll, scrollea to do menos los objetos con tag player
    /* void scroll(float scrollSpeed)
@@ -78,6 +82,7 @@ protected:
     std::string m_tag;
     int m_objectId;
     int m_textureID;
+    int m_layer;
     // posición del objeto en el juego.
     Vector2D m_position;
 

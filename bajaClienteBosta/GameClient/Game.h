@@ -68,7 +68,15 @@ public:
 
 private:
 
-    std::map<int,DrawObject*> listObjects;
+    //Layers
+    std::map<int,DrawObject*> backgroundObjects;
+    std::map<int,DrawObject*> middlegroundObjects;
+    std::map<int,DrawObject*> foregroundObjects;
+
+    void addDrawObject(int objectID, int layer, DrawObject* newDrawObject);
+    void removeDrawObject(int objectID, int layer);
+    void updateGameObject(const DrawMessage drawMessage);
+    bool existDrawObject(int objectID, int layer);
 
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;

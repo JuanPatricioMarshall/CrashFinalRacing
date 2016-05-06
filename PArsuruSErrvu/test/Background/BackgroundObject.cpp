@@ -21,6 +21,7 @@ BackgroundObject::BackgroundObject() :  GameObject(),
 				timerID(0)
 {
 	m_tag = "BackgroundObject";
+	m_layer = MIDDLEGROUND;
 }
 
 BackgroundObject::BackgroundObject(const Vector2D& direction, const Vector2D& scrollSpeed) :  GameObject(),

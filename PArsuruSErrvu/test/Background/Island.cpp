@@ -65,14 +65,7 @@ void Island::update()
 			}
 		}
 	}
-	DrawMessage enviar;
-	enviar.objectID = m_objectId;
-	enviar.column = m_currentFrame;
-	enviar.row = m_currentRow;
-	enviar.posX = m_position.m_x;
-	enviar.posY = m_position.m_y;
-	enviar.textureID = m_textureID;
-	Game::Instance()->sendToAllClients(enviar);
+	sendDrawMessage(true);
 }
 
 void Island::reappear()
@@ -84,5 +77,27 @@ void Island::reappear()
 	int randomX = Random::getRange(0, Game::Instance()->getGameWidth() - m_width);
 	m_position.setX(randomX);
 	m_waiting = false;
+}
+
+void Island::clean()
+{
+	//setea Y en el comienzo
+	BackgroundObject::clean();
+	//sendDrawMessage(false);
+}
+
+void Island::sendDrawMessage(bool isAlive)
+{
+	DrawMessage drawMsg;
+	drawMsg.alive = isAlive;
+	drawMsg.unusedBool = false;
+	drawMsg.objectID = m_objectId;
+	drawMsg.layer = m_layer;
+	drawMsg.column = m_currentFrame;
+	drawMsg.row = m_currentRow;
+	drawMsg.posX = m_position.getX();
+	drawMsg.posY = m_position.getY();
+	drawMsg.textureID = m_textureID;
+	Game::Instance()->sendToAllClients(drawMsg);
 }
 

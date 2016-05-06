@@ -8,11 +8,12 @@
 #include "Background.h"
 
 Background::Background() : m_direction(0,0),
-							m_scrollSpeed(0,0),
-							m_position(0,0)
-{}
+							m_scrollSpeed(0,0)
+{
+	m_layer = FOREGROUND;
+}
 
-Background::Background(const Vector2D& direction, const Vector2D& scrollSpeed): m_position(0,0)
+Background::Background(const Vector2D& direction, const Vector2D& scrollSpeed)
 {
 	m_direction = direction;
 	m_scrollSpeed = scrollSpeed;

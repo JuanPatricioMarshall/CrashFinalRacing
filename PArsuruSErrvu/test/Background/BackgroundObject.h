@@ -12,8 +12,10 @@
 //#include "../Game.h"
 //#include "../Singletons/TextureManager.h"
 #include "../Utils/Random.h"
+#include "../Utils/TiposDefinidos.h"
 #include <SDL2/SDL.h>
 #include <iostream>
+
 
 class BackgroundObject: public GameObject
 {

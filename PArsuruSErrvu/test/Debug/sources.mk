@@ -30,4 +30,5 @@ Singletons \
 Utils \
 Utils/Parser \
 Utils/pugixml \
+Weapons \
 

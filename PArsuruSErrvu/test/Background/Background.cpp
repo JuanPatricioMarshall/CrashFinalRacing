@@ -10,7 +10,9 @@
 Background::Background() : GameObject(),
 							m_direction(0,0),
 							m_scrollSpeed(0,0)
-{}
+{
+	m_layer = BACKGROUND;
+}
 
 Background::Background(const Vector2D& direction, const Vector2D& scrollSpeed): GameObject()
 {
@@ -50,17 +52,26 @@ void Background::update()
 
 	if (m_direction.getY() != 0)
 		m_position.m_y += (m_direction.getY() * m_scrollSpeed.getY());
-	DrawMessage enviar;
-	enviar.objectID = this->m_objectId;
-	enviar.column = this->m_currentFrame;
-	enviar.row = this->m_currentRow;
-	enviar.posX = this->m_position.m_x;
-	enviar.posY = this->m_position.m_y;
-	enviar.textureID = this->m_textureID;
-	Game::Instance()->sendToAllClients(enviar);
+
+	sendDrawMessage(true);
 }
 
 void Background::clean()
 {
 
+}
+
+void Background::sendDrawMessage(bool isAlive)
+{
+	DrawMessage drawMsg;
+	drawMsg.alive = isAlive;
+	drawMsg.unusedBool = false;
+	drawMsg.objectID = m_objectId;
+	drawMsg.layer = m_layer;
+	drawMsg.column = m_currentFrame;
+	drawMsg.row = m_currentRow;
+	drawMsg.posX = m_position.getX();
+	drawMsg.posY = m_position.getY();
+	drawMsg.textureID = m_textureID;
+	Game::Instance()->sendToAllClients(drawMsg);
 }

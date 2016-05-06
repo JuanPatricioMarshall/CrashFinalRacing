@@ -1,0 +1,40 @@
+/*
+ * BasicWeapon.cpp
+ *
+ *  Created on: May 6, 2016
+ *      Author: gonzalo
+ */
+
+#include "BasicWeapon.h"
+
+BasicWeapon::BasicWeapon(): Weapon()
+{
+	m_shootCooldown = 500;
+	m_waitTime = 0;
+	m_canShoot = true;
+}
+
+BasicWeapon::~BasicWeapon()
+{
+}
+
+bool BasicWeapon::shoot(const Vector2D& bulletPosition)
+{
+	bool didShoot = false;
+
+	if (m_canShoot)
+	{
+		Bullet* bullet = new Bullet();
+		bullet->setPosition(Vector2D(bulletPosition.m_x, bulletPosition.m_y));
+		bullet->setDirection(Vector2D(0,DIRECTION_UP));
+
+		BulletsHandler::Instance()->addBullet(bullet);
+		m_waitTime = 0;
+		m_canShoot = false;
+		didShoot = true;
+	}
+
+	return didShoot;
+
+}
+

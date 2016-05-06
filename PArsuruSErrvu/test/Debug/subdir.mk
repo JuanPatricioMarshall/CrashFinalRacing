@@ -9,8 +9,7 @@ CPP_SRCS += \
 ../MoveableObject.cpp \
 ../Nave.cpp \
 ../Player.cpp \
-../main.cpp \
-../mainDeCliente.cpp 
+../main.cpp 
 
 OBJS += \
 ./DrawObject.o \
@@ -18,8 +17,7 @@ OBJS += \
 ./MoveableObject.o \
 ./Nave.o \
 ./Player.o \
-./main.o \
-./mainDeCliente.o 
+./main.o 
 
 CPP_DEPS += \
 ./DrawObject.d \
@@ -27,8 +25,7 @@ CPP_DEPS += \
 ./MoveableObject.d \
 ./Nave.d \
 ./Player.d \
-./main.d \
-./mainDeCliente.d 
+./main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

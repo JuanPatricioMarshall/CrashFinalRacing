@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Weapons/subdir.mk
 -include Utils/pugixml/subdir.mk
 -include Utils/Parser/subdir.mk
 -include Utils/subdir.mk

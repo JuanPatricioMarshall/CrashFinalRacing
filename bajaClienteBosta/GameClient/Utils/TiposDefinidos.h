@@ -19,6 +19,10 @@
 #define INPUT_MESSAGE_SIZE 24
 #define CONNECTED_MESSAGE_SIZE 8
 
+#define BACKGROUND 1
+#define MIDDLEGROUND 10
+#define FOREGROUND 20
+
 #include <string>
 
 // TIPOS RELACIONADOS A ARCHIVOS XML
@@ -63,8 +67,11 @@ struct ConnectedMessage
 
 struct DrawMessage
 {
-	int objectID;
-	int textureID;
+	bool alive;
+	bool unusedBool;
+	short objectID;
+	short textureID;
+	short layer;
 	short posX;
 	short posY;
 	short row;

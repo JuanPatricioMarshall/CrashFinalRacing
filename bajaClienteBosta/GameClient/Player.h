@@ -12,6 +12,7 @@
 #include "MoveableObject.h"
 #include "Singletons/InputHandler.h"
 #include "Singletons/TextureManager.h"
+#include "Utils/TiposDefinidos.h"
 
 
 class Player : public MoveableObject

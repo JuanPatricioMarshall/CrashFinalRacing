@@ -11,6 +11,7 @@
 #include <string>
 #include "Vector2D.h"
 #include "Singletons/ObjectIdGenerator.h"
+#include "Utils/TiposDefinidos.h"
 
 /*
  * Clase abstracta de la que heredan todos los GameObjects
@@ -47,8 +48,12 @@ public:
 
     int getWidth() { return m_width; }
     int getHeight() { return m_height; }
+
     int getObjectId() { return m_objectId; }
+    int getLayer() { return m_layer; }
     void setObjectID(int objectId) {m_objectId = objectId;}
+    void setLayer(int layer) {m_layer = layer;}
+
 
     // En este ejemplo de scroll, scrollea to do menos los objetos con tag player
    /* void scroll(float scrollSpeed)
@@ -63,7 +68,9 @@ protected:
 
     // constructor with default initialisation list
     GameObject() :  m_tag("GameObject"),
+					m_objectId(100),
     				m_textureID(0),
+					m_layer(MIDDLEGROUND),
     				m_position(0,0),
                     m_width(0),
                     m_height(0),
@@ -81,6 +88,7 @@ protected:
     std::string m_tag;
     int m_objectId;
     int m_textureID;
+    int m_layer;
     // posición del objeto en el juego.
     Vector2D m_position;
 

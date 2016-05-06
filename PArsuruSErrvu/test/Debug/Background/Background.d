@@ -3,7 +3,8 @@ Background/Background.d: ../Background/Background.cpp \
  ../Background/../GameObject.h ../Background/../Vector2D.h \
  ../Background/../Singletons/ObjectIdGenerator.h \
  ../Background/../Singletons/../Utils/TiposDefinidos.h \
- ../Background/../Utils/Random.h ../Background/../Vector2D.h \
+ ../Background/../Utils/TiposDefinidos.h ../Background/../Utils/Random.h \
+ ../Background/../Utils/TiposDefinidos.h ../Background/../Vector2D.h \
  ../Background/../Singletons/TextureManager.h ../Background/../Game.h \
  ../Background/../Server/server.h \
  ../Background/../Server/ListaInteligente.h \
@@ -31,9 +32,19 @@ Background/Background.d: ../Background/Background.cpp \
  ../Background/../Singletons/InputHandler.h \
  ../Background/../Singletons/../Game.h \
  ../Background/../Singletons/../Vector2D.h \
- ../Background/../Singletons/TextureManager.h ../Background/../Player.h \
- ../Background/../MoveableObject.h ../Background/../GameObject.h \
- ../Background/../DrawObject.h ../Background/../Game.h
+ ../Background/../Singletons/TextureManager.h \
+ ../Background/../Weapons/BulletsHandler.h \
+ ../Background/../Weapons/Bullet.h \
+ ../Background/../Weapons/../MoveableObject.h \
+ ../Background/../Weapons/../GameObject.h \
+ ../Background/../Weapons/../Vector2D.h \
+ ../Background/../Weapons/../Game.h \
+ ../Background/../Weapons/../Singletons/GameTimeHelper.h \
+ ../Background/../Player.h ../Background/../MoveableObject.h \
+ ../Background/../Weapons/Weapon.h ../Background/../Weapons/../Vector2D.h \
+ ../Background/../Weapons/BasicWeapon.h ../Background/../Weapons/Weapon.h \
+ ../Background/../DrawObject.h ../Background/../Game.h \
+ ../Background/../GameObject.h
 
 ../Background/Background.h:
 
@@ -47,7 +58,11 @@ Background/Background.d: ../Background/Background.cpp \
 
 ../Background/../Singletons/../Utils/TiposDefinidos.h:
 
+../Background/../Utils/TiposDefinidos.h:
+
 ../Background/../Utils/Random.h:
+
+../Background/../Utils/TiposDefinidos.h:
 
 ../Background/../Vector2D.h:
 
@@ -109,12 +124,34 @@ Background/Background.d: ../Background/Background.cpp \
 
 ../Background/../Singletons/TextureManager.h:
 
+../Background/../Weapons/BulletsHandler.h:
+
+../Background/../Weapons/Bullet.h:
+
+../Background/../Weapons/../MoveableObject.h:
+
+../Background/../Weapons/../GameObject.h:
+
+../Background/../Weapons/../Vector2D.h:
+
+../Background/../Weapons/../Game.h:
+
+../Background/../Weapons/../Singletons/GameTimeHelper.h:
+
 ../Background/../Player.h:
 
 ../Background/../MoveableObject.h:
 
-../Background/../GameObject.h:
+../Background/../Weapons/Weapon.h:
+
+../Background/../Weapons/../Vector2D.h:
+
+../Background/../Weapons/BasicWeapon.h:
+
+../Background/../Weapons/Weapon.h:
 
 ../Background/../DrawObject.h:
 
 ../Background/../Game.h:
+
+../Background/../GameObject.h:

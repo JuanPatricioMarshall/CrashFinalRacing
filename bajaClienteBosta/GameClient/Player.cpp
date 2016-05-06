@@ -15,6 +15,7 @@ Player::Player() :  MoveableObject(),
 					m_dying(false)
 {
 	m_tag = "Player";
+	m_layer = FOREGROUND;
 }
 
 Player::Player(bool canControl) :  MoveableObject(),
@@ -23,6 +24,7 @@ Player::Player(bool canControl) :  MoveableObject(),
 {
 	m_controllable = canControl;
 	m_tag = "Player";
+	m_layer = FOREGROUND;
 }
 
 void Player::collision()

@@ -11,10 +11,11 @@
 #include "BackgroundObject.h"
 #include "../Vector2D.h"
 #include "../Singletons/TextureManager.h"
+#include "../Utils/TiposDefinidos.h"
 #include "../Game.h"
 #include <string>
 
-class Background
+class Background: public GameObject
 {
 
 public:
@@ -36,17 +37,10 @@ public:
 
 protected:
 
-    int m_width;
-    int m_height;
-
     //Variables de scroll
     Vector2D m_direction;
     Vector2D m_scrollSpeed;
 
-    Vector2D m_position;
-
-    //ID del sprite que tomará en el map de lTextureManager
-    int m_textureID;
 };
 
 

@@ -13,12 +13,19 @@ main.d: ../main.cpp ../Game.h ../Server/server.h \
  ../Background/../Vector2D.h \
  ../Background/../Singletons/ObjectIdGenerator.h \
  ../Background/../Singletons/../Utils/TiposDefinidos.h \
- ../Background/../Utils/Random.h ../Background/../Game.h \
+ ../Background/../Utils/TiposDefinidos.h ../Background/../Utils/Random.h \
+ ../Background/../Utils/TiposDefinidos.h ../Background/../Game.h \
  ../Background/../Singletons/TextureManager.h ../Background/Background.h \
  ../Background/../Vector2D.h ../Singletons/InputHandler.h \
  ../Singletons/../Game.h ../Singletons/../Vector2D.h \
- ../Singletons/TextureManager.h ../Player.h ../MoveableObject.h \
- ../GameObject.h ../Vector2D.h ../DrawObject.h ../Utils/Random.h
+ ../Singletons/TextureManager.h ../Weapons/BulletsHandler.h \
+ ../Weapons/Bullet.h ../Weapons/../MoveableObject.h \
+ ../Weapons/../GameObject.h ../Weapons/../Vector2D.h ../Weapons/../Game.h \
+ ../Weapons/../Singletons/GameTimeHelper.h ../Player.h \
+ ../MoveableObject.h ../Weapons/Weapon.h ../Weapons/../Vector2D.h \
+ ../Vector2D.h ../Utils/TiposDefinidos.h ../Weapons/BasicWeapon.h \
+ ../Weapons/Weapon.h ../DrawObject.h ../GameObject.h ../Utils/Random.h \
+ ../Singletons/GameTimeHelper.h
 
 ../Game.h:
 
@@ -70,7 +77,11 @@ main.d: ../main.cpp ../Game.h ../Server/server.h \
 
 ../Background/../Singletons/../Utils/TiposDefinidos.h:
 
+../Background/../Utils/TiposDefinidos.h:
+
 ../Background/../Utils/Random.h:
+
+../Background/../Utils/TiposDefinidos.h:
 
 ../Background/../Game.h:
 
@@ -88,14 +99,40 @@ main.d: ../main.cpp ../Game.h ../Server/server.h \
 
 ../Singletons/TextureManager.h:
 
+../Weapons/BulletsHandler.h:
+
+../Weapons/Bullet.h:
+
+../Weapons/../MoveableObject.h:
+
+../Weapons/../GameObject.h:
+
+../Weapons/../Vector2D.h:
+
+../Weapons/../Game.h:
+
+../Weapons/../Singletons/GameTimeHelper.h:
+
 ../Player.h:
 
 ../MoveableObject.h:
 
-../GameObject.h:
+../Weapons/Weapon.h:
+
+../Weapons/../Vector2D.h:
 
 ../Vector2D.h:
 
+../Utils/TiposDefinidos.h:
+
+../Weapons/BasicWeapon.h:
+
+../Weapons/Weapon.h:
+
 ../DrawObject.h:
 
+../GameObject.h:
+
 ../Utils/Random.h:
+
+../Singletons/GameTimeHelper.h:
