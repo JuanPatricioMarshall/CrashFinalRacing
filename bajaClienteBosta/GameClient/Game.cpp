@@ -5,10 +5,11 @@ Game* Game::s_pInstance = 0;
 Game::Game():
 m_pWindow(0),
 m_pRenderer(0),
+ m_timeOutCounter(0),
 m_running(false),
 m_scrollSpeed(0.8)
 {
-
+	m_player = new Player();
 }
 
 Game::~Game()
@@ -21,6 +22,8 @@ Game::~Game()
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int SDL_WINDOW_flag)
 {
+	askForName();
+
     // Tamaño de la ventana
     m_gameWidth = width;
     m_gameHeight = height;
@@ -28,6 +31,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         cout << "SDL init success\n";
+
 
         m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, SDL_WINDOW_flag);
 
@@ -59,24 +63,11 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
         return false;
     }
 
-
-    //Provisorio rompen porq blackship water island son string... pone ints (hacer mapas primero)
     TextureManager::Instance()-> init();
-    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
-   // m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, "blackship", 1);
-
-    /*  m_background = new Background();
-    m_background->load(0, 0, m_gameWidth, m_gameHeight, "water");
-
-    m_island = new Island();
-    m_island->load(0, m_gameHeight/2, 150, 150, "island", 1);
-    // en ms
-    m_island->setReappearanceTime(0);
-*/
-    m_player = new Player();
 
     if (!setUpKorea())
     	return false;
+
 
     //tudo ben
     m_running = true;
@@ -103,11 +94,11 @@ void Game::render()
     SDL_RenderPresent(m_pRenderer);
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
-	//printf("interpretando draw message del objeto %d\n",drwMsg.objectID);
-	/*printf("texture ID: %d \n",drwMsg.textureID);
-	printf("Pos X: %d \n",drwMsg.posX);
-	printf("Pos Y: %d \n",drwMsg.posY);*/
-	//printf("Layer: %d \n",drwMsg.layer);
+
+	if (drwMsg.ignoreMsg)
+	{
+		return;
+	}
 
 	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
@@ -259,15 +250,30 @@ bool Game::setUpKorea()
 
 	    string ip = parsersito->getConexionInfo().ip;
 	    int porto = parsersito->getConexionInfo().puerto;
-	    std::vector<Mensaje> listaDeMensajes = parsersito->getListaMensajes() ;
 
-	    m_client = new cliente(3,ip,porto, listaDeMensajes);
+
+	    m_client = new cliente(3,ip,porto, m_playerName);
 
 	    if (!conectToKorea())
 	    	return false;
 
 	    return true;
 
+}
+
+void Game::askForName()
+{
+    pedirNombre:
+	printf("Ingrese el nombre con el que desea conectarse \n");
+    char name[24];
+    cin.getline(name, 24);
+    std::string playerName(name);
+    if (playerName.length() <= 0)
+    {
+    	printf("Nombre Invalido \n");
+    	goto pedirNombre;
+    }
+    m_playerName = playerName;
 }
 
 void Game::createPlayer(int objectID, int textureID)
@@ -351,6 +357,26 @@ void Game::readFromKorea()
 	pthread_create(&listenThread, NULL, &Game::thread_method, (void*)this);
 
 }
+
+bool Game::updateTimeOut()
+{
+	if (m_client->checkServerConnection() == false)
+		return false;
+
+	if (m_timeOutCounter >= TiMEOUT_MESSAGE_RATE)
+	{
+		Mensaje timeOutMsg = MessageFactory::Instance()->createMessage("", "",msgTimeOutACK);
+		m_client->sendMsg(timeOutMsg);
+		printf("Envio timeout\n");
+		m_timeOutCounter = 0;
+	}
+	else
+	{
+		m_timeOutCounter += GameTimeHelper::Instance()->deltaTime();
+	}
+	return true;
+}
+
 void Game::clean()
 {
     cout << "cleaning game\n";

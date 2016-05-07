@@ -21,7 +21,6 @@ class server;
 class Player;
 
 
-
 class Game
 {
 public:
@@ -45,7 +44,8 @@ public:
     void handleEvents();
     void clean();
 
-    void createPlayer(int playerId);
+    bool createPlayer(int playerId, const std::string& playerName);
+    bool validatePlayerName(const std::string& playerName);
     void disconnectPlayer(int playerId);
     void setUpKorea();
     void conectToKorea();
@@ -72,10 +72,10 @@ public:
 
 private:
 
-    std::map<int,Player*> listOfPlayer;
+    std::map<int,Player*> m_listOfPlayer;
+    std::map<int,std::string> m_playerNames;
 
-    //Layers
-    std::map<int,GameObject*> listOfGameObjects;
+    std::map<int,GameObject*> m_listOfGameObjects;
 
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;

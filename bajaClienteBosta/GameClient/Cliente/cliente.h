@@ -31,12 +31,14 @@
 class cliente
 {
     public:
-        cliente(int argc, string ip,int port, std::vector<Mensaje> listaDeMensajesCargados );
+        cliente(int argc, string ip,int port, std::string name );
         ~cliente();
         bool conectar();
         void desconectar();
         void escribir(Mensaje mensaje);
+        void sendMsg(Mensaje msg);
         void sendInputMsg(InputMessage msg);
+        void sendConnectionInfoMsg(ConnectionInfo msg);
         bool leer();
         bool isConnected();
         bool isConnecting();
@@ -53,6 +55,8 @@ class cliente
         int sockfd, portno, n;
         bool m_connected;
         bool m_connecting;
+        std::string m_playerName;
+
         Timer* serverTimeOut;
         Timer* sendTimeOutTimer;
         pthread_t timeOutThread;
@@ -69,7 +73,6 @@ class cliente
 
         void cerrarSoket();
         void procesarMensaje(NetworkMessage networkMessage);
-        void sendMsg(Mensaje msg);
         void setTimeOut();
         bool validarMensaje(DataMessage dataMsg);
         bool lecturaExitosa(int bytesLeidos);

@@ -8,17 +8,22 @@
 #include "Background/Background.h"
 #include "Singletons/InputHandler.h"
 #include "Singletons/TextureManager.h"
+#include "Singletons/GameTimeHelper.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <sstream>
 #include "DrawObject.h"
 #include <map>
+#include <string>
+
 using namespace std;
 class Island;
 class Background;
 class Player;
 class cliente;
 class DrawObject;
+
+#define TiMEOUT_MESSAGE_RATE 3000
 
 
 class Game
@@ -48,11 +53,14 @@ public:
     void disconnectObject(int objectID, int layer);
     void disconnect();
     bool setUpKorea();
+    void askForName();
     bool conectToKorea();
    	void sendToKorea(InputMessage mensaje);
    	void* koreaMethod(void);
    	void readFromKorea();
    	void interpretarDrawMsg(DrawMessage drwMsg);
+
+   	bool updateTimeOut();
 
     SDL_Renderer* getRenderer() const { return m_pRenderer; }
     SDL_Window* getWindow() const { return m_pWindow; }
@@ -83,12 +91,16 @@ private:
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;
 
+   	int m_timeOutCounter;
+
     //Provisorio
     Player* m_player;
     Background* m_background;
     Island* m_island;
     cliente* m_client;
     bool m_running;
+
+    std::string m_playerName;
 
     static Game* s_pInstance;
 

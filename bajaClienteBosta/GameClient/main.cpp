@@ -8,11 +8,12 @@
 #include "Game.h"
 #include "Utils/Random.h"
 #include <SDL2/SDL.h>
+#include "Singletons/GameTimeHelper.h"
 #include <iostream>
 
 using namespace std;
 
-const int FPS = 150;
+const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 
 int main(int argc, char **argv)
@@ -35,15 +36,23 @@ int main(int argc, char **argv)
 
 			frameStartTime = SDL_GetTicks();
 
+			Game::Instance()->updateTimeOut();
+
 			Game::Instance()->handleEvents();
 			Game::Instance()->render();
 
 			frameEndTime = SDL_GetTicks() - frameStartTime;
 
 			//tiempo a esperar = tiempo que demoro en finalizar el  frame = tiempo en que finalizó - tiempo en que inició
-			if (frameEndTime < DELAY_TIME) {
+			if (frameEndTime < DELAY_TIME)
+			{
 				SDL_Delay((int) ((DELAY_TIME - frameEndTime)));
-            }
+				GameTimeHelper::Instance()->updateDeltaTime(DELAY_TIME);
+			}
+			else
+			{
+				GameTimeHelper::Instance()->updateDeltaTime(frameEndTime);
+			}
         }
     }
     else

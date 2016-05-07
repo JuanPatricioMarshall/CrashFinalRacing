@@ -1,0 +1,196 @@
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 04:24 ) 
+  ===============================================
+
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 04:24 ) 
+  ===============================================
+
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 04:25 ) 
+  ===============================================
+
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 14:21 ) 
+  ===============================================
+
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 14:43 ) 
+  ===============================================
+
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:20 ) 
+  ===============================================
+
+  ERROR: Server: Jorge ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:25 ) 
+  ===============================================
+
+  ERROR: Server: Julio ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:29 ) 
+  ===============================================
+
+  ERROR: Server: Julio ha ingresado a la partida.
+  ERROR: Server: Julio ha ingresado a la partida.
+  WARNING: Server: No se pudo aceptar al cliente 127.0.0.1 por nombre inválido.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:31 ) 
+  ===============================================
+
+  ERROR: Server: Esteban ha ingresado a la partida.
+  WARNING: Server: No se pudo aceptar al cliente 127.0.0.1 por nombre inválido.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:37 ) 
+  ===============================================
+
+  ERROR: Server: Julio ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:38 ) 
+  ===============================================
+
+  ERROR: Server: Florencia ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:43 ) 
+  ===============================================
+
+  ERROR: Server: Gonzalo ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  ERROR: Server: Juan ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:43 ) 
+  ===============================================
+
+  ERROR: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  ERROR: Server: No se pudo crear el cliente con ip127.0.0.1. el nombre: a ya está en uso.
+  WARNING: Server: No se pudo aceptar al cliente 127.0.0.1 por nombre inválido.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:48 ) 
+  ===============================================
+
+  ERROR: Server: dsa ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  ERROR: Server: d ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:50 ) 
+  ===============================================
+
+  ERROR: Server: ads ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:50 ) 
+  ===============================================
+
+  ERROR: Server: dsad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:54 ) 
+  ===============================================
+
+  ERROR: Server: sad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:55 ) 
+  ===============================================
+
+  ERROR: Server: ad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 16:55 ) 
+  ===============================================
+
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:04 ) 
+  ===============================================
+
+  ERROR: Server: Jorge ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:05 ) 
+  ===============================================
+
+  ERROR: Server: Hallo ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:25 ) 
+  ===============================================
+
+  ERROR: Server: asdds ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:26 ) 
+  ===============================================
+
+  ERROR: Server: sad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:29 ) 
+  ===============================================
+
+  ERROR: Server: dsad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:31 ) 
+  ===============================================
+
+  ERROR: Server: das ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:33 ) 
+  ===============================================
+
+  ERROR: Server: ad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:36 ) 
+  ===============================================
+
+  ERROR: Server: sad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:42 ) 
+  ===============================================
+
+  ERROR: Server: Gonzalo ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 07-05-2016 a las 17:43 ) 
+  ===============================================
+
+  ERROR: Server: ads ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.

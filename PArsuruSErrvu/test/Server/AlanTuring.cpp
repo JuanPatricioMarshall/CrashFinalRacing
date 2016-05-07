@@ -86,6 +86,29 @@ int AlanTuring::encodeConnectedMessage(ConnectedMessage connectedMsg, char* buff
 	return codigoEnigma.msg_Length;
 }
 
+int AlanTuring::encodeConnectionInfoMessage(ConnectionInfo connectionInfoMesg, char* bufferEntrada)
+{
+	bzero(bufferEntrada, MESSAGE_BUFFER_SIZE);
+
+	NetworkMessage codigoEnigma;
+	bzero(codigoEnigma.msg_Data, MESSAGE_DATA_SIZE);
+
+	codigoEnigma.msg_Code[0] = 'c';
+	codigoEnigma.msg_Code[1] = 'n';
+	codigoEnigma.msg_Code[2] = 'i';
+
+
+	//copia el draw message en el buffer de network message data
+	memcpy(codigoEnigma.msg_Data, &connectionInfoMesg, sizeof(ConnectionInfo));
+
+	codigoEnigma.msg_Length = CONNECTIONINFO_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	//copia el mensaje de red al buffer ingresado
+	memcpy(bufferEntrada, &codigoEnigma, sizeof(NetworkMessage));
+
+	return codigoEnigma.msg_Length;
+}
+
 DrawMessage AlanTuring::decodeDrawMessage (NetworkMessage netMsg)
 {
 	DrawMessage drawMsg;
@@ -103,6 +126,13 @@ ConnectedMessage AlanTuring::decodeConnectedMessage (NetworkMessage netMsg)
 	ConnectedMessage connectedMsg;
 	memcpy(&connectedMsg, netMsg.msg_Data, sizeof(ConnectedMessage));
 	return connectedMsg;
+}
+
+ConnectionInfo AlanTuring::decodeConnectionInfoMessage(NetworkMessage netMsg)
+{
+	ConnectionInfo connectionInfoMsg;
+	memcpy(&connectionInfoMsg, netMsg.msg_Data, sizeof(ConnectionInfo));
+	return connectionInfoMsg;
 }
 /**********************************************************************************************************************************/
 

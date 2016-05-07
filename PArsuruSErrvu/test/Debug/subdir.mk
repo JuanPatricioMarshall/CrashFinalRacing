@@ -6,21 +6,18 @@
 CPP_SRCS += \
 ../Game.cpp \
 ../MoveableObject.cpp \
-../Nave.cpp \
 ../Player.cpp \
 ../main.cpp 
 
 OBJS += \
 ./Game.o \
 ./MoveableObject.o \
-./Nave.o \
 ./Player.o \
 ./main.o 
 
 CPP_DEPS += \
 ./Game.d \
 ./MoveableObject.d \
-./Nave.d \
 ./Player.d \
 ./main.d 
 

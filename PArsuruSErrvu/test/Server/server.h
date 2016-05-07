@@ -36,6 +36,7 @@ class server
         void aceptar();
         void escribir(int id);
         bool leer(int id);
+        bool leerBloqueando(int id);
         void closeAllsockets();
         const int getMaxClientes();
         const int getNumClientes();
@@ -67,6 +68,7 @@ class server
         std::vector<pthread_t> m_clientResponseThreads;
 
         int m_lastID;
+        bool m_successfulPlayerCreation;
         pthread_mutex_t  m_mutex;
         pthread_cond_t   m_condv;
 
