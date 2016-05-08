@@ -207,8 +207,8 @@ void cliente::sendConnectionInfoMsg(ConnectionInfo msg)
 bool cliente::sendTimeOutMsg()
 {
 	//pthread_mutex_lock(&m_writingMutex);
-	if (!checkServerConnection())
-		return false;
+	//if (!checkServerConnection())
+		//return false;
 
 	/*if ((float)sendTimeOutTimer->GetTicks()/CLOCKS_PER_SEC >= 2.5f)
 	{
@@ -248,7 +248,7 @@ bool cliente::leer()
 	bzero(buffer,256);
 	int messageLength = 0;
 	char *p = (char*)buffer;
-	n = recv(sockfd, buffer, MESSAGE_LENGTH_BYTES, 0);
+	int n = recv(sockfd, buffer, MESSAGE_LENGTH_BYTES, 0);
 
    if (!lecturaExitosa(n))
    {
@@ -273,7 +273,6 @@ bool cliente::leer()
    //loopea hasta haber leido la totalidad de los bytes necarios
    while (messageLength > 0)
    {
-	   printf("Leyo %d de %d bytes\n",n, messageLength);
 	  n = recv(sockfd, p, messageLength, 0);
        if (!lecturaExitosa(n))
        {
@@ -309,7 +308,7 @@ void cliente::cerrarSoket()
 void cliente::setTimeOut()
 {
     struct timeval timeout;
-    timeout.tv_sec = TIMEOUT_SECONDS;
+    timeout.tv_sec = TIMEOUT_SECONDS * 10;
     timeout.tv_usec = TIMEOUT_MICROSECONDS;
 
     if (setsockopt (sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout)) < 0)
@@ -328,6 +327,7 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 	if ((networkMessage.msg_Code[0] == 't') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 'o'))
 	{
 		//TimeOut ACK, lo dej opor si en el futuro queremos hacer algo extra
+		serverTimeOut->Reset();
 		return;
 	}
 
@@ -394,7 +394,7 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		DrawMessage drwMsg = m_alanTuring->decodeDrawMessage(networkMessage);
 		Game::Instance()->interpretarDrawMsg(drwMsg);
 			//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
-
+		return;
 	}
 
 	if ((networkMessage.msg_Code[0] == 'p') && (networkMessage.msg_Code[1] == 'd') && (networkMessage.msg_Code[2] == 'c'))
@@ -406,6 +406,13 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		std::stringstream ss;
 		ss <<"Cliente: El jguador " << playerDiscMsg.name << " se ha desconectado.";
 		Logger::Instance()->LOG(ss.str(), DEBUG);
+		return;
+	}
+
+
+	if ((networkMessage.msg_Code[0] == 'g') && (networkMessage.msg_Code[1] == 'b') && (networkMessage.msg_Code[2] == 'g'))
+	{
+		Game::Instance()->setGameStarted(true);
 		return;
 	}
 

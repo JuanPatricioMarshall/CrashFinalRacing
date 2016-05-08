@@ -72,9 +72,11 @@ public:
     //Alto y Ancho de la ventana de juego
     int getGameWidth() const { return m_gameWidth; }
     int getGameHeight() const { return m_gameHeight; }
-    pthread_t listenThread;
     float getScrollSpeed() { return m_scrollSpeed; }
+    void setGameStarted(bool state) { m_gameStarted = state; }
+
     static void *thread_method(void *context);
+    pthread_t listenThread;
 
 
 private:
@@ -100,6 +102,8 @@ private:
     Island* m_island;
     cliente* m_client;
     bool m_running;
+
+    bool m_gameStarted;
 
     std::string m_playerName;
 

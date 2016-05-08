@@ -27,9 +27,8 @@ public:
                     m_angle(0),
                     m_alpha(255),
                     m_currentRow(0),
-                    m_currentFrame(0)
-
-
+                    m_currentFrame(0),
+					m_dirty(true)
     {
     	m_objectId = ObjectIdGenerator::Instance()->generateId();
     }
@@ -105,6 +104,8 @@ protected:
     int m_currentRow;
     //actual frame que se deberá dibujar
     int m_currentFrame;
+
+    bool m_dirty;
 
 };
 

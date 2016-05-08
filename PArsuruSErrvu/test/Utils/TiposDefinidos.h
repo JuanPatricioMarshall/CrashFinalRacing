@@ -82,6 +82,7 @@ struct PlayerDisconnection
 	char name[24];
 };
 
+
 struct DrawMessage
 {
 	bool unused1;

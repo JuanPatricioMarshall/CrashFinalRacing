@@ -39,7 +39,11 @@ void Bullet::update()
 		m_direction.setY(0);
 	}
 
-	sendDrawMessage(true);
+	if (m_dirty)
+	{
+		sendDrawMessage(true);
+		m_dirty = false;
+	}
 
 }
 

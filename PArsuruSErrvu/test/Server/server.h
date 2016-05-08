@@ -46,6 +46,7 @@ class server
         void sendConnectedMsg(int socketReceptor, ConnectedMessage msg);
         void sendDisconnectionMsg(int socketReceptor, PlayerDisconnection msg);
         void informPlayerDisconnection(PlayerDisconnection, int playerDiscID);
+        void informGameBeginning();
 
         bool isRunning();
 

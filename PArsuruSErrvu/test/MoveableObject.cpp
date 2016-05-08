@@ -31,11 +31,13 @@ void MoveableObject::update()
 	if (m_direction.getX() != 0)
 	{
 		m_position.m_x += (m_direction.getX() * m_speed.getX());
+        m_dirty = true;
 	}
 
 	if (m_direction.getY() != 0)
 	{
 		m_position.m_y += (m_direction.getY() * m_speed.getY());
+        m_dirty = true;
 	}
 
 }

@@ -48,12 +48,22 @@ void Background::update()
 {
 	//se mueve en la dirección seteada
 	if (m_direction.getX() != 0)
+	{
 		m_position.m_x += (m_direction.getX() * m_scrollSpeed.getX());
+		m_dirty = true;
+	}
 
 	if (m_direction.getY() != 0)
+	{
 		m_position.m_y += (m_direction.getY() * m_scrollSpeed.getY());
+		m_dirty = true;
+	}
 
-	sendDrawMessage(true);
+	if (m_dirty)
+	{
+		sendDrawMessage(true);
+		m_dirty = false;
+	}
 }
 
 void Background::clean()

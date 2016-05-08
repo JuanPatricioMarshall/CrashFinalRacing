@@ -51,7 +51,11 @@ void Player::update()
 	//Probar valores para animacion
 	//m_currentFrame = int(((SDL_GetTicks() / (1000 / 3)) % m_numFrames));
 
-	sendDrawMessage(true);
+	if (m_dirty)
+	{
+		sendDrawMessage(true);
+		m_dirty = false;
+	}
 
 	m_direction.setX(0);
 	m_direction.setY(0);
@@ -74,26 +78,32 @@ void Player::handleInput(InputMessage inputMsg)
         if ((inputMsg.buttonUp == 1) && (m_position.getY() > 0))
         {
             m_direction.setY(DIRECTION_UP);
+            m_dirty = true;
         }
         else if ((inputMsg.buttonDown == 1) && ((m_position.getY() + m_height) < Game::Instance()->getGameHeight() - 10))
         {
         	m_direction.setY(DIRECTION_DOWN);
+            m_dirty = true;
         }
 
         if ((inputMsg.buttonLeft == 1)	&& m_position.getX() > 0)
         {
         	m_direction.setX(DIRECTION_LEFT);
+            m_dirty = true;
         }
         else if ((inputMsg.buttonRight == 1) && ((m_position.getX() + m_width) < Game::Instance()->getGameWidth()))
         {
         	m_direction.setX(DIRECTION_RIGHT);
+            m_dirty = true;
         }
         //Se mueve a velocidades constantes. Evita que vaay a mayot velocidad en diagonal
         m_direction.normalize();
 
         if (inputMsg.buttonShoot)
+        {
         	m_currentWeapon->shoot(Vector2D(m_position.getX() + m_shootOffset.getX(), m_position.getY() + m_shootOffset.getY()));
-
+            m_dirty = true;
+        }
         //printf("Direcion = %f , %f \n", m_direction.m_x, m_direction.m_y);
 
     }

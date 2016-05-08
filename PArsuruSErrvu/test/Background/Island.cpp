@@ -45,6 +45,7 @@ void Island::update()
 {
 	if (!m_waiting)
 	{
+		m_dirty = true;
 		//se mueve en la dirección seteada
 		m_position.m_x += (m_direction.getX() * m_scrollSpeed.getX());
 		m_position.m_y += (m_direction.getY() * m_scrollSpeed.getY());
@@ -65,7 +66,12 @@ void Island::update()
 			}
 		}
 	}
-	sendDrawMessage(true);
+
+	if (m_dirty)
+	{
+		sendDrawMessage(true);
+		m_dirty = false;
+	}
 }
 
 void Island::reappear()

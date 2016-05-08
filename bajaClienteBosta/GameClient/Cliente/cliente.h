@@ -53,7 +53,7 @@ class cliente
 
     private:
         AlanTuring* m_alanTuring;
-        int sockfd, portno, n;
+        int sockfd, portno;
         bool m_connected;
         bool m_connecting;
         std::string m_playerName;
@@ -77,8 +77,6 @@ class cliente
         void setTimeOut();
         bool validarMensaje(DataMessage dataMsg);
         bool lecturaExitosa(int bytesLeidos);
-
-
 
 };
 

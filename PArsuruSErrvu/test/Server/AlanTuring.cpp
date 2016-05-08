@@ -210,17 +210,8 @@ int AlanTuring::encodeXMLMessage(Mensaje mensaje, char* bufferSalida)
 int AlanTuring::encodeNetworkMessage(NetworkMessage netMsg, char* bufferSalida )
 {
 	bzero(bufferSalida,MESSAGE_BUFFER_SIZE);
-
-	/*memcpy(bufferSalida, &netMsg.msg_Length, sizeof (netMsg.msg_Length));
-	memcpy(bufferSalida + sizeof (netMsg.msg_Length),&netMsg.msg_Code, sizeof (netMsg.msg_Code));
-	memcpy(bufferSalida + sizeof (netMsg.msg_Length) + sizeof (netMsg.msg_Code), &netMsg.msg_Data,
-			sizeof (NetworkMessage) - sizeof (netMsg.msg_Length) - sizeof (netMsg.msg_Code));
 	int length = netMsg.msg_Length;
-	return length;*/
-
-	//memcpy(bufferSalida, &netMsg, sizeof(NetworkMessage));
 	memcpy(bufferSalida, &netMsg, sizeof(NetworkMessage));
-	int length = (int)netMsg.msg_Length;
 	return length;
 
 }

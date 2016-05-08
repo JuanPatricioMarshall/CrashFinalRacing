@@ -7,6 +7,7 @@ m_pWindow(0),
 m_pRenderer(0),
  m_timeOutCounter(0),
 m_running(false),
+m_gameStarted(false),
 m_scrollSpeed(0.8)
 {
 	m_player = new Player();
@@ -358,8 +359,12 @@ void Game::readFromKorea()
 
 bool Game::updateTimeOut()
 {
-	if (m_client->checkServerConnection() == false)
-		return false;
+	if (m_gameStarted)
+	{
+		 bool conectado= m_client->checkServerConnection();
+		 if (!conectado)
+			return false;
+	}
 
 	if (m_timeOutCounter >= TiMEOUT_MESSAGE_RATE)
 	{
@@ -367,9 +372,11 @@ bool Game::updateTimeOut()
 		netMsg.msg_Code[0] = 't';
 		netMsg.msg_Code[1] = 'm';
 		netMsg.msg_Code[2] = 'o';
-		m_client->sendNetworkMsg(netMsg);
 		netMsg.msg_Length =  MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
+
+		m_client->sendNetworkMsg(netMsg);
+		//printf("Se envío Timeout Msg\n");
 		m_timeOutCounter = 0;
 	}
 	else

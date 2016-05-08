@@ -151,16 +151,17 @@ void Game::setUpKorea()
 	m_server = new server(porto, maxClientes);
 	printf("Se pone a escuchar\n");
 	m_server->escuchar();
-	printf("Escucho 1");
+
 	int auxi = 0;
 	while(m_server->getNumClientes() < m_server->getMaxClientes())
 	{
 		auxi++;
 		m_server->aceptar();
 	}
-	//servidor->closeAllsockets();
-	//delete servidor;
-	//Logger::Instance()->Close();
+
+	//Informa a los clientes que el juego comenzará
+	m_server->informGameBeginning();
+
 }
 
 

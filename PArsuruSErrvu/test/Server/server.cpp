@@ -181,7 +181,7 @@ void server::agregarTimeOutTimer(int clientPosition)
 {
 	//comienza el timer
 	Timer timer;
-	bool result = m_listaTimeOuts.addAt(clientPosition, timer);
+	m_listaTimeOuts.addAt(clientPosition, timer);
 	m_listaTimeOuts.getElemAt(clientPosition).Reset();
 	m_listaTimeOuts.getElemAt(clientPosition).Start();
 }
@@ -236,6 +236,25 @@ void server::informPlayerDisconnection(PlayerDisconnection playerDiscMsg, int pl
 	     }
 	 }
 }
+
+
+void server::informGameBeginning(){
+
+	NetworkMessage gameBeginningMsg;
+	gameBeginningMsg.msg_Code[0] = 'g';
+	gameBeginningMsg.msg_Code[1] = 'b';
+	gameBeginningMsg.msg_Code[2] = 'g';
+	gameBeginningMsg.msg_Length = MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+	 for (int i = 0; i < m_listaDeClientes.size(); i++)
+	 {
+	     if ( m_listaDeClientes.isAvailable(i))
+	     {
+
+	    	 m_queuePost[i].add(gameBeginningMsg);
+	     }
+	 }
+}
+
 
 void server::sendDrawMsg(int socketReceptor, DrawMessage msg)
 {
@@ -599,10 +618,11 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 
 	if ((netMsg.msg_Code[0] == 't') && (netMsg.msg_Code[1] == 'm') && (netMsg.msg_Code[2] == 'o'))
 	{
+		printf("Leyo Timeout\n");
 		NetworkMessage timeOutMsg;
 		timeOutMsg.msg_Code[0] = 't';
-		timeOutMsg.msg_Code[0] = 'm';
-		timeOutMsg.msg_Code[0] = 'o';
+		timeOutMsg.msg_Code[1] = 'm';
+		timeOutMsg.msg_Code[2] = 'o';
 		timeOutMsg.msg_Length = MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
 		//agrega solo en el cliente del cual recibio el mensaje
