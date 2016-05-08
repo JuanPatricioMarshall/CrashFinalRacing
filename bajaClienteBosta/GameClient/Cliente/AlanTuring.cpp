@@ -109,6 +109,29 @@ int AlanTuring::encodeConnectionInfoMessage(ConnectionInfo connectionInfoMesg, c
 	return codigoEnigma.msg_Length;
 }
 
+int AlanTuring::encodePlayerDisconnectionMessage(PlayerDisconnection playerDiscMsg, char* bufferEntrada)
+{
+	bzero(bufferEntrada, MESSAGE_BUFFER_SIZE);
+
+	NetworkMessage codigoEnigma;
+	bzero(codigoEnigma.msg_Data, MESSAGE_DATA_SIZE);
+
+	codigoEnigma.msg_Code[0] = 'p';
+	codigoEnigma.msg_Code[1] = 'd';
+	codigoEnigma.msg_Code[2] = 'c';
+
+
+	//copia el draw message en el buffer de network message data
+	memcpy(codigoEnigma.msg_Data, &playerDiscMsg, sizeof(PlayerDisconnection));
+
+	codigoEnigma.msg_Length = PLAYER_DISCONNECTION_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	//copia el mensaje de red al buffer ingresado
+	memcpy(bufferEntrada, &codigoEnigma, sizeof(NetworkMessage));
+
+	return codigoEnigma.msg_Length;
+}
+
 DrawMessage AlanTuring::decodeDrawMessage (NetworkMessage netMsg)
 {
 	DrawMessage drawMsg;
@@ -133,6 +156,39 @@ ConnectionInfo AlanTuring::decodeConnectionInfoMessage(NetworkMessage netMsg)
 	ConnectionInfo connectionInfoMsg;
 	memcpy(&connectionInfoMsg, netMsg.msg_Data, sizeof(ConnectionInfo));
 	return connectionInfoMsg;
+}
+PlayerDisconnection AlanTuring::decodePlayerDisconnectionMessage(NetworkMessage netMsg)
+{
+	PlayerDisconnection playerDiscMsg;
+	memcpy(&playerDiscMsg, netMsg.msg_Data, sizeof(PlayerDisconnection));
+	return playerDiscMsg;
+}
+
+NetworkMessage AlanTuring::drawMessageToNetwork(DrawMessage drawMessage)
+{
+	NetworkMessage networkMessage;
+	bzero(networkMessage.msg_Data, MESSAGE_DATA_SIZE);
+	networkMessage.msg_Code[0] = 'd';
+	networkMessage.msg_Code[1] = 'm';
+	networkMessage.msg_Code[2] = 's';
+
+	memcpy(networkMessage.msg_Data, &drawMessage, sizeof(DrawMessage));
+	networkMessage.msg_Length = DRAW_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	return networkMessage;
+}
+NetworkMessage AlanTuring::playerDisconnectionToNetwork(PlayerDisconnection playerDiscMessage)
+{
+	NetworkMessage networkMessage;
+	bzero(networkMessage.msg_Data, MESSAGE_DATA_SIZE);
+	networkMessage.msg_Code[0] = 'p';
+	networkMessage.msg_Code[1] = 'd';
+	networkMessage.msg_Code[2] = 'c';
+
+	memcpy(networkMessage.msg_Data, &playerDiscMessage, sizeof(PlayerDisconnection));
+	networkMessage.msg_Length = PLAYER_DISCONNECTION_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	return networkMessage;
 }
 /**********************************************************************************************************************************/
 

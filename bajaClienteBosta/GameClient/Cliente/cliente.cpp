@@ -136,6 +136,27 @@ void cliente::sendMsg(Mensaje msg)
     }
 }
 
+void cliente::sendNetworkMsg(NetworkMessage netMsg)
+{
+	char bufferEscritura[MESSAGE_BUFFER_SIZE];
+	bzero(bufferEscritura,MESSAGE_BUFFER_SIZE);
+
+	int msgLength = m_alanTuring->encodeNetworkMessage(netMsg, bufferEscritura);
+
+	char *ptr = (char*) bufferEscritura;
+
+    while (msgLength > 0)
+    {
+        int bytesEnviados = send(sockfd, ptr, msgLength, 0);
+        if (bytesEnviados < 1)
+        {
+        	Logger::Instance()->LOG("Server: No se pudo enviar el mensaje.", WARN);
+        	return;
+        }
+        ptr += bytesEnviados;
+        msgLength -= bytesEnviados;
+    }
+}
 
 
 void cliente::sendInputMsg(InputMessage msg)
@@ -235,11 +256,11 @@ bool cliente::leer()
 	   return false;
    }
    int acum = n;
-   while (n < MESSAGE_LENGTH_BYTES)
+   while (acum < MESSAGE_LENGTH_BYTES)
    {
 	   printf("Leyo menos de 4\n");
 	   p += n;
-	   n = recv(sockfd, p, MESSAGE_LENGTH_BYTES, 0);
+	   n = recv(sockfd, p, MESSAGE_LENGTH_BYTES - acum, 0);
 	   if (!lecturaExitosa(n))
 		   return false;
 	   acum += n;
@@ -252,6 +273,7 @@ bool cliente::leer()
    //loopea hasta haber leido la totalidad de los bytes necarios
    while (messageLength > 0)
    {
+	   printf("Leyo %d de %d bytes\n",n, messageLength);
 	  n = recv(sockfd, p, messageLength, 0);
        if (!lecturaExitosa(n))
        {
@@ -303,6 +325,12 @@ void cliente::setTimeOut()
 
 void cliente::procesarMensaje(NetworkMessage networkMessage)
 {
+	if ((networkMessage.msg_Code[0] == 't') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 'o'))
+	{
+		//TimeOut ACK, lo dej opor si en el futuro queremos hacer algo extra
+		return;
+	}
+
 	if ((networkMessage.msg_Code[0] == 'c') && (networkMessage.msg_Code[1] == 'n') && (networkMessage.msg_Code[2] == 't'))
 	{
 		ConnectedMessage connectedMessage = m_alanTuring->decodeConnectedMessage(networkMessage);
@@ -359,12 +387,6 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		Logger::Instance()->LOG("Cliente: No se pudo conectar al servidor. El servidor está lleno.", DEBUG);
 		return;
 	}
-	if ((networkMessage.msg_Code[0] == 't') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 'o'))
-	{
-		//TimeOut ACK, lo dej opor si en el futuro queremos hacer algo extra
-		//printf("Llego un time Out ACK\n");
-		return;
-	}
 
 
 	if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 's'))
@@ -373,6 +395,18 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		Game::Instance()->interpretarDrawMsg(drwMsg);
 			//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
 
+	}
+
+	if ((networkMessage.msg_Code[0] == 'p') && (networkMessage.msg_Code[1] == 'd') && (networkMessage.msg_Code[2] == 'c'))
+	{
+		PlayerDisconnection playerDiscMsg = m_alanTuring->decodePlayerDisconnectionMessage(networkMessage);
+		Game::Instance()->disconnectObject(playerDiscMsg.objectID, playerDiscMsg.layer);
+
+		printf ("El jugador %s se ha desconectado. \n", playerDiscMsg.name);
+		std::stringstream ss;
+		ss <<"Cliente: El jguador " << playerDiscMsg.name << " se ha desconectado.";
+		Logger::Instance()->LOG(ss.str(), DEBUG);
+		return;
 	}
 
 }
@@ -425,14 +459,16 @@ void cliente::createTimeoutThread(){
 
 bool cliente::lecturaExitosa(int bytesLeidos)
 {
-    if (n < 0)
+    if (bytesLeidos < 0)
     {
     	//Se perdio la coneccion con el server
+    	printf("Leyó menos de 0\n");
     	desconectar();
     	return false;
     }
-	if (n == 0){
+	if (bytesLeidos == 0){
 		//Se perdio la coneccion con el server
+    	printf("Leyó 0\n");
 		desconectar();
 		return false;
     }

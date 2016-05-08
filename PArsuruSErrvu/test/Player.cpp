@@ -104,7 +104,7 @@ void Player::sendDrawMessage(bool isAlive)
 {
 	DrawMessage drawMsg;
 	drawMsg.connectionStatus = m_connected;
-	drawMsg.ignoreMsg = false;
+	drawMsg.unused1 = false;
 	drawMsg.alive = isAlive;
 	drawMsg.hasSound = false;
 

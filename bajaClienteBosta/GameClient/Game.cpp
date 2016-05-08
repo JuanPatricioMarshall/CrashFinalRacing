@@ -95,11 +95,6 @@ void Game::render()
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
-	if (drwMsg.ignoreMsg)
-	{
-		return;
-	}
-
 	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
 		if (drwMsg.connectionStatus == false)
@@ -340,6 +335,7 @@ void Game::sendToKorea(InputMessage mensaje)
 {
 	m_client->sendInputMsg(mensaje);
 }
+
 void* Game::koreaMethod(void)
 {
 	std::cout << "Empece a ciclar bitches!\n";
@@ -348,6 +344,7 @@ void* Game::koreaMethod(void)
 	}
 	 pthread_exit(NULL);
 }
+
 void *Game::thread_method(void *context)
 {
 	return ((Game *)context)->koreaMethod();
@@ -358,6 +355,7 @@ void Game::readFromKorea()
 
 }
 
+
 bool Game::updateTimeOut()
 {
 	if (m_client->checkServerConnection() == false)
@@ -365,9 +363,13 @@ bool Game::updateTimeOut()
 
 	if (m_timeOutCounter >= TiMEOUT_MESSAGE_RATE)
 	{
-		Mensaje timeOutMsg = MessageFactory::Instance()->createMessage("", "",msgTimeOutACK);
-		m_client->sendMsg(timeOutMsg);
-		printf("Envio timeout\n");
+		NetworkMessage netMsg;
+		netMsg.msg_Code[0] = 't';
+		netMsg.msg_Code[1] = 'm';
+		netMsg.msg_Code[2] = 'o';
+		m_client->sendNetworkMsg(netMsg);
+		netMsg.msg_Length =  MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
 		m_timeOutCounter = 0;
 	}
 	else

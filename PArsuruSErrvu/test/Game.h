@@ -14,7 +14,9 @@
 #include <sstream>
 #include "Player.h"
 #include <map>
+#include <string>
 using namespace std;
+
 class Island;
 class Background;
 class server;

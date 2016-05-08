@@ -41,6 +41,7 @@ public:
 	int encodeInputMessage(InputMessage msj, char* bufferEntrada);
 	int encodeConnectedMessage(ConnectedMessage msj, char* bufferEntrada);
 	int encodeConnectionInfoMessage(ConnectionInfo msj, char* bufferEntrada);
+	int encodePlayerDisconnectionMessage(PlayerDisconnection msj, char* bufferEntrada);
 	//int encodeDrawMessage(NetworkMessage* netMsg, const DrawMessage msj);
 	//int encodeInputMessage(NetworkMessage* netMsg, const InputMessage msj);
 
@@ -48,6 +49,10 @@ public:
 	InputMessage decodeInputMessage(NetworkMessage netMsg);
 	ConnectedMessage decodeConnectedMessage(NetworkMessage netMsg);
 	ConnectionInfo decodeConnectionInfoMessage(NetworkMessage netMsg);
+	PlayerDisconnection decodePlayerDisconnectionMessage(NetworkMessage netMsg);
+
+	NetworkMessage drawMessageToNetwork(DrawMessage drawMessage);
+	NetworkMessage playerDisconnectionToNetwork(PlayerDisconnection playerDiscMessage);
 
 	//devuelve un buffer de 256 bytes con el mensaje codificado en binario en buffeSalida y un int con el tamaño Mensaje
 	int encodeXMLMessage(Mensaje mensaje, char* bufferSalida);

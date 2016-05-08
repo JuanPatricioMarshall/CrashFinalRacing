@@ -84,8 +84,15 @@ bool Game::validatePlayerName(const std::string& playerName)
 
 void Game::disconnectPlayer(int playerID)
 {
-	m_playerNames.erase(playerID);
+	PlayerDisconnection playerDiscMsg;
+	std::size_t length = m_playerNames[playerID].copy(playerDiscMsg.name, MAX_NAME_LENGTH, 0);
+	playerDiscMsg.name[length]='\0';
+	playerDiscMsg.objectID = m_listOfPlayer[playerID]->getObjectId();
+	playerDiscMsg.layer = m_listOfPlayer[playerID]->getLayer();
+	m_server->informPlayerDisconnection(playerDiscMsg, playerID);
+
 	m_listOfPlayer[playerID]->setConnected(false);
+	m_playerNames.erase(playerID);
 	//listOfPlayer.erase(id);
 	//mostrar en gris
 }
@@ -159,7 +166,7 @@ void Game::setUpKorea()
 
 void Game::sendToAllClients(DrawMessage mensaje)
 {
-	m_server->sendToAll(mensaje);
+	m_server->sendDrawMsgToAll(mensaje);
 }
 void* Game::koreaMethod(void)
 {

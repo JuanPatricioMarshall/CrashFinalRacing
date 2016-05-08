@@ -47,7 +47,7 @@ server::~server()
 {
 	closeAllsockets();
 	m_listaDeClientes.clear();
-	//m_listaTimeOuts.clear();
+	m_listaTimeOuts.clear();
 	m_queuePost.clear();
 
 	delete m_alanTuring;
@@ -126,7 +126,6 @@ bool server::crearCliente (int clientSocket)
 		return false;
 	}
 
-	agregarTimeOutTimer(m_lastID);
 
 	//Envia solicitud de datos de coneccion
 	ConnectedMessage connectedMsg;
@@ -143,7 +142,7 @@ bool server::crearCliente (int clientSocket)
 		m_listaDeClientes.removeAt(m_lastID);
 		close(clientSocket);
 
-		 return false;
+		return false;
 	}
 
 	//Informa resultado del procesamiento de la informacion de coneccion
@@ -156,13 +155,14 @@ bool server::crearCliente (int clientSocket)
 		removeTimeOutTimer(m_lastID);
 		m_listaDeClientes.removeAt(m_lastID);
 		close(clientSocket);
-		return false;;
+		return false;
 	}
 
 
 	//DEBE AVISAR EL RESULTADO. SI PUDO O NO CREAR EL JUGADOR
 
 	aumentarNumeroClientes();
+	agregarTimeOutTimer(m_lastID);
 
 	//printf("se agrego en la posicion %d \n", m_lastID);
 
@@ -180,6 +180,8 @@ bool server::crearCliente (int clientSocket)
 void server::agregarTimeOutTimer(int clientPosition)
 {
 	//comienza el timer
+	Timer timer;
+	bool result = m_listaTimeOuts.addAt(clientPosition, timer);
 	m_listaTimeOuts.getElemAt(clientPosition).Reset();
 	m_listaTimeOuts.getElemAt(clientPosition).Start();
 }
@@ -202,30 +204,39 @@ void server::encolarDrawMessage(DrawMessage drawMsg)
 	 {
 	     if ( m_listaDeClientes.isAvailable(i))
 	     {
-	    	 m_queuePost[i].add(drawMsg);
+	    	 NetworkMessage netMsg = m_alanTuring->drawMessageToNetwork(drawMsg);
+	    	 m_queuePost[i].add(netMsg);
 	     }
 	 }
 
 }
 
-void server::sendToAll(DrawMessage drawMsg){
+void server::sendDrawMsgToAll(DrawMessage drawMsg){
 
 	 for (int i = 0; i < m_listaDeClientes.size(); i++)
 	 {
 	     if ( m_listaDeClientes.isAvailable(i))
 	     {
-	    	 m_queuePost[i].add(drawMsg);
+	    	 NetworkMessage netMsg = m_alanTuring->drawMessageToNetwork(drawMsg);
+	    	 m_queuePost[i].add(netMsg);
 	     }
 	 }
-
-	 /*for (int i = 0; i < m_listaDeClientes.size(); i++)
-	 {
-	     if ( m_listaDeClientes.isAvailable(i)){
-	    	 sendDrawMsg(m_listaDeClientes.getElemAt(i),msg);
-
-	     }
-	 }*/
 }
+
+void server::informPlayerDisconnection(PlayerDisconnection playerDiscMsg, int playerDiscID){
+
+	 for (int i = 0; i < m_listaDeClientes.size(); i++)
+	 {
+		 if (i == playerDiscID)
+			 continue;
+	     if ( m_listaDeClientes.isAvailable(i))
+	     {
+	    	 NetworkMessage netMsg = m_alanTuring->playerDisconnectionToNetwork(playerDiscMsg);
+	    	 m_queuePost[i].add(netMsg);
+	     }
+	 }
+}
+
 void server::sendDrawMsg(int socketReceptor, DrawMessage msg)
 {
 	char bufferEscritura[MESSAGE_BUFFER_SIZE];
@@ -247,10 +258,51 @@ void server::sendDrawMsg(int socketReceptor, DrawMessage msg)
         msgLength -= bytesEnviados;
     }
 }
+
+void server::sendNetworkMsg(int socketReceptor, NetworkMessage netMsg)
+{
+	char bufferEscritura[MESSAGE_BUFFER_SIZE];
+	bzero(bufferEscritura,MESSAGE_BUFFER_SIZE);
+
+	int msgLength = m_alanTuring->encodeNetworkMessage(netMsg, bufferEscritura);
+
+	char *ptr = (char*) bufferEscritura;
+
+    while (msgLength > 0)
+    {
+        int bytesEnviados = send(socketReceptor, ptr, msgLength, 0);
+        if (bytesEnviados < 1)
+        {
+        	Logger::Instance()->LOG("Server: No se pudo enviar el mensaje.", WARN);
+        	return;
+        }
+        ptr += bytesEnviados;
+        msgLength -= bytesEnviados;
+    }
+}
+
 void server::sendConnectedMsg(int socketReceptor, ConnectedMessage msg)
 {
 	char bufferEscritura[MESSAGE_BUFFER_SIZE];
 	int msgLength = m_alanTuring->encodeConnectedMessage(msg, bufferEscritura);
+	char *ptr = (char*) bufferEscritura;
+
+    while (msgLength > 0)
+    {
+        int bytesEnviados = send(socketReceptor, ptr, msgLength , 0);
+        if (bytesEnviados < 1)
+        {
+        	Logger::Instance()->LOG("Server: No se pudo enviar el mensaje.", WARN);
+        	return;
+        }
+        ptr += bytesEnviados;
+        msgLength -= bytesEnviados;
+    }
+}
+void server::sendDisconnectionMsg(int socketReceptor, PlayerDisconnection msg)
+{
+	char bufferEscritura[MESSAGE_BUFFER_SIZE];
+	int msgLength = m_alanTuring->encodePlayerDisconnectionMessage(msg, bufferEscritura);
 	char *ptr = (char*) bufferEscritura;
 
     while (msgLength > 0)
@@ -308,10 +360,10 @@ bool server::leer(int id)
     	return false;
 
     int acum = n;
-    while (n < 4)
+    while (acum < MESSAGE_LENGTH_BYTES)
     {
  	   p += n;
- 	   n = recv(m_listaDeClientes.getElemAt(id), p, MESSAGE_LENGTH_BYTES, 0);
+ 	   n = recv(m_listaDeClientes.getElemAt(id), p, MESSAGE_LENGTH_BYTES - acum, 0);
        if (!lecturaExitosa(n, id))
        	return false;
  	   acum += n;
@@ -378,7 +430,9 @@ void server::checkTimeOuts()
 	for (int i = 0; i < m_listaTimeOuts.size(); ++i)
 	{
 		if ((!m_listaTimeOuts.isAvailable(i)) || (!m_listaDeClientes.isAvailable(i)))
+		{
 			continue;
+		}
 		//printf("Timer del server = %f\n", (float)m_listaTimeOuts.getElemAt(i).GetTicks()/CLOCKS_PER_SEC);
 		if ((long double)(m_listaTimeOuts.getElemAt(i).GetTicks()/CLOCKS_PER_SEC) >= TIMEOUT_SECONDS)
 		{
@@ -399,9 +453,10 @@ void* server::postProcesamiento(void)
 	{
 			if (m_queuePost[id].size() != 0)
 			{
-				DrawMessage drawMessage = m_queuePost[id].remove();
-				//DrawMessage drawMessage = m_alanTuring->decodeDrawMessage(msg.drawMessage);
-				sendDrawMsg(m_listaDeClientes.getElemAt(id),drawMessage);
+				NetworkMessage netMsg = m_queuePost[id].remove();
+				//DrawMessage drawMessage =  m_alanTuring->decodeDrawMessage(netMsg);
+
+				sendNetworkMsg(m_listaDeClientes.getElemAt(id),netMsg);
 			}
 	}
 }
@@ -455,7 +510,9 @@ void server::closeSocket(int id)
 		return;
 
 	removeTimeOutTimer(id);
+
 	Game::Instance()->disconnectPlayer(id);
+
 	reducirNumeroClientes();
 	close(m_listaDeClientes.getElemAt(id));
 	m_listaDeClientes.removeAt(id);
@@ -542,11 +599,14 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 
 	if ((netMsg.msg_Code[0] == 't') && (netMsg.msg_Code[1] == 'm') && (netMsg.msg_Code[2] == 'o'))
 	{
-		DrawMessage drawMsg;
-		drawMsg.ignoreMsg = true;
+		NetworkMessage timeOutMsg;
+		timeOutMsg.msg_Code[0] = 't';
+		timeOutMsg.msg_Code[0] = 'm';
+		timeOutMsg.msg_Code[0] = 'o';
+		timeOutMsg.msg_Length = MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
 		//agrega solo en el cliente del cual recibio el mensaje
-		m_queuePost[serverMsg->clientID].add(drawMsg);
+		m_queuePost[serverMsg->clientID].add(timeOutMsg);
 		return true;
 	}
 
@@ -561,14 +621,14 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 		{
 			std::stringstream ss;
 			ss <<"Server: " << playerName << " ha ingresado a la partida.";
-			Logger::Instance()->LOG(ss.str(), ERROR);
+			Logger::Instance()->LOG(ss.str(), DEBUG);
 			printf("%s \n", ss.str().c_str());
 		}
 		else
 		{
 			std::stringstream ss;
 			ss <<"Server: No se pudo crear el cliente con ip" << inet_ntoa(cli_addr.sin_addr) << ". el nombre: " << playerName << " ya está en uso.";
-			Logger::Instance()->LOG(ss.str(), ERROR);
+			Logger::Instance()->LOG(ss.str(), WARN);
 			printf("%s \n", ss.str().c_str());
 		}
 

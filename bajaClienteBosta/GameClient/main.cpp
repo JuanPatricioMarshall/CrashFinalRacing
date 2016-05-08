@@ -25,7 +25,6 @@ int main(int argc, char **argv)
 	Random::initialize();
 
 	if (Game::Instance()->init("1942 Ultraa Diesel", 400, 150, 800, 600, SDL_WINDOWPOS_CENTERED)) //flag por ejemplo: SDL_WINDOW_FULLSCREEN_DESKTOP
-
 	{
 		std::cout << "game init success!\n";
 

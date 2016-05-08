@@ -37,6 +37,7 @@ class cliente
         void desconectar();
         void escribir(Mensaje mensaje);
         void sendMsg(Mensaje msg);
+        void sendNetworkMsg(NetworkMessage netMsg);
         void sendInputMsg(InputMessage msg);
         void sendConnectionInfoMsg(ConnectionInfo msg);
         bool leer();

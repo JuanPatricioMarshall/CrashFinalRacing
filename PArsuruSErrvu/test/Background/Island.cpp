@@ -89,7 +89,7 @@ void Island::clean()
 void Island::sendDrawMessage(bool isAlive)
 {
 	DrawMessage drawMsg;
-	drawMsg.ignoreMsg = false;
+	drawMsg.unused1 = false;
 	drawMsg.connectionStatus = true;
 	drawMsg.alive = isAlive;
 	drawMsg.hasSound = false;

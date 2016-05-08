@@ -76,6 +76,7 @@ public:
     float getScrollSpeed() { return m_scrollSpeed; }
     static void *thread_method(void *context);
 
+
 private:
 
     //Layers

@@ -20,6 +20,7 @@
 #define INPUT_MESSAGE_SIZE 24
 #define CONNECTED_MESSAGE_SIZE 12
 #define CONNECTIONINFO_MESSAGE_SIZE 24
+#define PLAYER_DISCONNECTION_MESSAGE_SIZE 32
 
 #define BACKGROUND 1
 #define MIDDLEGROUND 10
@@ -74,9 +75,16 @@ struct ConnectionInfo
 	char name[24];
 };
 
+struct PlayerDisconnection
+{
+	int objectID;
+	int layer;
+	char name[24];
+};
+
 struct DrawMessage
 {
-	bool ignoreMsg;
+	bool unused1;
 	bool connectionStatus;
 	bool alive;
 	bool hasSound;
