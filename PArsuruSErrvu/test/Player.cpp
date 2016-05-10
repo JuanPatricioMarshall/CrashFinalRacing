@@ -46,6 +46,20 @@ void Player::draw()
 void Player::update()
 {
 	MoveableObject::update();
+
+	// si esta quieto Y no esta enl borde de abajo, lo empuja hacia abajo. Si esta desconectado se comporta de acuerdo a DRAG_DISCONNECTED_PLAYER
+	if (((m_direction.getX() == 0) && (m_direction.getY() == 0)) &&
+		(((m_position.getY() + m_height) < Game::Instance()->getGameHeight() - 10) ||
+		(DRAG_DISCONNECTED_PLAYER && !m_connected)))
+	{
+		if (FRONZE_DISCONNECTED_PLAYER && !m_connected)
+			return;
+
+		m_position.m_y += Game::Instance()->getScrollSpeed();
+		m_dirty = true;
+	}
+
+
 	m_currentWeapon->update();
 
 	//Probar valores para animacion
@@ -126,5 +140,13 @@ void Player::sendDrawMessage(bool isAlive)
 	drawMsg.posX = m_position.getX();
 	drawMsg.posY = m_position.getY();
 	drawMsg.textureID = m_textureID;
-	Game::Instance()->sendToAllClients(drawMsg);
+
+	if (USE_DRAWMESSAGE_PACKAGING)
+	{
+		Game::Instance()->addToPackage(drawMsg);
+	}
+	else
+	{
+		Game::Instance()->sendToAllClients(drawMsg);
+	}
 }

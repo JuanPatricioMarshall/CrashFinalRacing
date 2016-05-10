@@ -24,6 +24,9 @@ int main(int argc, char **argv)
 
 	Random::initialize();
 
+	//unsigned int framesCount = 0;
+	//unsigned int fpsCount = 0;
+
 	if (Game::Instance()->init("1942 Ultraa Diesel", 400, 150, 800, 600, SDL_WINDOWPOS_CENTERED)) //flag por ejemplo: SDL_WINDOW_FULLSCREEN_DESKTOP
 	{
 		std::cout << "game init success!\n";
@@ -38,6 +41,8 @@ int main(int argc, char **argv)
 			Game::Instance()->updateTimeOut();
 
 			Game::Instance()->handleEvents();
+
+
 			Game::Instance()->render();
 
 			frameEndTime = SDL_GetTicks() - frameStartTime;
@@ -52,6 +57,10 @@ int main(int argc, char **argv)
 			{
 				GameTimeHelper::Instance()->updateDeltaTime(frameEndTime);
 			}
+			//framesCount++;
+			//fpsCount +=  1000/ frameEndTime;
+			//printf("FPS: %d \n", (1000/ frameEndTime));
+
         }
     }
     else
@@ -60,8 +69,10 @@ int main(int argc, char **argv)
         return -1;
     }
 
+	//printf("FPS PROMEDIO: %d \n", (fpsCount/ framesCount));
     std::cout << "game closing...\n";
     Game::Instance()->clean();
+
 
     return 0;
 }

@@ -5,18 +5,24 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Weapons/BasicWeapon.cpp \
+../Weapons/BlueBullet.cpp \
 ../Weapons/Bullet.cpp \
-../Weapons/BulletsHandler.cpp 
+../Weapons/BulletsHandler.cpp \
+../Weapons/FiveBulletsWeapon.cpp 
 
 OBJS += \
 ./Weapons/BasicWeapon.o \
+./Weapons/BlueBullet.o \
 ./Weapons/Bullet.o \
-./Weapons/BulletsHandler.o 
+./Weapons/BulletsHandler.o \
+./Weapons/FiveBulletsWeapon.o 
 
 CPP_DEPS += \
 ./Weapons/BasicWeapon.d \
+./Weapons/BlueBullet.d \
 ./Weapons/Bullet.d \
-./Weapons/BulletsHandler.d 
+./Weapons/BulletsHandler.d \
+./Weapons/FiveBulletsWeapon.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

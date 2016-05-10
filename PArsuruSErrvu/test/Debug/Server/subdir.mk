@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Server/AlanTuring.cpp \
+../Server/DrawMessagesPacker.cpp \
 ../Server/MessageFactory.cpp \
 ../Server/server.cpp 
 
 OBJS += \
 ./Server/AlanTuring.o \
+./Server/DrawMessagesPacker.o \
 ./Server/MessageFactory.o \
 ./Server/server.o 
 
 CPP_DEPS += \
 ./Server/AlanTuring.d \
+./Server/DrawMessagesPacker.d \
 ./Server/MessageFactory.d \
 ./Server/server.d 
 

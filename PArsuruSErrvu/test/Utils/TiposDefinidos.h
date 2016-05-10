@@ -17,10 +17,13 @@
 #define MAX_NAME_LENGTH 24
 
 #define DRAW_MESSAGE_SIZE 24
-#define INPUT_MESSAGE_SIZE 24
-#define CONNECTED_MESSAGE_SIZE 12
+#define INPUT_MESSAGE_SIZE 16
+#define CONNECTED_MESSAGE_SIZE 16
 #define CONNECTIONINFO_MESSAGE_SIZE 24
 #define PLAYER_DISCONNECTION_MESSAGE_SIZE 32
+#define RESET_MESSAGE_SIZE 4
+
+#define DRAW_MESSAGE_PACK_SIZE  20
 
 #define BACKGROUND 1
 #define MIDDLEGROUND 10
@@ -68,11 +71,19 @@ struct ConnectedMessage
 	bool connected;
 	int objectID;
 	int textureID;
+	short windowWidth;
+	short windowHeight;
 };
 
 struct ConnectionInfo
 {
 	char name[24];
+};
+
+struct ResetInfo
+{
+	short windowWidth;
+	short windowHeight;
 };
 
 struct PlayerDisconnection
@@ -107,11 +118,7 @@ struct InputMessage
 	short buttonRight;
 	short buttonLeft;
 	short buttonShoot;
-	short buttonReserved;//2 bytes reserved for future
-	short buttonShootPower;
-	short buttonXpecialCombo;
-	short buttonCompressionSistem;
-	short actionID;
+	short buttonRoll;
 };
 
 
@@ -129,6 +136,12 @@ struct TextureInfo
 	int height;
 	int numFrames;
 
+};
+
+struct DrawMessagePack
+{
+	int totalSize;
+	DrawMessage drawMessages[DRAW_MESSAGE_PACK_SIZE];
 };
 
 /*struct intMessage

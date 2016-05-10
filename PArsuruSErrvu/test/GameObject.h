@@ -67,13 +67,10 @@ public:
     void setLayer(int layer) {m_layer = layer;}
 
     // En este ejemplo de scroll, scrollea to do menos los objetos con tag player
-   /* void scroll(float scrollSpeed)
+   void scroll(float scrollSpeed)
     {
-        if(m_tag != std::string("Player")) // player is never scrolled
-        {
-            m_position.setX(m_position.getY() + scrollSpeed);
-        }
-    }*/
+	   m_position.setX(m_position.getY() + scrollSpeed);
+    }
 
 protected:
 

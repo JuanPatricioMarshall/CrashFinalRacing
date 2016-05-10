@@ -44,7 +44,7 @@ bool cliente::conectar()
 		cerrarSoket();
 	}
 	m_connecting = false;
-	printf("m_connected %d \n",m_connected);
+
     return m_connected;
 }
 void cliente::desconectar()
@@ -234,7 +234,6 @@ bool cliente::checkServerConnection()
 
 		Game::Instance()->disconnect();
 		desconectar();
-		printf("Presione 1 para reconectar.\n");
 		return false;
 	}
 	return true;
@@ -248,6 +247,8 @@ bool cliente::leer()
 	bzero(buffer,256);
 	int messageLength = 0;
 	char *p = (char*)buffer;
+	int readLimit = (DRAW_MESSAGE_PACK_SIZE * sizeof(DrawMessage)) + MESSAGE_CODE_BYTES + MESSAGE_LENGTH_BYTES + MESSAGE_LENGTH_BYTES;
+
 	int n = recv(sockfd, buffer, MESSAGE_LENGTH_BYTES, 0);
 
    if (!lecturaExitosa(n))
@@ -273,7 +274,12 @@ bool cliente::leer()
    //loopea hasta haber leido la totalidad de los bytes necarios
    while (messageLength > 0)
    {
+	  //printf("Leyó %d. Faltan leer %d \n", acum, messageLength);
 	  n = recv(sockfd, p, messageLength, 0);
+	 if(messageLength >readLimit)
+		 {
+			 return true;
+		 }
        if (!lecturaExitosa(n))
        {
     	   //se perdio la conexion con el server
@@ -324,6 +330,7 @@ void cliente::setTimeOut()
 
 void cliente::procesarMensaje(NetworkMessage networkMessage)
 {
+	//Timeout
 	if ((networkMessage.msg_Code[0] == 't') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 'o'))
 	{
 		//TimeOut ACK, lo dej opor si en el futuro queremos hacer algo extra
@@ -331,8 +338,10 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		return;
 	}
 
+	//Mensaje de coneccion con el servidor
 	if ((networkMessage.msg_Code[0] == 'c') && (networkMessage.msg_Code[1] == 'n') && (networkMessage.msg_Code[2] == 't'))
 	{
+		printf("Conectando\n");
 		ConnectedMessage connectedMessage = m_alanTuring->decodeConnectedMessage(networkMessage);
 		if (connectedMessage.requestData && !connectedMessage.connected)
 		{
@@ -351,10 +360,12 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 				m_connected = false;
 			}
 		}
+
 		if (connectedMessage.connected && !connectedMessage.requestData)
 		{
 			printf("Conectado con id: %d \n", connectedMessage.objectID);
 			Game::Instance()->createPlayer(connectedMessage.objectID, connectedMessage.textureID);
+			Game::Instance()->setWindowSize(static_cast<int>(connectedMessage.windowWidth), static_cast<int>(connectedMessage.windowHeight));
 			//El cliente se conecto con exito.
 			printf("Conección con el server exitosa. \n");
 			Logger::Instance()->LOG("Cliente: Conección al servidor exitosa.\n", DEBUG);
@@ -366,10 +377,12 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 			desconectar();
 			m_connected = false;
 		}
+
 		return;
 	}
 	if ((networkMessage.msg_Code[0] == 'e') && (networkMessage.msg_Code[1] == 'x') && (networkMessage.msg_Code[2] == 't'))
 	{
+		printf("Exit\n");
 		//El cliente fue pateado
 		desconectar();
 		printf("El cliente ha sido desconectado del server.\n");
@@ -377,6 +390,7 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 
 		return;
 	}
+	//Servidor Lleno
 	if ((networkMessage.msg_Code[0] == 'f') && (networkMessage.msg_Code[1] == 'u') && (networkMessage.msg_Code[2] == 'l'))
 	{
 		//El server esta lleno. Patear
@@ -389,14 +403,40 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 	}
 
 
+	//Draw Message
 	if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 's'))
 	{
+		//printf("Leyendo DrawMessage\n");
 		DrawMessage drwMsg = m_alanTuring->decodeDrawMessage(networkMessage);
 		Game::Instance()->interpretarDrawMsg(drwMsg);
 			//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
+		//printf("Fin Leyendo DrawMessage\n");
+		return;
+	}
+	//Draw Message Package
+	if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 'p'))
+	{
+		//printf("Leyendo DrawMessagePackage\n");
+		DrawMessagePack drwMsgPackage = m_alanTuring->decodeDrawMessagePackage(networkMessage);
+		procesarDrawPackage(drwMsgPackage);
+			//Logger::Instance()->LOG("Se envio drwMsg a interpretar\n", DEBUG);
+		//printf("Fin Leyendo DrawMessagePackage\n");
 		return;
 	}
 
+	//Reinicio de Juego
+	if ((networkMessage.msg_Code[0] == 'r') && (networkMessage.msg_Code[1] == 's') && (networkMessage.msg_Code[2] == 't'))
+	{
+		ResetInfo resetInfo = m_alanTuring->decodeResetInfo(networkMessage);
+		Game::Instance()->setWindowSize(static_cast<int>(resetInfo.windowWidth), static_cast<int>(resetInfo.windowHeight));
+		Game::Instance()->resetGame();
+
+		Logger::Instance()->LOG("Juego: El juego ha sido reiniciado.", DEBUG);
+
+		return;
+	}
+
+	//Desconeccion de un jugador
 	if ((networkMessage.msg_Code[0] == 'p') && (networkMessage.msg_Code[1] == 'd') && (networkMessage.msg_Code[2] == 'c'))
 	{
 		PlayerDisconnection playerDiscMsg = m_alanTuring->decodePlayerDisconnectionMessage(networkMessage);
@@ -406,10 +446,12 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		std::stringstream ss;
 		ss <<"Cliente: El jguador " << playerDiscMsg.name << " se ha desconectado.";
 		Logger::Instance()->LOG(ss.str(), DEBUG);
+
 		return;
 	}
 
 
+	//Game Beginning
 	if ((networkMessage.msg_Code[0] == 'g') && (networkMessage.msg_Code[1] == 'b') && (networkMessage.msg_Code[2] == 'g'))
 	{
 		Game::Instance()->setGameStarted(true);
@@ -480,4 +522,14 @@ bool cliente::lecturaExitosa(int bytesLeidos)
 		return false;
     }
 	return true;
+}
+
+void cliente::procesarDrawPackage(DrawMessagePack drawMsgPackage)
+{
+	int drawMessagesAmount = (drawMsgPackage.totalSize - sizeof(int)) / sizeof(DrawMessage);
+	for (int i = 0; i < drawMessagesAmount; i++)
+	{
+		DrawMessage drawMessage = drawMsgPackage.drawMessages[i];
+		Game::Instance()->interpretarDrawMsg(drawMessage);
+	}
 }

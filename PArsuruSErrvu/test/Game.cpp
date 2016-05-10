@@ -6,7 +6,8 @@ Game::Game():
 m_pWindow(0),
 m_pRenderer(0),
 m_running(false),
-m_scrollSpeed(0.8)
+m_reseting(false),
+m_scrollSpeed(2)
 {
 
 }
@@ -25,18 +26,23 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
     m_gameWidth = width;
     m_gameHeight = height;
 
+    inicializarServer();
+
+    //TextureManager::Instance()-> init();
+
     //Provisorio rompen porq blackship water island son string... pone ints (hacer mapas primero)
    //m_player = new Player();
    //m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, "blackship", 1);
    //m_player->load(m_gameWidth/2, m_gameHeight/2, 38, 64, 1, 1);
    //listOfPlayer[m_player->getObjectId()]= *m_player;
 
-   m_background = new Background();
-   m_background->load(0, 0, m_gameWidth, m_gameHeight, 2);
-   m_background->setLayer(BACKGROUND);
-	printf("Background inicializado con objectID: %d y textureID: %d y layer : %d\n", m_background->getObjectId(), 2, m_background->getLayer());
-	m_listOfGameObjects[m_background->getObjectId()] = m_background;
+   //m_background = new Background();
+  // m_background->load(0, 0, m_gameWidth, m_gameHeight, 2);
+  // m_background->setLayer(BACKGROUND);
+	//printf("Background inicializado con objectID: %d y textureID: %d y layer : %d\n", m_background->getObjectId(), 2, m_background->getLayer());
+//	m_listOfGameObjects[m_background->getObjectId()] = m_background;
 
+    m_level = new Level();
 
    m_island = new Island();
    m_island->load(0, m_gameHeight/2, 150, 150, 3, 1);
@@ -45,7 +51,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
    printf("Isla inicializada con objectID: %d y textureID: %d\n", m_island->getObjectId(), 3);
    m_listOfGameObjects[m_island->getObjectId()] = m_island;
 
-    setUpKorea();
+
+
+
     //tudo ben
     m_running = true;
 
@@ -115,6 +123,8 @@ void Game::update()
 {
 	BulletsHandler::Instance()->updateBullets();
 
+	m_level->update();
+
 	for (std::map<int,Player*>::iterator it=m_listOfPlayer.begin(); it != m_listOfPlayer.end(); ++it)
 	{
 		//printf("objectID = %d \n", it->second.getObjectId());
@@ -131,7 +141,7 @@ void Game::update()
 void Game::handleEvents()
 {
 }
-void Game::setUpKorea()
+void Game::inicializarServer()
 {
 
 	std::string fileName = "Utils/Default/servidor.xml";
@@ -149,6 +159,9 @@ void Game::setUpKorea()
 	printf("Cargo maxClientes: %d \n",maxClientes);
 	printf("Creando enlazamiento\n");
 	m_server = new server(porto, maxClientes);
+
+    m_drawMessagePacker = new DrawMessagesPacker(m_server);
+
 	printf("Se pone a escuchar\n");
 	m_server->escuchar();
 
@@ -169,6 +182,18 @@ void Game::sendToAllClients(DrawMessage mensaje)
 {
 	m_server->sendDrawMsgToAll(mensaje);
 }
+
+void Game::addToPackage(DrawMessage drawMsg)
+{
+	m_drawMessagePacker->addDrawMessage(drawMsg);
+}
+void Game::sendPackages()
+{
+	m_drawMessagePacker->sendPackedMessages();
+}
+
+
+
 void* Game::koreaMethod(void)
 {
 
@@ -221,11 +246,43 @@ void Game::clean()
     m_listOfGameObjects.clear();
     m_playerNames.clear();
 
+    m_drawMessagePacker->clean();
+    delete m_drawMessagePacker;
+
+    m_level->clean();
+
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
 
 
-    SDL_DestroyWindow(m_pWindow);
-    SDL_DestroyRenderer(m_pRenderer);
+    //SDL_DestroyWindow(m_pWindow);
+    //SDL_DestroyRenderer(m_pRenderer);
     SDL_Quit();
+}
+
+void Game::resetGame()
+{
+	 BulletsHandler::Instance()->clearBullets();
+
+	/*for (std::map<int,Player*>::iterator it=m_listOfPlayer.begin(); it != m_listOfPlayer.end(); ++it)
+	{
+		//printf("objectID = %d \n", it->second.getObjectId());
+		 it->second->clean();
+		 delete  it->second;
+	}*/
+	/*for (std::map<int,GameObject*>::iterator it=m_listOfGameObjects.begin(); it != m_listOfGameObjects.end(); ++it)
+	{
+		//printf("objectID = %d \n", it->second.getObjectId());
+		 it->second->clean();
+		 delete  it->second;
+	}
+	 m_listOfGameObjects.clear();*/
+	 InputHandler::Instance()->clean();
+	 m_level->clean();
+
+
+	 //CARGAR XML
+	 //m_level->initialize();
+	    m_gameWidth = 800;
+	    m_gameHeight = 600;
 }

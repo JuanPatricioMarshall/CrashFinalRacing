@@ -8,6 +8,7 @@ m_pRenderer(0),
  m_timeOutCounter(0),
 m_running(false),
 m_gameStarted(false),
+m_reseting(false),
 m_scrollSpeed(0.8)
 {
 	m_player = new Player();
@@ -23,18 +24,23 @@ Game::~Game()
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int SDL_WINDOW_flag)
 {
+    TextureManager::Instance()-> init();
+
 	askForName();
 
-    // Tamaño de la ventana
-    m_gameWidth = width;
-    m_gameHeight = height;
+    if (!initializeClient())
+    	return false;
+
+    printf("Conectado\n");
+
 
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         cout << "SDL init success\n";
 
+        printf("%d\n",m_gameWidth);
 
-        m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, SDL_WINDOW_flag);
+        m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
 
         if(m_pWindow != 0)
         {
@@ -64,15 +70,16 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
         return false;
     }
 
-    TextureManager::Instance()-> init();
-
-    if (!setUpKorea())
-    	return false;
-
 
     //tudo ben
     m_running = true;
     return true;
+}
+
+void Game::setWindowSize(int width, int height)
+{
+	m_gameWidth = width;
+	m_gameHeight = height;
 }
 
 void Game::render()
@@ -96,10 +103,12 @@ void Game::render()
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
+
 	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
 		if (drwMsg.connectionStatus == false)
 		{
+			printf("DrawMessage de objeto desconectado\n");
 			disconnectObject(drwMsg.objectID, static_cast<int>(drwMsg.layer));
 		}
 
@@ -110,16 +119,18 @@ void Game::interpretarDrawMsg(DrawMessage drwMsg){
 		}
 		else
 		{
-			//printf("Destruyendo objeto con id: %d \n", drwMsg.objectID);
+			printf("Destruyendo objeto con id: %d \n", drwMsg.objectID);
 			removeDrawObject(drwMsg.objectID, drwMsg.layer);
 		}
 	}
 	else //Si no existe en el mapa
 	{
 		if (!drwMsg.alive)
+		{printf("DrawMessage de objeto Muerto\n");
 			return;
+		}
 
-		//printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
+		printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
 
 		DrawObject* newObject = new DrawObject();
 		newObject->setObjectID(drwMsg.objectID);
@@ -234,7 +245,7 @@ void Game::handleEvents()
 	//Pseudo controler
 	m_player->handleInput();
 }
-bool Game::setUpKorea()
+bool Game::initializeClient()
 {
 		std::string	fileName = "Utils/Default/cliente.xml";
 
@@ -247,8 +258,9 @@ bool Game::setUpKorea()
 	    string ip = parsersito->getConexionInfo().ip;
 	    int porto = parsersito->getConexionInfo().puerto;
 
-
 	    m_client = new cliente(3,ip,porto, m_playerName);
+
+	    delete parsersito;
 
 	    if (!conectToKorea())
 	    	return false;
@@ -270,12 +282,15 @@ void Game::askForName()
     	goto pedirNombre;
     }
     m_playerName = playerName;
+    playerName.clear();
 }
 
 void Game::createPlayer(int objectID, int textureID)
 {
 	//m_player = new Player();
+	printf("player: id: %d, textureID: %d \n", objectID, textureID);
 	m_player->setObjectID(objectID);
+	m_player->setTextureID(textureID);
 }
 
 void Game::disconnectObject(int objectID, int layer)
@@ -332,15 +347,20 @@ bool Game::conectToKorea()
 }
 
 
-void Game::sendToKorea(InputMessage mensaje)
+void Game::sendInputMsg(InputMessage mensaje)
 {
 	m_client->sendInputMsg(mensaje);
+}
+
+void Game::sendNetworkMsg(NetworkMessage netMsg)
+{
+	m_client->sendNetworkMsg(netMsg);
 }
 
 void* Game::koreaMethod(void)
 {
 	std::cout << "Empece a ciclar bitches!\n";
-	while (Game::Instance()->isRunning()) {
+	while (m_client->isConnected()) {
 			m_client->leer();
 	}
 	 pthread_exit(NULL);
@@ -374,7 +394,6 @@ bool Game::updateTimeOut()
 		netMsg.msg_Code[2] = 'o';
 		netMsg.msg_Length =  MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
-
 		m_client->sendNetworkMsg(netMsg);
 		//printf("Se envío Timeout Msg\n");
 		m_timeOutCounter = 0;
@@ -389,6 +408,7 @@ bool Game::updateTimeOut()
 void Game::clean()
 {
     cout << "cleaning game\n";
+
 
     for (std::map<int,DrawObject*>::iterator it = backgroundObjects.begin(); it != backgroundObjects.end(); ++it)
     {
@@ -406,7 +426,9 @@ void Game::clean()
 		delete it->second;
     }
 
-    //delete m_player; //Provisorio
+    m_client->desconectar();
+    delete m_client;
+    delete m_player;
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
@@ -417,4 +439,70 @@ void Game::clean()
     SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);
     SDL_Quit();
+}
+
+void Game::resetGame()
+{
+	m_reseting = true;
+    cout << "reseting game\n";
+
+    for (std::map<int,DrawObject*>::iterator it = backgroundObjects.begin(); it != backgroundObjects.end(); ++it)
+    {
+        cout << "destroying background\n";
+    	it->second->clean();
+		delete it->second;
+    }
+    for (std::map<int,DrawObject*>::iterator it = middlegroundObjects.begin(); it != middlegroundObjects.end(); ++it)
+    {
+        cout << "destroying middleground\n";
+    	it->second->clean();
+		delete it->second;
+    }
+    for (std::map<int,DrawObject*>::iterator it = foregroundObjects.begin(); it != foregroundObjects.end(); ++it)
+    {
+        cout << "destroying foreground\n";
+    	it->second->clean();
+		delete it->second;
+    }
+
+    InputHandler::Instance()->reset();
+    TextureManager::Instance()->clearTextureMap();
+    backgroundObjects.clear();
+    middlegroundObjects.clear();
+    foregroundObjects.clear();
+
+    cout << "destroying SDL STUFF\n";
+    SDL_DestroyWindow(m_pWindow);
+    SDL_DestroyRenderer(m_pRenderer);
+
+    printf("Ventana destruida\n");
+
+    printf("Ancho: %d , Alto: %d \n", m_gameWidth, m_gameHeight);
+
+
+   m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
+
+   if(m_pWindow != 0)
+   {
+	   cout << "window creation success\n";
+	   m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
+
+	   if(m_pRenderer != 0)
+	   {
+		   cout << "renderer creation success\n";
+		   SDL_SetRenderDrawColor(m_pRenderer, 0,0,0,255);
+	   }
+	   else
+	   {
+		   cout << "renderer init fail\n";
+		   return;
+	   }
+   }
+   else
+   {
+	   cout << "window init fail\n";
+	   return;
+   }
+
+   m_reseting = false;
 }

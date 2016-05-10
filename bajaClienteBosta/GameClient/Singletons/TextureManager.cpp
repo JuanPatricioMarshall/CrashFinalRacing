@@ -57,6 +57,14 @@ void TextureManager::init(){
 	hola.path =	"Assets/Sprites/water.jpg";
 	m_textureMapInfo[2]=hola;
 
+	hola.width = 9;
+	hola.height = 54;
+	hola.numFrames = 1;
+	hola.path =	"Assets/Sprites/laserBlue01.png";
+	m_textureMapInfo[11]=hola;
+
+
+
 	hola.width = 32;
 	hola.height = 32;
 	hola.numFrames = 1;

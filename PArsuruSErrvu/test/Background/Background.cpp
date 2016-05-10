@@ -87,5 +87,13 @@ void Background::sendDrawMessage(bool isAlive)
 	drawMsg.posX = m_position.getX();
 	drawMsg.posY = m_position.getY();
 	drawMsg.textureID = m_textureID;
-	Game::Instance()->sendToAllClients(drawMsg);
+
+	if (USE_DRAWMESSAGE_PACKAGING)
+	{
+		Game::Instance()->addToPackage(drawMsg);
+	}
+	else
+	{
+		Game::Instance()->sendToAllClients(drawMsg);
+	}
 }

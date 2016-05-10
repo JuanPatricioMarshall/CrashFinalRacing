@@ -39,6 +39,31 @@ int AlanTuring::encodeDrawMessage(DrawMessage drawMsg, char* bufferSalida)
 
 	return codigoEnigma.msg_Length;
 }
+
+int AlanTuring::encodeDrawMessagePackage(DrawMessagePack packMsg, char* bufferEntrada)
+{
+	bzero(bufferEntrada,MESSAGE_BUFFER_SIZE);
+
+	NetworkMessage codigoEnigma;
+	bzero(codigoEnigma.msg_Data, MESSAGE_DATA_SIZE);
+
+	codigoEnigma.msg_Code[0] = 'd';
+	codigoEnigma.msg_Code[1] = 'm';
+	codigoEnigma.msg_Code[2] = 'p';
+
+	int drawMessagesAmount = (packMsg.totalSize - sizeof(int)) / sizeof(DrawMessage);
+	int packSize = (drawMessagesAmount * sizeof(DrawMessage)) + sizeof(int);
+	//copia el draw message en el buffer de network message data
+	memcpy(codigoEnigma.msg_Data, &packMsg,  sizeof(DrawMessagePack));
+
+	codigoEnigma.msg_Length =  packSize + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	//copia el mensaje de red al buffer ingresado
+	memcpy(bufferEntrada, &codigoEnigma, sizeof(NetworkMessage));
+
+	return codigoEnigma.msg_Length;
+}
+
 int AlanTuring::encodeInputMessage(InputMessage inputMsg, char* bufferSalida)
 {
 	//inicializa el buffer de salida
@@ -164,6 +189,23 @@ PlayerDisconnection AlanTuring::decodePlayerDisconnectionMessage(NetworkMessage 
 	return playerDiscMsg;
 }
 
+DrawMessagePack AlanTuring::decodeDrawMessagePackage(NetworkMessage netMsg)
+{
+	int messageLength = 0;
+	memcpy(&messageLength, &netMsg, sizeof(messageLength));
+
+	DrawMessagePack drawMsgPack;
+	memcpy(&drawMsgPack, netMsg.msg_Data, messageLength);
+	return drawMsgPack;
+}
+
+ResetInfo AlanTuring::decodeResetInfo(NetworkMessage netMsg)
+{
+	ResetInfo resetInfoMsg;
+	memcpy(&resetInfoMsg, netMsg.msg_Data, sizeof(ResetInfo));
+	return resetInfoMsg;
+}
+
 NetworkMessage AlanTuring::drawMessageToNetwork(DrawMessage drawMessage)
 {
 	NetworkMessage networkMessage;
@@ -187,6 +229,40 @@ NetworkMessage AlanTuring::playerDisconnectionToNetwork(PlayerDisconnection play
 
 	memcpy(networkMessage.msg_Data, &playerDiscMessage, sizeof(PlayerDisconnection));
 	networkMessage.msg_Length = PLAYER_DISCONNECTION_MESSAGE_SIZE + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	return networkMessage;
+}
+
+NetworkMessage AlanTuring::drawMsgPackToNetwork(DrawMessagePack drawMsgPack)
+{
+	NetworkMessage networkMessage;
+	bzero(networkMessage.msg_Data, MESSAGE_DATA_SIZE);
+	networkMessage.msg_Code[0] = 'd';
+	networkMessage.msg_Code[1] = 'm';
+	networkMessage.msg_Code[2] = 'p';
+
+	int drawMessagesAmount = (drawMsgPack.totalSize - sizeof(int)) / sizeof(DrawMessage);
+	int packSize = (drawMessagesAmount * sizeof(DrawMessage)) + sizeof(int);
+
+	//printf("Tamaño total = %d \n", drawMsgPack.totalSize);
+	//printf("%d x 24 + 4 = Tamaño paquete = %d",drawMessagesAmount, packSize);
+
+	memcpy(networkMessage.msg_Data, &drawMsgPack, packSize);
+	networkMessage.msg_Length =  packSize + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
+
+	return networkMessage;
+}
+
+NetworkMessage AlanTuring::ResetMsgToNetwork(ResetInfo resetMessage)
+{
+	NetworkMessage networkMessage;
+	bzero(networkMessage.msg_Data, MESSAGE_DATA_SIZE);
+	networkMessage.msg_Code[0] = 'r';
+	networkMessage.msg_Code[1] = 's';
+	networkMessage.msg_Code[2] = 't';
+
+	memcpy(networkMessage.msg_Data, &resetMessage, sizeof(ResetInfo));
+	networkMessage.msg_Length = sizeof(ResetInfo) + MESSAGE_LENGTH_BYTES + MESSAGE_CODE_BYTES;
 
 	return networkMessage;
 }

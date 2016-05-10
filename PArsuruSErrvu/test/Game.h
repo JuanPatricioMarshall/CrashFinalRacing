@@ -3,25 +3,32 @@
 
 
 #include "Server/server.h"
+#include "Server/DrawMessagesPacker.h"
 #include "Utils/Parser/ParserServidor.h"
+#include "Background/Level.h"
 #include "Background/Island.h"
 #include "Background/Background.h"
 #include "Singletons/InputHandler.h"
 #include "Singletons/TextureManager.h"
 #include "Weapons/BulletsHandler.h"
+#include "Player.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <sstream>
-#include "Player.h"
 #include <map>
 #include <string>
 using namespace std;
 
 class Island;
 class Background;
-class server;
 class Player;
+class Level;
+class server;
+class DrawMessagesPacker;
 
+#define USE_DRAWMESSAGE_PACKAGING 0
+#define DRAG_DISCONNECTED_PLAYER 1
+#define FRONZE_DISCONNECTED_PLAYER 1
 
 class Game
 {
@@ -45,13 +52,17 @@ public:
     void update();
     void handleEvents();
     void clean();
+    void resetGame();
 
     bool createPlayer(int playerId, const std::string& playerName);
     bool validatePlayerName(const std::string& playerName);
     void disconnectPlayer(int playerId);
-    void setUpKorea();
+    void inicializarServer();
     void conectToKorea();
-    void sendToAllClients(DrawMessage mensaje);
+    void sendToAllClients(DrawMessage drawMsg);
+    void addToPackage(DrawMessage drawMsg);
+    void sendPackages();
+
    	void* koreaMethod(void);
    	void readFromKorea();
 
@@ -62,12 +73,15 @@ public:
     SDL_Window* getWindow() const { return m_pWindow; }
 
     bool isRunning() { return m_running; }
+    bool isResseting() { return m_reseting; }
 
     void quit() { m_running = false; }
 
     //Alto y Ancho de la ventana de juego
     int getGameWidth() const { return m_gameWidth; }
     int getGameHeight() const { return m_gameHeight; }
+    void setReseting(bool state) { m_reseting = state; }
+
     pthread_t listenThread;
     float getScrollSpeed() { return m_scrollSpeed; }
     static void *thread_method(void *context);
@@ -82,12 +96,19 @@ private:
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;
 
+    Level* m_level;
+
     //Provisorio
     Player* m_player;
     Background* m_background;
     Island* m_island;
+
     server* m_server;
+    DrawMessagesPacker* m_drawMessagePacker;
+
+
     bool m_running;
+    bool m_reseting;
 
     static Game* s_pInstance;
 

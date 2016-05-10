@@ -8,12 +8,12 @@
 #ifndef BACKGROUND_ISLAND_H_
 #define BACKGROUND_ISLAND_H_
 
-#include "BackgroundObject.h"
 #include "../Game.h"
 #include "../Singletons/TextureManager.h"
+#include "RecurrentObject.h"
 
 
-class Island: public BackgroundObject
+class Island: public RecurrentObject
 {
 
 public:

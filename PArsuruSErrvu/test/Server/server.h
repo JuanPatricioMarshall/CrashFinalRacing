@@ -8,7 +8,7 @@
 #include "MessageFactory.h"
 #include "../Utils/StringHelper.h"
 #include "../Utils/Logger.h"
-
+#include "../Game.h"
 
 #include <stdio.h>
 #include <queue>
@@ -25,7 +25,7 @@
 
 #define TIMEOUT_SECONDS 10
 #define TIMEOUT_MICROSECONDS 0
-#include "../Game.h"
+
 class server
 {
     public:
@@ -42,8 +42,11 @@ class server
         const int getNumClientes();
         void sendNetworkMsg(int socketReceptor, NetworkMessage netMsg);
         void sendDrawMsgToAll(DrawMessage msg);
+        void sendPackToAll(DrawMessagePack msg);
         void sendDrawMsg(int socketReceptor, DrawMessage msg);
         void sendConnectedMsg(int socketReceptor, ConnectedMessage msg);
+        void sendResetMsgToAll(ResetInfo resetMsg);
+
         void sendDisconnectionMsg(int socketReceptor, PlayerDisconnection msg);
         void informPlayerDisconnection(PlayerDisconnection, int playerDiscID);
         void informGameBeginning();

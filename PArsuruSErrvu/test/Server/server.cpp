@@ -126,13 +126,15 @@ bool server::crearCliente (int clientSocket)
 		return false;
 	}
 
-
 	//Envia solicitud de datos de coneccion
 	ConnectedMessage connectedMsg;
 	connectedMsg.requestData = true;
 	connectedMsg.connected = false;
 	connectedMsg.objectID = m_lastID;
 	connectedMsg.textureID = m_lastID;
+	//Tamaño de ventana
+	connectedMsg.windowWidth = Game::Instance()->getGameWidth();
+	connectedMsg.windowHeight = Game::Instance()->getGameHeight();
 	sendConnectedMsg(clientSocket, connectedMsg);
 
 	if (!leerBloqueando(m_lastID))
@@ -213,11 +215,35 @@ void server::encolarDrawMessage(DrawMessage drawMsg)
 
 void server::sendDrawMsgToAll(DrawMessage drawMsg){
 
+	 NetworkMessage netMsg = m_alanTuring->drawMessageToNetwork(drawMsg);
 	 for (int i = 0; i < m_listaDeClientes.size(); i++)
 	 {
 	     if ( m_listaDeClientes.isAvailable(i))
 	     {
-	    	 NetworkMessage netMsg = m_alanTuring->drawMessageToNetwork(drawMsg);
+	    	 m_queuePost[i].add(netMsg);
+	     }
+	 }
+}
+
+void server::sendResetMsgToAll(ResetInfo resetMsg){
+
+	 NetworkMessage netMsg = m_alanTuring->ResetMsgToNetwork(resetMsg);
+	 for (int i = 0; i < m_listaDeClientes.size(); i++)
+	 {
+	     if ( m_listaDeClientes.isAvailable(i))
+	     {
+	    	 m_queuePost[i].add(netMsg);
+	     }
+	 }
+}
+
+void server::sendPackToAll(DrawMessagePack drawPackMsg){
+
+	 NetworkMessage netMsg = m_alanTuring->drawMsgPackToNetwork(drawPackMsg);
+	 for (int i = 0; i < m_listaDeClientes.size(); i++)
+	 {
+	     if ( m_listaDeClientes.isAvailable(i))
+	     {
 	    	 m_queuePost[i].add(netMsg);
 	     }
 	 }
@@ -374,11 +400,14 @@ bool server::leer(int id)
     char *p = (char*)buffer;
     int messageLength = 0;
 
-    int n = recv(m_listaDeClientes.getElemAt(id), p, MESSAGE_LENGTH_BYTES, 0);
+    int readLimit = (DRAW_MESSAGE_PACK_SIZE * sizeof(DrawMessage)) + MESSAGE_CODE_BYTES + MESSAGE_LENGTH_BYTES + MESSAGE_LENGTH_BYTES;
+
+    int n = recv(m_listaDeClientes.getElemAt(id), buffer, MESSAGE_LENGTH_BYTES, 0);
     if (!lecturaExitosa(n, id))
     	return false;
 
     int acum = n;
+   // bool bug = false;
     while (acum < MESSAGE_LENGTH_BYTES)
     {
  	   p += n;
@@ -386,6 +415,7 @@ bool server::leer(int id)
        if (!lecturaExitosa(n, id))
        	return false;
  	   acum += n;
+
     }
     messageLength = m_alanTuring->decodeLength(buffer);
 
@@ -395,7 +425,14 @@ bool server::leer(int id)
     //loopea hasta haber leido la totalidad de los bytes necarios
     while (messageLength > 0)
     {
+    	//printf("Leyó %d. Faltan leer %d \n", acum, messageLength);
     	n = recv(m_listaDeClientes.getElemAt(id), p, messageLength, 0);
+
+    	 if(messageLength >readLimit)
+    	 {
+    		 return true;
+    	 }
+
         if (!lecturaExitosa(n, id))
         	return false;
         p += n;
@@ -421,7 +458,6 @@ bool server::leer(int id)
 
 void* server::procesar(void)
 {
-	printf("Procesando informacion confidencial, hakeando la base de datos de la nasa\n");
 	while(this->isRunning())
 	{
 
@@ -616,9 +652,9 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 
 	NetworkMessage netMsg = serverMsg->networkMessage;
 
+	//Time Out Msg
 	if ((netMsg.msg_Code[0] == 't') && (netMsg.msg_Code[1] == 'm') && (netMsg.msg_Code[2] == 'o'))
 	{
-		printf("Leyo Timeout\n");
 		NetworkMessage timeOutMsg;
 		timeOutMsg.msg_Code[0] = 't';
 		timeOutMsg.msg_Code[1] = 'm';
@@ -630,6 +666,7 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 		return true;
 	}
 
+	//Connection Info Message
 	if ((netMsg.msg_Code[0] == 'c') && (netMsg.msg_Code[1] == 'n') && (netMsg.msg_Code[2] == 'i'))
 	{
 		ConnectionInfo connectionInfoMessage = m_alanTuring->decodeConnectionInfoMessage(netMsg);
@@ -655,11 +692,36 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 		return m_successfulPlayerCreation;
 	}
 
+	//Reset Msg
+	if ((netMsg.msg_Code[0] == 'r') && (netMsg.msg_Code[1] == 's') && (netMsg.msg_Code[2] == 't'))
+	{
+		if (!Game::Instance()->isResseting())
+		{
+			Game::Instance()->setReseting(true);
+			Logger::Instance()->LOG("Server: Se reiniciará el juego.", DEBUG);
+			//Resetea el juego
+			Game::Instance()->resetGame();
 
+			//Envia la nueva informacion al cliente
+			ResetInfo resetInfo;
+			resetInfo.windowHeight = Game::Instance()->getGameHeight();
+			resetInfo.windowWidth = Game::Instance()->getGameHeight();
+
+			sendResetMsgToAll(resetInfo);
+
+			Game::Instance()->setReseting(false);
+		}
+
+		return true;
+	}
+
+
+	//Input Msg
 	if ((netMsg.msg_Code[0] == 'i') && (netMsg.msg_Code[1] == 'm') && (netMsg.msg_Code[2] == 's'))
 	{
 		InputMessage inputMsg = m_alanTuring->decodeInputMessage(netMsg);
 		Game::Instance()->actualizarEstado(serverMsg->clientID,inputMsg);
+		return true;
 	}
 
 	return true;

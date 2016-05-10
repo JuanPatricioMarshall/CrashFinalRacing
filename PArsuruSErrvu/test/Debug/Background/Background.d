@@ -1,11 +1,8 @@
 Background/Background.d: ../Background/Background.cpp \
- ../Background/Background.h ../Background/BackgroundObject.h \
- ../Background/../GameObject.h ../Background/../Vector2D.h \
- ../Background/../Singletons/ObjectIdGenerator.h \
+ ../Background/Background.h ../Background/../Vector2D.h \
+ ../Background/../Singletons/TextureManager.h \
  ../Background/../Singletons/../Utils/TiposDefinidos.h \
- ../Background/../Utils/TiposDefinidos.h ../Background/../Utils/Random.h \
- ../Background/../Utils/TiposDefinidos.h ../Background/../Vector2D.h \
- ../Background/../Singletons/TextureManager.h ../Background/../Game.h \
+ ../Background/../Utils/TiposDefinidos.h ../Background/../Game.h \
  ../Background/../Server/server.h \
  ../Background/../Server/ListaInteligente.h \
  ../Background/../Server/AlanTuring.h \
@@ -18,16 +15,28 @@ Background/Background.d: ../Background/Background.cpp \
  ../Background/../Server/MessageFactory.h \
  ../Background/../Server/../Utils/StringHelper.h \
  ../Background/../Server/../Game.h \
+ ../Background/../Server/DrawMessagesPacker.h \
+ ../Background/../Server/server.h \
  ../Background/../Utils/Parser/ParserServidor.h \
  ../Background/../Utils/Parser/Parser.h \
  ../Background/../Utils/Parser/../Logger.h \
  ../Background/../Utils/Parser/../TiposDefinidos.h \
  ../Background/../Utils/Parser/../pugixml/pugixml.hpp \
  ../Background/../Utils/Parser/../pugixml/pugiconfig.hpp \
- ../Background/../Background/Island.h \
- ../Background/../Background/BackgroundObject.h \
+ ../Background/../Background/Level.h \
  ../Background/../Background/../Game.h \
+ ../Background/../Background/../GameObject.h \
+ ../Background/../Background/../Vector2D.h \
+ ../Background/../Background/../Singletons/ObjectIdGenerator.h \
+ ../Background/../Background/../Singletons/../Utils/TiposDefinidos.h \
+ ../Background/../Background/../Utils/TiposDefinidos.h \
+ ../Background/../Background/Background.h \
+ ../Background/../Background/Island.h \
  ../Background/../Background/../Singletons/TextureManager.h \
+ ../Background/../Background/RecurrentObject.h \
+ ../Background/../Background/../Utils/Random.h \
+ ../Background/../Background/../Utils/TiposDefinidos.h \
+ ../Background/../Background/Island.h \
  ../Background/../Background/Background.h \
  ../Background/../Singletons/InputHandler.h \
  ../Background/../Singletons/../Game.h \
@@ -42,29 +51,19 @@ Background/Background.d: ../Background/Background.cpp \
  ../Background/../Weapons/../Singletons/GameTimeHelper.h \
  ../Background/../Player.h ../Background/../MoveableObject.h \
  ../Background/../Weapons/Weapon.h ../Background/../Weapons/../Vector2D.h \
- ../Background/../Weapons/BasicWeapon.h ../Background/../Weapons/Weapon.h
+ ../Background/../Vector2D.h ../Background/../Utils/TiposDefinidos.h \
+ ../Background/../Weapons/BasicWeapon.h ../Background/../Weapons/Weapon.h \
+ ../Background/../GameObject.h ../Background/RecurrentObject.h
 
 ../Background/Background.h:
-
-../Background/BackgroundObject.h:
-
-../Background/../GameObject.h:
-
-../Background/../Vector2D.h:
-
-../Background/../Singletons/ObjectIdGenerator.h:
-
-../Background/../Singletons/../Utils/TiposDefinidos.h:
-
-../Background/../Utils/TiposDefinidos.h:
-
-../Background/../Utils/Random.h:
-
-../Background/../Utils/TiposDefinidos.h:
 
 ../Background/../Vector2D.h:
 
 ../Background/../Singletons/TextureManager.h:
+
+../Background/../Singletons/../Utils/TiposDefinidos.h:
+
+../Background/../Utils/TiposDefinidos.h:
 
 ../Background/../Game.h:
 
@@ -92,6 +91,10 @@ Background/Background.d: ../Background/Background.cpp \
 
 ../Background/../Server/../Game.h:
 
+../Background/../Server/DrawMessagesPacker.h:
+
+../Background/../Server/server.h:
+
 ../Background/../Utils/Parser/ParserServidor.h:
 
 ../Background/../Utils/Parser/Parser.h:
@@ -104,13 +107,33 @@ Background/Background.d: ../Background/Background.cpp \
 
 ../Background/../Utils/Parser/../pugixml/pugiconfig.hpp:
 
-../Background/../Background/Island.h:
-
-../Background/../Background/BackgroundObject.h:
+../Background/../Background/Level.h:
 
 ../Background/../Background/../Game.h:
 
+../Background/../Background/../GameObject.h:
+
+../Background/../Background/../Vector2D.h:
+
+../Background/../Background/../Singletons/ObjectIdGenerator.h:
+
+../Background/../Background/../Singletons/../Utils/TiposDefinidos.h:
+
+../Background/../Background/../Utils/TiposDefinidos.h:
+
+../Background/../Background/Background.h:
+
+../Background/../Background/Island.h:
+
 ../Background/../Background/../Singletons/TextureManager.h:
+
+../Background/../Background/RecurrentObject.h:
+
+../Background/../Background/../Utils/Random.h:
+
+../Background/../Background/../Utils/TiposDefinidos.h:
+
+../Background/../Background/Island.h:
 
 ../Background/../Background/Background.h:
 
@@ -144,6 +167,14 @@ Background/Background.d: ../Background/Background.cpp \
 
 ../Background/../Weapons/../Vector2D.h:
 
+../Background/../Vector2D.h:
+
+../Background/../Utils/TiposDefinidos.h:
+
 ../Background/../Weapons/BasicWeapon.h:
 
 ../Background/../Weapons/Weapon.h:
+
+../Background/../GameObject.h:
+
+../Background/RecurrentObject.h:

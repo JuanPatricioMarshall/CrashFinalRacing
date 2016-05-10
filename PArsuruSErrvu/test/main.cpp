@@ -11,11 +11,9 @@
 #include "Singletons/GameTimeHelper.h"
 #include <iostream>
 
-#include "Singletons/GameTimeHelper.h"
-
 using namespace std;
 
-const int FPS = 60;
+const int FPS = 150;
 const int DELAY_TIME = 1000.0f / FPS;
 
 int main(int argc, char **argv)
@@ -26,16 +24,22 @@ int main(int argc, char **argv)
 
 	Random::initialize();
 
-	if (Game::Instance()->init("1942 Ultraa Diesel", 400, 150, 800, 600)) //flag por ejemplo: SDL_WINDOW_FULLSCREEN_DESKTOP
+	if (Game::Instance()->init("1942 Servidor Ultra Diesel", 400, 150, 800, 600)) //flag por ejemplo: SDL_WINDOW_FULLSCREEN_DESKTOP
 
 	{
 		std::cout << "game init success!\n";
 
 		//Bucle del juego
-		while (Game::Instance()->isRunning()) {
+		while (Game::Instance()->isRunning())
+		{
 			frameStartTime = SDL_GetTicks();
 			//Game::Instance()->handleEvents();
 			Game::Instance()->update();
+
+			if (USE_DRAWMESSAGE_PACKAGING)
+			{
+				Game::Instance()->sendPackages();
+			}
 
 			frameEndTime = SDL_GetTicks() - frameStartTime;
 
@@ -43,14 +47,16 @@ int main(int argc, char **argv)
 			if (frameEndTime < DELAY_TIME) {
 				SDL_Delay((int) ((DELAY_TIME - frameEndTime)));
 				GameTimeHelper::Instance()->updateDeltaTime(DELAY_TIME);
+				//printf("FPS: %d \n", (1000/ DELAY_TIME));
             }
 			else
 			{
 				GameTimeHelper::Instance()->updateDeltaTime(frameEndTime);
+				//printf("FPS: %d \n", (1000/ frameEndTime));
 			}
 
-
         }
+
     }
     else
     {

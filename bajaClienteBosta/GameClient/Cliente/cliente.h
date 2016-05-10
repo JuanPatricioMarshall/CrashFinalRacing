@@ -72,6 +72,7 @@ class cliente
 
         char buffer[256];
 
+        void procesarDrawPackage(DrawMessagePack drawMsgPackage);
         void cerrarSoket();
         void procesarMensaje(NetworkMessage networkMessage);
         void setTimeOut();

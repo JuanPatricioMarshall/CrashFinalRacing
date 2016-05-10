@@ -35,6 +35,7 @@ void InputHandler::clean()
 
 void InputHandler::reset()
 {
+    //m_keystates = 0;
     m_mouseButtonStates[LEFT] = false;
     m_mouseButtonStates[RIGHT] = false;
     m_mouseButtonStates[MIDDLE] = false;

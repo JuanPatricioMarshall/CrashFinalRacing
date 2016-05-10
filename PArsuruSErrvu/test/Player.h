@@ -10,6 +10,7 @@
 #include "Utils/TiposDefinidos.h"
 #include "Weapons/BasicWeapon.h"
 
+
 class Player : public MoveableObject
 {
 public:

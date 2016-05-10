@@ -5,18 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Background/Background.cpp \
-../Background/BackgroundObject.cpp \
-../Background/Island.cpp 
+../Background/Island.cpp \
+../Background/Level.cpp \
+../Background/RecurrentObject.cpp 
 
 OBJS += \
 ./Background/Background.o \
-./Background/BackgroundObject.o \
-./Background/Island.o 
+./Background/Island.o \
+./Background/Level.o \
+./Background/RecurrentObject.o 
 
 CPP_DEPS += \
 ./Background/Background.d \
-./Background/BackgroundObject.d \
-./Background/Island.d 
+./Background/Island.d \
+./Background/Level.d \
+./Background/RecurrentObject.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -8,13 +8,13 @@
 #ifndef BACKGROUND_H_
 #define BACKGROUND_H_
 
-#include "BackgroundObject.h"
 #include "../Vector2D.h"
 #include "../Singletons/TextureManager.h"
 #include "../Utils/TiposDefinidos.h"
 #include "../Game.h"
 #include "../GameObject.h"
 #include <string>
+#include "RecurrentObject.h"
 
 class Background: public GameObject
 {

@@ -29,16 +29,16 @@ public:
      * textureID es el identificador con el que se vincula el sprite en el map del TextureManager.
      * numFrames son la cantidad de Frames
     */
-    virtual void load(int x, int y, int width, int height, int textureID, int numFrames)=0;
+    virtual void load(int x, int y, int width, int height, int textureID, int numFrames){};
 
     // Dibuja el objeto en pantalla respecto del estado actual del objeto
-    virtual void draw()=0;
+    virtual void draw() {};
 
     // Actualiza el estado del objeto (posición, velocidad, etc)
-    virtual void update()=0;
+    virtual void update() {};
 
     // Libera memoria y los recursos que esté utilizando el GameObject
-    virtual void clean()=0;
+    virtual void clean(){};
 
 
     // Getters
@@ -54,6 +54,7 @@ public:
     int getLayer() { return m_layer; }
     void setObjectID(int objectId) {m_objectId = objectId;}
     void setLayer(int layer) {m_layer = layer;}
+    void setTextureID(int textureID) {m_textureID = textureID;}
 
 
     // En este ejemplo de scroll, scrollea to do menos los objetos con tag player

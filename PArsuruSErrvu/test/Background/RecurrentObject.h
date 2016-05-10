@@ -17,10 +17,10 @@
 #include <iostream>
 
 
-class BackgroundObject: public GameObject
+class RecurrentObject: public GameObject
 {
 public:
-    virtual ~BackgroundObject() {}
+    virtual ~RecurrentObject() {}
 
     //Funciones Generales
     virtual void load(int x, int y, int width, int height, int textureID, int numFrames);
@@ -42,8 +42,8 @@ public:
 
 protected:
 
-    BackgroundObject();
-    BackgroundObject(const Vector2D& direction, const Vector2D& scrollSpeed);
+    RecurrentObject();
+    RecurrentObject(const Vector2D& direction, const Vector2D& scrollSpeed);
 
     // variables de movimiento
     Vector2D m_direction;

@@ -5,17 +5,17 @@
  *      Author: gonzalo
  */
 
-#include "BackgroundObject.h"
+#include "RecurrentObject.h"
 
 //Callback, no puede ser miembro de la función. Puede si es estática...tal vez...
 Uint32 BackgroundObject_TimerCallback(Uint32 interval, void *backgroundObject) {
-   ((class BackgroundObject *)backgroundObject)->reappear();
+   ((class RecurrentObject *)backgroundObject)->reappear();
    return 0;
 }
 
-BackgroundObject::BackgroundObject() :  GameObject(),
+RecurrentObject::RecurrentObject() :  GameObject(),
 				m_direction(0,1),
-				m_scrollSpeed(0,5),
+				m_scrollSpeed(0,2),
 				m_reappearanceTime(0),
 				m_waiting(false),
 				timerID(0)
@@ -24,7 +24,7 @@ BackgroundObject::BackgroundObject() :  GameObject(),
 	m_layer = MIDDLEGROUND;
 }
 
-BackgroundObject::BackgroundObject(const Vector2D& direction, const Vector2D& scrollSpeed) :  GameObject(),
+RecurrentObject::RecurrentObject(const Vector2D& direction, const Vector2D& scrollSpeed) :  GameObject(),
 																							m_reappearanceTime(0),
 																							m_waiting(false),
 																							timerID(0)
@@ -35,7 +35,7 @@ BackgroundObject::BackgroundObject(const Vector2D& direction, const Vector2D& sc
 }
 
 
-void BackgroundObject::load(int x, int y, int width, int height, int textureID, int numFrames)
+void RecurrentObject::load(int x, int y, int width, int height, int textureID, int numFrames)
 {
     // posicion de la nave en el juego. Puede estar fuera de camara y se dibujará aunque no sea visible
     m_position = Vector2D(x, y);
@@ -47,13 +47,13 @@ void BackgroundObject::load(int x, int y, int width, int height, int textureID, 
     m_numFrames = numFrames;
 }
 
-void BackgroundObject::draw()
+void RecurrentObject::draw()
 {
     /*TextureManager::Instance()->drawFrame(m_textureID, m_position.getX(), m_position.getY(), m_width, m_height,
     										m_currentRow, m_currentFrame, Game::Instance()->getRenderer(), m_angle, m_alpha);*/
 }
 
-void BackgroundObject::update()
+void RecurrentObject::update()
 {
 	/*if (!m_waiting)
 	{
@@ -80,7 +80,7 @@ void BackgroundObject::update()
 }
 
 
-void BackgroundObject::reappear()
+void RecurrentObject::reappear()
 {
 	//setea Y en el comienzo
 	m_position.setY(0 - m_height);
@@ -91,7 +91,7 @@ void BackgroundObject::reappear()
 	m_position.setX(randomX);
 }
 
-void BackgroundObject::clean()
+void RecurrentObject::clean()
 {
 	if (timerID != 0)
 		SDL_RemoveTimer( timerID );

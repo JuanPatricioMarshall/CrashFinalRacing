@@ -49,13 +49,16 @@ public:
     void handleEvents();
     void clean();
 
+    void resetGame();
+
     void createPlayer(int objectID, int textureID);
     void disconnectObject(int objectID, int layer);
     void disconnect();
-    bool setUpKorea();
+    bool initializeClient();
     void askForName();
     bool conectToKorea();
-   	void sendToKorea(InputMessage mensaje);
+   	void sendInputMsg(InputMessage mensaje);
+   	void sendNetworkMsg(NetworkMessage netMsg);
    	void* koreaMethod(void);
    	void readFromKorea();
    	void interpretarDrawMsg(DrawMessage drwMsg);
@@ -66,6 +69,7 @@ public:
     SDL_Window* getWindow() const { return m_pWindow; }
 
     bool isRunning() { return m_running; }
+    bool isReseting() { return m_reseting; }
 
     void quit() { m_running = false; }
 
@@ -74,6 +78,8 @@ public:
     int getGameHeight() const { return m_gameHeight; }
     float getScrollSpeed() { return m_scrollSpeed; }
     void setGameStarted(bool state) { m_gameStarted = state; }
+    void setReseting(bool state) { m_reseting = state; }
+    void setWindowSize(int width, int heigth);
 
     static void *thread_method(void *context);
     pthread_t listenThread;
@@ -104,6 +110,7 @@ private:
     bool m_running;
 
     bool m_gameStarted;
+    bool m_reseting;
 
     std::string m_playerName;
 

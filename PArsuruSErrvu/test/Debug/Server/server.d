@@ -5,24 +5,27 @@ Server/server.d: ../Server/server.cpp ../Server/server.h \
  ../Server/ServerMessage.h ../Server/../Utils/Timer.h \
  ../Server/MessageFactory.h ../Server/../Utils/StringHelper.h \
  ../Server/../Game.h ../Server/../Server/server.h \
- ../Server/../Utils/Parser/ParserServidor.h \
+ ../Server/../Server/DrawMessagesPacker.h \
+ ../Server/../Server/../Utils/TiposDefinidos.h \
+ ../Server/../Server/server.h ../Server/../Utils/Parser/ParserServidor.h \
  ../Server/../Utils/Parser/Parser.h ../Server/../Utils/Parser/../Logger.h \
  ../Server/../Utils/Parser/../TiposDefinidos.h \
  ../Server/../Utils/Parser/../pugixml/pugixml.hpp \
  ../Server/../Utils/Parser/../pugixml/pugiconfig.hpp \
- ../Server/../Background/Island.h \
- ../Server/../Background/BackgroundObject.h \
+ ../Server/../Background/Level.h ../Server/../Background/../Game.h \
  ../Server/../Background/../GameObject.h \
  ../Server/../Background/../Vector2D.h \
  ../Server/../Background/../Singletons/ObjectIdGenerator.h \
  ../Server/../Background/../Singletons/../Utils/TiposDefinidos.h \
  ../Server/../Background/../Utils/TiposDefinidos.h \
- ../Server/../Background/../Utils/Random.h \
- ../Server/../Background/../Utils/TiposDefinidos.h \
- ../Server/../Background/../Game.h \
- ../Server/../Background/../Singletons/TextureManager.h \
  ../Server/../Background/Background.h \
  ../Server/../Background/../Vector2D.h \
+ ../Server/../Background/../Singletons/TextureManager.h \
+ ../Server/../Background/../Utils/TiposDefinidos.h \
+ ../Server/../Background/RecurrentObject.h \
+ ../Server/../Background/../Utils/Random.h \
+ ../Server/../Background/Island.h ../Server/../Background/Island.h \
+ ../Server/../Background/Background.h \
  ../Server/../Singletons/InputHandler.h ../Server/../Singletons/../Game.h \
  ../Server/../Singletons/../Vector2D.h \
  ../Server/../Singletons/TextureManager.h \
@@ -62,6 +65,12 @@ Server/server.d: ../Server/server.cpp ../Server/server.h \
 
 ../Server/../Server/server.h:
 
+../Server/../Server/DrawMessagesPacker.h:
+
+../Server/../Server/../Utils/TiposDefinidos.h:
+
+../Server/../Server/server.h:
+
 ../Server/../Utils/Parser/ParserServidor.h:
 
 ../Server/../Utils/Parser/Parser.h:
@@ -74,9 +83,9 @@ Server/server.d: ../Server/server.cpp ../Server/server.h \
 
 ../Server/../Utils/Parser/../pugixml/pugiconfig.hpp:
 
-../Server/../Background/Island.h:
+../Server/../Background/Level.h:
 
-../Server/../Background/BackgroundObject.h:
+../Server/../Background/../Game.h:
 
 ../Server/../Background/../GameObject.h:
 
@@ -88,17 +97,23 @@ Server/server.d: ../Server/server.cpp ../Server/server.h \
 
 ../Server/../Background/../Utils/TiposDefinidos.h:
 
-../Server/../Background/../Utils/Random.h:
-
-../Server/../Background/../Utils/TiposDefinidos.h:
-
-../Server/../Background/../Game.h:
-
-../Server/../Background/../Singletons/TextureManager.h:
-
 ../Server/../Background/Background.h:
 
 ../Server/../Background/../Vector2D.h:
+
+../Server/../Background/../Singletons/TextureManager.h:
+
+../Server/../Background/../Utils/TiposDefinidos.h:
+
+../Server/../Background/RecurrentObject.h:
+
+../Server/../Background/../Utils/Random.h:
+
+../Server/../Background/Island.h:
+
+../Server/../Background/Island.h:
+
+../Server/../Background/Background.h:
 
 ../Server/../Singletons/InputHandler.h:
 
