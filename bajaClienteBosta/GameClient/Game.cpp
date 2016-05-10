@@ -25,6 +25,8 @@ Game::~Game()
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int SDL_WINDOW_flag)
 {
+
+
     TextureManager::Instance()-> init();
 
 	askForName();
@@ -70,7 +72,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
         return false;
     }
 
-
+    TextureManager::Instance()->clearTextureMap();
+    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 0, Game::Instance()->getRenderer());
+    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
     //tudo ben
     m_initializingSDL = false;
     m_running = true;
@@ -105,10 +109,10 @@ void Game::render()
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
-	/*printf("objectID: %d\n", drwMsg.objectID);
+	printf("objectID: %d\n", drwMsg.objectID);
 	printf("layer: %d\n", drwMsg.layer);
 	printf("textureID: %d\n", drwMsg.textureID);
-	printf("alive: %d\n", drwMsg.alive);*/
+	printf("alive: %d\n", drwMsg.alive);
 	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
 		if (drwMsg.connectionStatus == false)
@@ -124,18 +128,18 @@ void Game::interpretarDrawMsg(DrawMessage drwMsg){
 		}
 		else
 		{
-			//printf("Destruyendo objeto con id: %d \n", drwMsg.objectID);
+			printf("Destruyendo objeto con id: %d \n", drwMsg.objectID);
 			removeDrawObject(drwMsg.objectID, drwMsg.layer);
 		}
 	}
 	else //Si no existe en el mapa
 	{
 		if (!drwMsg.alive)
-		{
+		{printf("DrawMessage de objeto Muerto\n");
 			return;
 		}
 
-		//printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
+		printf("Creando nuevo objeto con objectID: %d\n", drwMsg.objectID);
 
 		DrawObject* newObject = new DrawObject();
 		newObject->setObjectID(drwMsg.objectID);
@@ -439,9 +443,7 @@ void Game::clean()
 		delete it->second;
     }
 
-    m_client->desconectar();
-    delete m_client;
-    delete m_player;
+
 
     InputHandler::Instance()->clean();
     TextureManager::Instance()->clearTextureMap();
@@ -453,7 +455,11 @@ void Game::clean()
     SDL_DestroyRenderer(m_pRenderer);
     SDL_Quit();
 }
-
+void Game::disconnectPT(){
+    m_client->desconectar();
+    delete m_client;
+    delete m_player;
+}
 void Game::resetGame()
 {
 	m_reseting = true;
@@ -488,6 +494,18 @@ void Game::resetGame()
     //SDL_SetWindowSize(m_pWindow,m_gameWidth, m_gameHeight);
 
     cout << "Finish reseting game\n";
+    // m_reseting = false;
 
-  // m_reseting = false;
+    SDL_DestroyWindow(m_pWindow);
+
+    //----------------------------------------------------------------
+    m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
+    TextureManager::Instance()-> init();
+    TextureManager::Instance()->clearTextureMap();
+    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 0, Game::Instance()->getRenderer());
+    TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
+    //tudo ben
+    m_initializingSDL = false;
+    m_running = true;
+
 }

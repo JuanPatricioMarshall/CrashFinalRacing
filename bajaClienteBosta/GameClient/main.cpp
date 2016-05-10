@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	//printf("FPS PROMEDIO: %d \n", (fpsCount/ framesCount));
     std::cout << "game closing...\n";
     Game::Instance()->clean();
-
+    Game::Instance()->disconnectPT();
 
     return 0;
 }
