@@ -10,7 +10,7 @@
 	</conexion>
 	<mensajes>
 		<mensaje>
-			<id>25.111.233.4</id>
+			<id>Mensaje1</id>
 			<tipo> INT </tipo>
 			<valor> 10 </valor>
 		</mensaje>

@@ -53,11 +53,10 @@ public:
 
     void createPlayer(int objectID, int textureID);
     void disconnectObject(int objectID, int layer);
-    void disconnectPT();
+    void disconnect();
     bool initializeClient();
     void askForName();
     bool conectToKorea();
-    void disconnect();
    	void sendInputMsg(InputMessage mensaje);
    	void sendNetworkMsg(NetworkMessage netMsg);
    	void* koreaMethod(void);
