@@ -44,12 +44,12 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height)
 
     m_level = new Level();
 
-   m_island = new Island();
+   /*m_island = new Island();
    m_island->load(0, m_gameHeight/2, 150, 150, 3, 1);
    m_island->setLayer(MIDDLEGROUND);
-   m_island->setReappearanceTime(0);   // en ms
+   m_island->setReappearanceTime(5000);   // en ms
    printf("Isla inicializada con objectID: %d y textureID: %d\n", m_island->getObjectId(), 3);
-   m_listOfGameObjects[m_island->getObjectId()] = m_island;
+   m_listOfGameObjects[m_island->getObjectId()] = m_island;*/
 
 
 

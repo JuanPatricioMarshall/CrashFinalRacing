@@ -70,6 +70,7 @@ public:
 
     bool isRunning() { return m_running; }
     bool isReseting() { return m_reseting; }
+    bool isInitializingSDL(){ return m_initializingSDL;}
 
     void quit() { m_running = false; }
 
@@ -111,6 +112,7 @@ private:
 
     bool m_gameStarted;
     bool m_reseting;
+    bool m_initializingSDL;
 
     std::string m_playerName;
 

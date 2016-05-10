@@ -71,6 +71,7 @@ class server
         int m_clientNum;
         ListaInteligente<int> m_listaDeClientes;
         ListaInteligente<Timer> m_listaTimeOuts;
+        Timer m_resetTimer;
 
         std::vector<pthread_t> m_clientThreads;
         std::vector<pthread_t> m_clientResponseThreads;

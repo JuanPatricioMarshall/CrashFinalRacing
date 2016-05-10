@@ -117,7 +117,6 @@ void Player::handleInput()
 		if (!Game::Instance()->isReseting())
 		{
 			Game::Instance()->setReseting(true);
-
 			NetworkMessage netMsg;
 			netMsg.msg_Code[0] = 'r';
 			netMsg.msg_Code[1] = 's';

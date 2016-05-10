@@ -364,6 +364,21 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		if (connectedMessage.connected && !connectedMessage.requestData)
 		{
 			printf("Conectado con id: %d \n", connectedMessage.objectID);
+			Timer* initializingTimer = new Timer();
+			initializingTimer->Start();
+			while (Game::Instance()->isInitializingSDL())
+			{
+				if ((long double)initializingTimer->GetTicks()/CLOCKS_PER_SEC >= 5.0)
+				{
+					initializingTimer->Stop();
+					break;
+				}
+				else
+				{
+					continue;
+				}
+			}
+			delete initializingTimer;
 			Game::Instance()->createPlayer(connectedMessage.objectID, connectedMessage.textureID);
 			Game::Instance()->setWindowSize(static_cast<int>(connectedMessage.windowWidth), static_cast<int>(connectedMessage.windowHeight));
 			//El cliente se conecto con exito.

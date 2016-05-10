@@ -15,7 +15,7 @@ class DrawObject : public GameObject{
 public:
 	DrawObject();
 	virtual ~DrawObject();
-	virtual void load(int x, int y, int width, int height, int textureID, int numFrames){printf("ENTRO A LOAD MALO ERROR FIJARSE!!!!!!!! BOOM EXPLOTE");}
+	virtual void load(int x, int y, int width, int height, int textureID, int numFrames);
 	virtual void load(int x, int y, int textureID);
 	virtual void draw();
 	virtual void clean();

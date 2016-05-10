@@ -39,6 +39,7 @@ void TextureManager::init(){
 	hola.path =	"Assets/Sprites/BlackShip.png";
 	m_textureMapInfo[1]=hola;
 
+
 	hola.width =61;
 	hola.height = 68;
 	hola.numFrames = 1;

@@ -126,6 +126,8 @@ bool server::crearCliente (int clientSocket)
 		return false;
 	}
 
+	agregarTimeOutTimer(m_lastID);
+
 	//Envia solicitud de datos de coneccion
 	ConnectedMessage connectedMsg;
 	connectedMsg.requestData = true;
@@ -150,26 +152,22 @@ bool server::crearCliente (int clientSocket)
 	//Informa resultado del procesamiento de la informacion de coneccion
 	connectedMsg.requestData = false;
 	connectedMsg.connected = m_successfulPlayerCreation;
-	sendConnectedMsg(clientSocket, connectedMsg);
 
 	if (!m_successfulPlayerCreation)
 	{
+		sendConnectedMsg(clientSocket, connectedMsg);
 		removeTimeOutTimer(m_lastID);
 		m_listaDeClientes.removeAt(m_lastID);
 		close(clientSocket);
 		return false;
 	}
 
-
-	//DEBE AVISAR EL RESULTADO. SI PUDO O NO CREAR EL JUGADOR
-
 	aumentarNumeroClientes();
-	agregarTimeOutTimer(m_lastID);
-
-	//printf("se agrego en la posicion %d \n", m_lastID);
 
 	pthread_create(&m_clientThreads[m_lastID], NULL, &server::mati_method, (void*)this);
 	pthread_create(&m_clientResponseThreads[m_lastID], NULL, &server::mati_method3, (void*)this);
+
+	sendConnectedMsg(clientSocket, connectedMsg);
 
 	printf("Se ha conectado un cliente\n");
 	std::stringstream ss;

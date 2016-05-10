@@ -9,9 +9,10 @@ m_pRenderer(0),
 m_running(false),
 m_gameStarted(false),
 m_reseting(false),
+m_initializingSDL(false),
 m_scrollSpeed(0.8)
 {
-	m_player = new Player();
+	//m_player = new Player();
 }
 
 Game::~Game()
@@ -24,6 +25,8 @@ Game::~Game()
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int SDL_WINDOW_flag)
 {
+
+
     TextureManager::Instance()-> init();
 
 	askForName();
@@ -31,8 +34,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     if (!initializeClient())
     	return false;
 
-    printf("Conectado\n");
-
+    m_initializingSDL = true;
 
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
@@ -72,7 +74,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
 
     //tudo ben
+    m_initializingSDL = false;
     m_running = true;
+
     return true;
 }
 
@@ -103,7 +107,10 @@ void Game::render()
 }
 void Game::interpretarDrawMsg(DrawMessage drwMsg){
 
-
+	printf("objectID: %d\n", drwMsg.objectID);
+	printf("layer: %d\n", drwMsg.layer);
+	printf("textureID: %d\n", drwMsg.textureID);
+	printf("alive: %d\n", drwMsg.alive);
 	if ( existDrawObject(drwMsg.objectID, static_cast<int>(drwMsg.layer)))
 	{
 		if (drwMsg.connectionStatus == false)
@@ -209,23 +216,23 @@ bool Game::existDrawObject(int objectID, int layer)
 	switch(layer)
 	{
 	case BACKGROUND:
-			if (backgroundObjects.find(objectID) == backgroundObjects.end())
-			{
-				return false;
-			}
-			break;
+	if (backgroundObjects.find(objectID) == backgroundObjects.end())
+	{
+		return false;
+	}
+	break;
 	case MIDDLEGROUND:
-			if (middlegroundObjects.find(objectID) == middlegroundObjects.end())
-			{
-				return false;
-			}
-			break;
+	if (middlegroundObjects.find(objectID) == middlegroundObjects.end())
+	{
+		return false;
+	}
+	break;
 	case FOREGROUND:
-			if (foregroundObjects.find(objectID) == foregroundObjects.end())
-			{
-				return false;
-			}
-			break;
+	if (foregroundObjects.find(objectID) == foregroundObjects.end())
+	{
+		return false;
+	}
+	break;
 
 	default: return true;
 	}
@@ -243,7 +250,8 @@ void Game::handleEvents()
 {
 	InputHandler::Instance()->update();
 	//Pseudo controler
-	m_player->handleInput();
+	if (m_player)
+		m_player->handleInput();
 }
 bool Game::initializeClient()
 {
@@ -271,26 +279,33 @@ bool Game::initializeClient()
 
 void Game::askForName()
 {
-    pedirNombre:
-	printf("Ingrese el nombre con el que desea conectarse \n");
-    char name[24];
-    cin.getline(name, 24);
-    std::string playerName(name);
-    if (playerName.length() <= 0)
+    bool nombreValido = false;
+    while (!nombreValido)
     {
-    	printf("Nombre Invalido \n");
-    	goto pedirNombre;
+		printf("Ingrese el nombre con el que desea conectarse \n");
+		char name[24];
+		cin.getline(name, 24);
+		std::string playerName(name);
+		if (playerName.length() <= 0)
+		{
+			printf("Nombre Invalido \n");
+			nombreValido = false;
+		}
+		else
+		{
+		    m_playerName = playerName;
+			nombreValido = true;
+		}
     }
-    m_playerName = playerName;
-    playerName.clear();
 }
 
 void Game::createPlayer(int objectID, int textureID)
 {
-	//m_player = new Player();
-	printf("player: id: %d, textureID: %d \n", objectID, textureID);
+	m_player = new Player();
 	m_player->setObjectID(objectID);
 	m_player->setTextureID(textureID);
+
+
 }
 
 void Game::disconnectObject(int objectID, int layer)
@@ -472,37 +487,9 @@ void Game::resetGame()
     foregroundObjects.clear();
 
     cout << "destroying SDL STUFF\n";
-    SDL_DestroyWindow(m_pWindow);
-    SDL_DestroyRenderer(m_pRenderer);
+    //SDL_SetWindowSize(m_pWindow,m_gameWidth, m_gameHeight);
 
-    printf("Ventana destruida\n");
+    cout << "Finish reseting game\n";
 
-    printf("Ancho: %d , Alto: %d \n", m_gameWidth, m_gameHeight);
-
-
-   m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
-
-   if(m_pWindow != 0)
-   {
-	   cout << "window creation success\n";
-	   m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
-
-	   if(m_pRenderer != 0)
-	   {
-		   cout << "renderer creation success\n";
-		   SDL_SetRenderDrawColor(m_pRenderer, 0,0,0,255);
-	   }
-	   else
-	   {
-		   cout << "renderer init fail\n";
-		   return;
-	   }
-   }
-   else
-   {
-	   cout << "window init fail\n";
-	   return;
-   }
-
-   m_reseting = false;
+  // m_reseting = false;
 }
