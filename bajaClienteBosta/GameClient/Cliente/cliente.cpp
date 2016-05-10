@@ -453,7 +453,6 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 		ResetInfo resetInfo = m_alanTuring->decodeResetInfo(networkMessage);
 		Game::Instance()->setWindowSize(static_cast<int>(resetInfo.windowWidth), static_cast<int>(resetInfo.windowHeight));
 		Game::Instance()->resetGame();
-
 		Logger::Instance()->LOG("Juego: El juego ha sido reiniciado.", DEBUG);
 
 		return;

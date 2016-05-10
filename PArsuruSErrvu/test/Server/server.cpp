@@ -699,14 +699,12 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 			Logger::Instance()->LOG("Server: Se reiniciará el juego.", DEBUG);
 			//Resetea el juego
 			Game::Instance()->resetGame();
-
 			//Envia la nueva informacion al cliente
 			ResetInfo resetInfo;
 			resetInfo.windowHeight = Game::Instance()->getGameHeight();
-			resetInfo.windowWidth = Game::Instance()->getGameHeight();
+			resetInfo.windowWidth = Game::Instance()->getGameWidth();
 
 			sendResetMsgToAll(resetInfo);
-
 			Game::Instance()->setReseting(false);
 		}
 

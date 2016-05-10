@@ -263,26 +263,40 @@ void Game::clean()
 void Game::resetGame()
 {
 	 BulletsHandler::Instance()->clearBullets();
-
-	/*for (std::map<int,Player*>::iterator it=m_listOfPlayer.begin(); it != m_listOfPlayer.end(); ++it)
-	{
-		//printf("objectID = %d \n", it->second.getObjectId());
-		 it->second->clean();
-		 delete  it->second;
-	}*/
-	/*for (std::map<int,GameObject*>::iterator it=m_listOfGameObjects.begin(); it != m_listOfGameObjects.end(); ++it)
-	{
-		//printf("objectID = %d \n", it->second.getObjectId());
-		 it->second->clean();
-		 delete  it->second;
-	}
-	 m_listOfGameObjects.clear();*/
 	 InputHandler::Instance()->clean();
+	 //delete m_background;
+	 //delete m_island;
+	 //m_listOfGameObjects.clear();
 	 m_level->clean();
-
+	 printf("Se terminó de borrar bien\n");
 
 	 //CARGAR XML
 	 //m_level->initialize();
-	    m_gameWidth = 800;
-	    m_gameHeight = 600;
+	 m_gameWidth = 800;
+	 m_gameHeight = 600;
+
+	 m_level = new Level();
+	 printf("Se creó el nuevo nivel\n");
+
+	 //tudo ben
+	 m_running = true;
 }
+/*	 m_background = new Background();
+	 m_background->load(0, 0, m_gameWidth, m_gameHeight, 2);
+	 m_background->setLayer(BACKGROUND);
+	 printf("Background inicializado con objectID: %d y textureID: %d y layer : %d\n", m_background->getObjectId(), 2, m_background->getLayer());
+	 m_listOfGameObjects[m_background->getObjectId()] = m_background;
+
+	 printf("Se creó bien el background");
+
+	 m_island = new Island();
+	 m_island->load(0, m_gameHeight/2, 150, 150, 3, 1);
+	 m_island->setLayer(MIDDLEGROUND);
+	 m_island->setReappearanceTime(5000);   // en ms
+	 printf("Isla inicializada con objectID: %d y textureID: %d\n", m_island->getObjectId(), 3);
+	 m_listOfGameObjects[m_island->getObjectId()] = m_island;
+
+	 printf("Se creó bien la isla");
+*/
+	 //tudo ben
+	 //m_running = true;

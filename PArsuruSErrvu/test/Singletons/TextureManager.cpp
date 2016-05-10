@@ -41,8 +41,10 @@ void TextureManager::draw(int id, int x, int y, int width, int height, double an
 
     srcRect.x = 0;
     srcRect.y = 0;
-    srcRect.w = destRect.w = width;
-    srcRect.h = destRect.h = height;
+    //srcRect.w = destRect.w = width;
+    //srcRect.h = destRect.h = height;
+    destRect.w = width;
+    destRect.h = height;
     destRect.x = x;
     destRect.y = y;
 

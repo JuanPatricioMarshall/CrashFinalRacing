@@ -40,7 +40,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
         printf("%d\n",m_gameWidth);
 
-        m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
+        m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOW_RESIZABLE);
 
         if(m_pWindow != 0)
         {
@@ -451,8 +451,8 @@ void Game::clean()
     middlegroundObjects.clear();
     foregroundObjects.clear();
 
-    SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);
+    SDL_DestroyWindow(m_pWindow);
     SDL_Quit();
 }
 
@@ -486,56 +486,61 @@ void Game::resetGame()
 	 middlegroundObjects.clear();
 	 foregroundObjects.clear();
 
-	 cout << "destroying SDL STUFF\n";
-	  //SDL_SetWindowSize(m_pWindow,m_gameWidth, m_gameHeight);
+	 //cout << "destroying SDL STUFF\n";
+	 //SDL_DestroyRenderer(m_pRenderer);
+	 //printf("Se destruyó el renderer\n");
 
-	  cout << "Finish reseting game\n";
-	 // m_reseting = false;
+	 SDL_SetWindowSize(m_pWindow,m_gameWidth, m_gameHeight);
+	 printf("Se modificó el tamaño de la window\n");
 
+/*	 m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
+	 if (m_pRenderer != 0)
+	 {
+		 cout << "renderer creation success\n";
+		 SDL_SetRenderDrawColor(m_pRenderer, 0,0,0,255);
+	 }
+	 else
+		 cout << "renderer creation fail";*/
+/*	 SDL_DestroyRenderer(m_pRenderer);
+	 printf("Se destruyó el renderer\n");
 	 SDL_DestroyWindow(m_pWindow);
+	 printf("se destruyó la window\n");
+	 SDL_Quit();
+	 printf("se cerró SDL");
 
 
-	 m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
 	 TextureManager::Instance()-> init();
+
+	 if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	 {
+		 cout << "SDL init success\n";
+
+		 m_pWindow = SDL_CreateWindow("1942 - Cliente", 400, 150, m_gameWidth, m_gameHeight, SDL_WINDOWPOS_CENTERED);
+		 if(m_pWindow != 0)
+		 {
+			 cout << "window creation success\n";
+
+			 m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
+			 if(m_pRenderer != 0)
+			 {
+				 cout << "renderer creation success\n";
+				 SDL_SetRenderDrawColor(m_pRenderer, 0,0,0,255);
+			 }
+			 else
+				 cout << "renderer init fail\n";
+		 }
+		 else
+			 cout << "window init fail\n";
+	 }
+	 else
+		 cout << "SDL init fail\n";
+
 	 TextureManager::Instance()->clearTextureMap();
 	 TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 0, Game::Instance()->getRenderer());
 	 TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
-	 //tudo ben
-	 m_initializingSDL = false;
 	 m_running = true;
+*/
+	 cout << "Finish reseting game\n";
+	 m_reseting = false;
 
-	/*m_reseting = true;
-    cout << "reseting game\n";
-
-    for (std::map<int,DrawObject*>::iterator it = backgroundObjects.begin(); it != backgroundObjects.end(); ++it)
-    {
-        cout << "destroying background\n";
-    	it->second->clean();
-		delete it->second;
-    }
-    for (std::map<int,DrawObject*>::iterator it = middlegroundObjects.begin(); it != middlegroundObjects.end(); ++it)
-    {
-        cout << "destroying middleground\n";
-    	it->second->clean();
-		delete it->second;
-    }
-    for (std::map<int,DrawObject*>::iterator it = foregroundObjects.begin(); it != foregroundObjects.end(); ++it)
-    {
-        cout << "destroying foreground\n";
-    	it->second->clean();
-		delete it->second;
-    }
-
-    InputHandler::Instance()->reset();
-    TextureManager::Instance()->clearTextureMap();
-    backgroundObjects.clear();
-    middlegroundObjects.clear();
-    foregroundObjects.clear();
-
-    cout << "destroying SDL STUFF\n";
-    //SDL_SetWindowSize(m_pWindow,m_gameWidth, m_gameHeight);
-
-    cout << "Finish reseting game\n";*/
-
-  // m_reseting = false;
 }
