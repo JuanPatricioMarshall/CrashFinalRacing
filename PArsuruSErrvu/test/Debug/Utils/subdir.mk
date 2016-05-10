@@ -4,14 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Utils/GameObjectFactory.cpp \
 ../Utils/Logger.cpp \
 ../Utils/Timer.cpp 
 
 OBJS += \
+./Utils/GameObjectFactory.o \
 ./Utils/Logger.o \
 ./Utils/Timer.o 
 
 CPP_DEPS += \
+./Utils/GameObjectFactory.d \
 ./Utils/Logger.d \
 ./Utils/Timer.d 
 

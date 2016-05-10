@@ -368,6 +368,8 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 			initializingTimer->Start();
 			while (Game::Instance()->isInitializingSDL())
 			{
+				continue;
+				printf("Esperando que termina la inicializacion de SDL\n");
 				if ((long double)initializingTimer->GetTicks()/CLOCKS_PER_SEC >= 5.0)
 				{
 					initializingTimer->Stop();
@@ -421,6 +423,12 @@ void cliente::procesarMensaje(NetworkMessage networkMessage)
 	//Draw Message
 	if ((networkMessage.msg_Code[0] == 'd') && (networkMessage.msg_Code[1] == 'm') && (networkMessage.msg_Code[2] == 's'))
 	{
+		while (Game::Instance()->isInitializingSDL())
+		{
+			continue;
+			printf("Esperando que termina la inicializacion de SDL\n");
+
+		}
 		//printf("Leyendo DrawMessage\n");
 		DrawMessage drwMsg = m_alanTuring->decodeDrawMessage(networkMessage);
 		Game::Instance()->interpretarDrawMsg(drwMsg);

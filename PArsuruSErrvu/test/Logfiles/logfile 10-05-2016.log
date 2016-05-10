@@ -286,3 +286,242 @@
   DEBUG: Server: Se acepto el cliente: 127.0.0.1
   DEBUG: Server: Se desconectó un cliente.
   DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:54 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  WARNING: Server: No se pudo crear el cliente con ip127.0.0.1. el nombre: asd ya está en uso.
+  WARNING: Server: No se pudo aceptar al cliente 127.0.0.1 por nombre inválido.
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:55 ) 
+  ===============================================
+
+  DEBUG: Server: asddas ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:55 ) 
+  ===============================================
+
+  DEBUG: Server: asdd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:56 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:58 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:59 ) 
+  ===============================================
+
+  DEBUG: Server: Entro? ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 25.111.229.253
+  DEBUG: Server: asdads ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 00:59 ) 
+  ===============================================
+
+  DEBUG: Server: adasdsads ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: eaea ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 25.111.229.253
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:03 ) 
+  ===============================================
+
+  DEBUG: Server: Listo ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 25.111.229.253
+  DEBUG: Server: adasd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:03 ) 
+  ===============================================
+
+  DEBUG: Server: asdf ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 25.111.229.253
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:03 ) 
+  ===============================================
+
+  DEBUG: Server: asdasd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: asfd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 25.111.229.253
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:06 ) 
+  ===============================================
+
+  DEBUG: Server: asdasd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: aadds ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:09 ) 
+  ===============================================
+
+  DEBUG: Server: sadd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:10 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:11 ) 
+  ===============================================
+
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:16 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  WARNING: Server: No se pudo crear el cliente con ip127.0.0.1. el nombre: asd ya está en uso.
+  WARNING: Server: No se pudo aceptar al cliente 127.0.0.1 por nombre inválido.
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:17 ) 
+  ===============================================
+
+  DEBUG: Server: asdsad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: dasdasdd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:18 ) 
+  ===============================================
+
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:18 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: aadddw ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:19 ) 
+  ===============================================
+
+  DEBUG: Server: ads ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: dsadsad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:19 ) 
+  ===============================================
+
+  DEBUG: Server: adsdsad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: aasdasdsad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:19 ) 
+  ===============================================
+
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:21 ) 
+  ===============================================
+
+  DEBUG: Server: aad ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: a ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:23 ) 
+  ===============================================
+
+  DEBUG: Server: dsadsa ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: asdasd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:23 ) 
+  ===============================================
+
+  DEBUG: Server: asdasd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: dsadsadd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:24 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: asdasd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
+  ===============================================
+    Comienzo del Log ( 10-05-2016 a las 01:25 ) 
+  ===============================================
+
+  DEBUG: Server: asd ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: dsads ha ingresado a la partida.
+  DEBUG: Server: Se acepto el cliente: 127.0.0.1
+  DEBUG: Server: Se desconectó un cliente.
+  DEBUG: Server: Se desconectó un cliente.
