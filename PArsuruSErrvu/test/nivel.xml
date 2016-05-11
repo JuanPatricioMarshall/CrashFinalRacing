@@ -1,0 +1,59 @@
+<ventana>
+	<ancho>900</ancho>
+	<alto>600</alto>
+</ventana>
+<sprites>
+	<sprite>
+		<id>avion</id>
+		<path>path/a/avion.png</path>
+		<cantidad>1</cantidad>
+		<ancho>10</ancho>
+		<alto>10</alto>
+	</sprite>
+	<sprite>
+		<id>agua</id>
+		<path>path/a/agua.png</path>
+		<cantidad>1</cantidad>
+		<ancho>64</ancho>
+		<alto>64</alto>
+	</sprite>
+	<sprite>
+		<id>isla</id>
+		<path>path/a/island.png</path>
+		<cantidad>1</cantidad>
+		<ancho>150</ancho>
+		<alto>150</alto>
+	</sprite>
+	<sprite>
+		<id>disparo</id>
+		<path>path/a/disparo.png</path>
+		<cantidad>1</cantidad>
+		<ancho>5</ancho>
+		<alto>5</alto>
+	</sprite>
+</sprites>
+<escenario>
+	<ancho>100</ancho>
+	<alto>1000</alto>
+	<fondo>
+		<spriteId>agua</spriteId>
+		<ancho>10</ancho>
+		<alto>10</alto>
+	</fondo>
+	<elementos>
+		<elemento>
+			<spriteId>isla</spriteId>
+			<posicion>
+				<x>10</x>
+				<y>15</y>
+			</posicion>
+		</elemento>
+		<elemento>
+			<spriteId>isla</spriteId>
+			<posicion>
+				<x>15</x>
+				<y>20</y>
+			</posicion>
+		</elemento>
+	</elementos>
+</escenario>
