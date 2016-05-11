@@ -5,6 +5,13 @@
  *      Author: gonzalo
  */
 
+/*
+ * tiposDefinidos.h
+ *
+ *  Created on: Mar 23, 2016
+ *      Author: gonzalo
+ */
+
 #ifndef UTILS_TIPOSDEFINIDOS_H_
 #define UTILS_TIPOSDEFINIDOS_H_
 
@@ -30,6 +37,7 @@
 #define FOREGROUND 20
 
 #include <string>
+#include <vector>
 
 // TIPOS RELACIONADOS A ARCHIVOS XML
 
@@ -143,6 +151,57 @@ struct DrawMessagePack
 	int totalSize;
 	DrawMessage drawMessages[DRAW_MESSAGE_PACK_SIZE];
 };
+
+struct Ventana
+{
+	int ancho;
+	int alto;
+
+};
+
+struct Sprite
+{
+	std::string id;
+	std::string path;
+	int cantidad;
+	int ancho;
+	int alto;
+
+};
+struct Fondo
+{
+	std::string spriteId;
+	int ancho;
+	int alto;
+
+};
+
+struct Posicion
+{
+	int x;
+	int y;
+};
+
+struct Elemento
+{
+	std::string spriteId;
+	struct Posicion posicion;
+
+};
+
+struct Escenario
+{
+	int ancho;
+	int alto;
+	struct Fondo fondo;
+	std::vector<struct Elemento> listaDeElementos;
+
+};
+
+
+
+
+
 
 /*struct intMessage
 {
