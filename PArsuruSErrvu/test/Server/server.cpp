@@ -706,6 +706,7 @@ bool server::procesarMensaje(ServerMessage* serverMsg)
 
 			sendResetMsgToAll(resetInfo);
 			Game::Instance()->setReseting(false);
+			Logger::Instance()->LOG("Server: Se ha reiniciado el juego.", DEBUG);
 		}
 
 		return true;

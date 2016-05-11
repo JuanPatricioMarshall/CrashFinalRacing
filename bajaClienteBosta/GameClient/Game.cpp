@@ -486,12 +486,13 @@ void Game::resetGame()
 	 middlegroundObjects.clear();
 	 foregroundObjects.clear();
 
-	 //cout << "destroying SDL STUFF\n";
-	 //SDL_DestroyRenderer(m_pRenderer);
-	 //printf("Se destruyó el renderer\n");
-
 	 SDL_SetWindowSize(m_pWindow,m_gameWidth, m_gameHeight);
 	 printf("Se modificó el tamaño de la window\n");
+
+	 cout << "Finish reseting game\n";
+	 m_reseting = false;
+
+}
 
 /*	 m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
 	 if (m_pRenderer != 0)
@@ -540,7 +541,3 @@ void Game::resetGame()
 	 TextureManager::Instance()->load("Assets/Sprites/BlackShip.png", 1, Game::Instance()->getRenderer());
 	 m_running = true;
 */
-	 cout << "Finish reseting game\n";
-	 m_reseting = false;
-
-}

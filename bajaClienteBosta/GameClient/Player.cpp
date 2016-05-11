@@ -116,7 +116,8 @@ void Player::handleInput()
 	{
 		if (!Game::Instance()->isReseting())
 		{
-			SDL_FlushEvent(SDL_KEYDOWN);
+			//SDL_FlushEvent(SDL_KEYDOWN);
+			//SDL_FlushEvent(SDL_KEYUP);
 			Game::Instance()->setReseting(true);
 			NetworkMessage netMsg;
 			netMsg.msg_Code[0] = 'r';
